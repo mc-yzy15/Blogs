@@ -2,13 +2,13 @@ name: Sync WordPress to Hexo
 
 on:
   schedule:
-    - cron: '0 2 * * *'  # 每天凌晨2点自动执行
-  workflow_dispatch:  # 允许手动触发
+    - cron: "0 2 * * *" # 每天凌晨2点自动执行
+  workflow_dispatch: # 允许手动触发
     inputs:
       full_sync:
-        description: 'Full sync (yes/no)'
+        description: "Full sync (yes/no)"
         required: false
-        default: 'no'
+        default: "no"
 
 jobs:
   sync-wordpress:
@@ -24,14 +24,14 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20"
 
       - name: Install Dependencies
         run: npm install
 
       - name: Sync WordPress Posts
         run: |
-          node -e "
+          cat > sync.js << 'SYNCEOF'
           const https = require('https');
           const fs = require('fs');
           const path = require('path');
@@ -178,9 +178,9 @@ jobs:
               console.log('同步完成！新增', newCount, '篇文章');
 
               if (newCount > 0) {
-                console.log('::set-output name=HAS_NEW::true');
+                console.log('HAS_NEW=true');
               } else {
-                console.log('::set-output name=HAS_NEW::false');
+                console.log('HAS_NEW=false');
               }
             } catch (error) {
               console.error('同步失败:', error.message);
@@ -189,7 +189,8 @@ jobs:
           }
 
           main();
-          "
+          SYNCEOF
+          node sync.js
 
       - name: Configure Git
         if: success()
