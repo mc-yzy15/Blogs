@@ -85,7 +85,7 @@ jobs:
             const filepath = path.join(POSTS_DIR, filename);
 
             let content = '---\n';
-            content += 'title: \"' + post.title.rendered.replace(/"/g, '\"') + '\"\n';
+            content += 'title: ' + JSON.stringify(post.title.rendered) + '\n';
             content += 'date: ' + date.toISOString() + '\n';
             content += 'wordpress_id: ' + post.id + '\n';
             content += 'wordpress_url: ' + post.link + '\n';
@@ -109,13 +109,13 @@ jobs:
               .replace(/<b[^>]*>(.*?)<\/b>/gi, '**$1**')
               .replace(/<em[^>]*>(.*?)<\/em>/gi, '*$1*')
               .replace(/<i[^>]*>(.*?)<\/i>/gi, '*$1*')
-              .replace(/<a[^>]*href=\"([^\"]*)\"[^>]*>(.*?)<\/a>/gi, '[$2]($1)')
-              .replace(/<img[^>]*src=\"([^\"]*)\"[^>]*alt=\"([^\"]*)\"[^>]*>/gi, '![$2]($1)')
-              .replace(/<img[^>]*alt=\"([^\"]*)\"[^>]*src=\"([^\"]*)\"[^>]*>/gi, '![$1]($2)')
-              .replace(/<img[^>]*src=\"([^\"]*)\"[^>]*>/gi, '![]($1)')
+              .replace(/<a[^>]*href="([^"]*)"[^>]*>(.*?)<\/a>/gi, '[$2]($1)')
+              .replace(/<img[^>]*src="([^"]*)"[^>]*alt="([^"]*)"[^>]*>/gi, '![$2]($1)')
+              .replace(/<img[^>]*alt="([^"]*)"[^>]*src="([^"]*)"[^>]*>/gi, '![$1]($2)')
+              .replace(/<img[^>]*src="([^"]*)"[^>]*>/gi, '![]($1)')
               .replace(/<blockquote[^>]*>(.*?)<\/blockquote>/gi, '> $1')
-              .replace(/<code[^>]*>(.*?)<\/code>/gi, '\`$1\`')
-              .replace(/<pre[^>]*>(.*?)<\/pre>/gi, '\`\`\`\n$1\n\`\`\`')
+              .replace(/<code[^>]*>(.*?)<\/code>/gi, '`$1`')
+              .replace(/<pre[^>]*>(.*?)<\/pre>/gi, '```\n$1\n```')
               .replace(/<ul[^>]*>/gi, '')
               .replace(/<\/ul>/gi, '')
               .replace(/<ol[^>]*>/gi, '')
@@ -128,12 +128,12 @@ jobs:
               .replace(/&amp;/g, '&')
               .replace(/&lt;/g, '<')
               .replace(/&gt;/g, '>')
-              .replace(/&quot;/g, '\"')
-              .replace(/&#039;/g, \"'\")
-              .replace(/&rsquo;/g, \"'\")
-              .replace(/&lsquo;/g, \"'\")
-              .replace(/&rdquo;/g, '\"')
-              .replace(/&ldquo;/g, '\"')
+              .replace(/&quot;/g, '"')
+              .replace(/&#039;/g, "'")
+              .replace(/&rsquo;/g, "'")
+              .replace(/&lsquo;/g, "'")
+              .replace(/&rdquo;/g, '"')
+              .replace(/&ldquo;/g, '"')
               .replace(/&#8211;/g, '-')
               .replace(/&#8212;/g, '--')
               .replace(/&[0-9]+;/g, '')
@@ -204,4 +204,4 @@ jobs:
           git add -A
           git status
           git diff --staged --quiet || git commit -m "docs: sync WordPress posts $(date +'%Y-%m-%d %H:%M:%S')"
-          git push origin main
+          git push origin master
