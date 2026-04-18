@@ -116,7 +116,7 @@ feed:
   content_limit: 200
   content_limit_delim: '...'
   order_by: -date
-  icon: https://blogs.yzy15.dpdns.org/img/favicon.png
+  icon: https://blogs.yzy15.dpdns.org/img/favicon.ico
   autodiscovery: true
   template:
 

@@ -251,6 +251,11 @@ jobs:
           git config --global user.name 'GitHub Actions Bot'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
 
+      - name: Cleanup Temporary Files
+        if: success()
+        run: |
+          rm -f sync.js
+
       - name: Commit and Push Changes
         if: success()
         run: |
