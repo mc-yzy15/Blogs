@@ -10,6 +10,9 @@ on:
         required: false
         default: "no"
 
+permissions:
+  contents: write
+
 jobs:
   sync-wordpress:
     runs-on: ubuntu-latest
