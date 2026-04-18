@@ -1,6 +1,7 @@
 ---
 title: 博客搭建完成，欢迎来访！
 date: 2026-04-19 12:00:00
+sticky: 100
 categories:
   - 生活
 tags:
