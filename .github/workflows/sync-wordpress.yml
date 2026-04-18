@@ -1,0 +1,206 @@
+name: Sync WordPress to Hexo
+
+on:
+  schedule:
+    - cron: '0 2 * * *'  # 每天凌晨2点自动执行
+  workflow_dispatch:  # 允许手动触发
+    inputs:
+      full_sync:
+        description: 'Full sync (yes/no)'
+        required: false
+        default: 'no'
+
+jobs:
+  sync-wordpress:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Sync WordPress Posts
+        run: |
+          node -e "
+          const https = require('https');
+          const fs = require('fs');
+          const path = require('path');
+
+          const WORDPRESS_URL = 'home159263.wordpress.com';
+          const POSTS_DIR = 'source/_posts/WordPress';
+          const POSTS_FILE = 'source/_posts/wordpress_sync.json';
+
+          // 创建目录
+          if (!fs.existsSync(POSTS_DIR)) {
+            fs.mkdirSync(POSTS_DIR, { recursive: true });
+          }
+
+          // 获取已同步的文章ID列表
+          let syncedIds = [];
+          if (fs.existsSync(POSTS_FILE)) {
+            syncedIds = JSON.parse(fs.readFileSync(POSTS_FILE, 'utf8'));
+          }
+
+          // 从 WordPress REST API 获取文章
+          function fetchPosts(page = 1) {
+            return new Promise((resolve, reject) => {
+              const options = {
+                hostname: WORDPRESS_URL,
+                path: '/wp-json/wp/v2/posts?per_page=100&page=' + page,
+                headers: {
+                  'User-Agent': 'Hexo-WordPress-Sync/1.0'
+                }
+              };
+
+              https.get(options, (res) => {
+                let data = '';
+                res.on('data', (chunk) => data += chunk);
+                res.on('end', () => {
+                  try {
+                    const posts = JSON.parse(data);
+                    resolve({ posts, headers: res.headers });
+                  } catch (e) {
+                    reject(e);
+                  }
+                });
+              }).on('error', reject);
+            });
+          }
+
+          // 转换 WordPress 内容为 Hexo Markdown
+          function convertToHexo(post) {
+            const date = new Date(post.date);
+            const dateStr = date.toISOString().slice(0, 10);
+            const filename = post.slug + '.md';
+            const filepath = path.join(POSTS_DIR, filename);
+
+            let content = '---\n';
+            content += 'title: \"' + post.title.rendered.replace(/"/g, '\"') + '\"\n';
+            content += 'date: ' + date.toISOString() + '\n';
+            content += 'wordpress_id: ' + post.id + '\n';
+            content += 'wordpress_url: ' + post.link + '\n';
+            content += 'categories:\n';
+            content += '  - WordPress\n';
+            if (post.tags && post.tags.length > 0) {
+              content += 'tags:\n';
+              post.tags.forEach(tag => {
+                content += '  - ' + tag.name + '\n';
+              });
+            }
+            content += '---\n\n';
+            content += post.content.rendered
+              .replace(/<h1[^>]*>(.*?)<\/h1>/gi, '# $1')
+              .replace(/<h2[^>]*>(.*?)<\/h2>/gi, '## $1')
+              .replace(/<h3[^>]*>(.*?)<\/h3>/gi, '### $1')
+              .replace(/<h4[^>]*>(.*?)<\/h4>/gi, '#### $1')
+              .replace(/<h5[^>]*>(.*?)<\/h5>/gi, '##### $1')
+              .replace(/<h6[^>]*>(.*?)<\/h6>/gi, '###### $1')
+              .replace(/<strong[^>]*>(.*?)<\/strong>/gi, '**$1**')
+              .replace(/<b[^>]*>(.*?)<\/b>/gi, '**$1**')
+              .replace(/<em[^>]*>(.*?)<\/em>/gi, '*$1*')
+              .replace(/<i[^>]*>(.*?)<\/i>/gi, '*$1*')
+              .replace(/<a[^>]*href=\"([^\"]*)\"[^>]*>(.*?)<\/a>/gi, '[$2]($1)')
+              .replace(/<img[^>]*src=\"([^\"]*)\"[^>]*alt=\"([^\"]*)\"[^>]*>/gi, '![$2]($1)')
+              .replace(/<img[^>]*alt=\"([^\"]*)\"[^>]*src=\"([^\"]*)\"[^>]*>/gi, '![$1]($2)')
+              .replace(/<img[^>]*src=\"([^\"]*)\"[^>]*>/gi, '![]($1)')
+              .replace(/<blockquote[^>]*>(.*?)<\/blockquote>/gi, '> $1')
+              .replace(/<code[^>]*>(.*?)<\/code>/gi, '\`$1\`')
+              .replace(/<pre[^>]*>(.*?)<\/pre>/gi, '\`\`\`\n$1\n\`\`\`')
+              .replace(/<ul[^>]*>/gi, '')
+              .replace(/<\/ul>/gi, '')
+              .replace(/<ol[^>]*>/gi, '')
+              .replace(/<\/ol>/gi, '')
+              .replace(/<li[^>]*>(.*?)<\/li>/gi, '- $1\n')
+              .replace(/<p[^>]*>(.*?)<\/p>/gi, '$1\n\n')
+              .replace(/<br\s*\/?>/gi, '\n')
+              .replace(/<[^>]+>/g, '')
+              .replace(/&nbsp;/g, ' ')
+              .replace(/&amp;/g, '&')
+              .replace(/&lt;/g, '<')
+              .replace(/&gt;/g, '>')
+              .replace(/&quot;/g, '\"')
+              .replace(/&#039;/g, \"'\")
+              .replace(/&rsquo;/g, \"'\")
+              .replace(/&lsquo;/g, \"'\")
+              .replace(/&rdquo;/g, '\"')
+              .replace(/&ldquo;/g, '\"')
+              .replace(/&#8211;/g, '-')
+              .replace(/&#8212;/g, '--')
+              .replace(/&[0-9]+;/g, '')
+              .trim();
+
+            return { filepath, content, id: post.id };
+          }
+
+          async function main() {
+            try {
+              console.log('开始同步 WordPress 博客...');
+              const { posts, headers } = await fetchPosts(1);
+              const totalPages = parseInt(headers['x-wp-totalpages'] || '1');
+              const totalPosts = parseInt(headers['x-wp-total'] || '0');
+              console.log('共找到', totalPosts, '篇文章，分', totalPages, '页');
+
+              let allPosts = [...posts];
+
+              // 如果有多页，继续获取
+              for (let page = 2; page <= totalPages; page++) {
+                const { posts: morePosts } = await fetchPosts(page);
+                allPosts = allPosts.concat(morePosts);
+              }
+
+              let newCount = 0;
+              const newIds = [];
+
+              for (const post of allPosts) {
+                if (!syncedIds.includes(post.id)) {
+                  const { filepath, content, id } = convertToHexo(post);
+                  fs.writeFileSync(filepath, content);
+                  console.log('已同步:', post.title.rendered);
+                  newCount++;
+                  newIds.push(id);
+                }
+              }
+
+              // 更新已同步ID列表
+              syncedIds = [...syncedIds, ...newIds];
+              fs.writeFileSync(POSTS_FILE, JSON.stringify(syncedIds));
+
+              console.log('同步完成！新增', newCount, '篇文章');
+
+              if (newCount > 0) {
+                console.log('::set-output name=HAS_NEW::true');
+              } else {
+                console.log('::set-output name=HAS_NEW::false');
+              }
+            } catch (error) {
+              console.error('同步失败:', error.message);
+              process.exit(1);
+            }
+          }
+
+          main();
+          "
+
+      - name: Configure Git
+        if: success()
+        run: |
+          git config --global user.name 'GitHub Actions Bot'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+      - name: Commit and Push Changes
+        if: success()
+        run: |
+          git add -A
+          git status
+          git diff --staged --quiet || git commit -m "docs: sync WordPress posts $(date +'%Y-%m-%d %H:%M:%S')"
+          git push origin main
