@@ -2,8 +2,8 @@ name: Sync WordPress to Hexo
 
 on:
   schedule:
-    - cron: "0 2 * * *" # 每天凌晨2点自动执行
-  workflow_dispatch: # 允许手动触发
+    - cron: "0 2 * * *"
+  workflow_dispatch:
     inputs:
       full_sync:
         description: "Full sync (yes/no)"
@@ -13,22 +13,26 @@ on:
 jobs:
   sync-wordpress:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           submodules: false
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "20"
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
       - name: Install Dependencies
-        run: npm install
+        run: pnpm install
 
       - name: Sync WordPress Posts
         run: |
@@ -37,29 +41,28 @@ jobs:
           const fs = require('fs');
           const path = require('path');
 
-          const WORDPRESS_URL = 'home159263.wordpress.com';
+          const API_HOST = 'public-api.wordpress.com';
+          const SITE_SLUG = 'home159263.wordpress.com';
           const POSTS_DIR = 'source/_posts/WordPress';
           const POSTS_FILE = 'source/_posts/wordpress_sync.json';
 
-          // 创建目录
           if (!fs.existsSync(POSTS_DIR)) {
             fs.mkdirSync(POSTS_DIR, { recursive: true });
           }
 
-          // 获取已同步的文章ID列表
           let syncedIds = [];
           if (fs.existsSync(POSTS_FILE)) {
             syncedIds = JSON.parse(fs.readFileSync(POSTS_FILE, 'utf8'));
           }
 
-          // 从 WordPress REST API 获取文章
-          function fetchPosts(page = 1) {
+          function fetchJSON(urlPath) {
             return new Promise((resolve, reject) => {
               const options = {
-                hostname: WORDPRESS_URL,
-                path: '/wp-json/wp/v2/posts?per_page=100&_embed&page=' + page,
+                hostname: API_HOST,
+                path: urlPath,
                 headers: {
-                  'User-Agent': 'Hexo-WordPress-Sync/1.0'
+                  'User-Agent': 'Hexo-WordPress-Sync/2.0',
+                  'Accept': 'application/json'
                 }
               };
 
@@ -67,21 +70,39 @@ jobs:
                 let data = '';
                 res.on('data', (chunk) => data += chunk);
                 res.on('end', () => {
+                  if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+                    fetchJSON(res.headers.location).then(resolve).catch(reject);
+                    return;
+                  }
+                  if (res.statusCode !== 200) {
+                    reject(new Error('HTTP ' + res.statusCode + ': ' + data.slice(0, 200)));
+                    return;
+                  }
                   try {
-                    const posts = JSON.parse(data);
-                    resolve({ posts, headers: res.headers });
+                    const json = JSON.parse(data);
+                    resolve({ data: json, headers: res.headers });
                   } catch (e) {
-                    reject(e);
+                    reject(new Error('JSON parse error (got HTML?): ' + data.slice(0, 100)));
                   }
                 });
               }).on('error', reject);
             });
           }
 
-          // 转换 WordPress 内容为 Hexo Markdown
-          function convertToHexo(post) {
+          function fetchPosts(page = 1) {
+            return fetchJSON('/wp/v2/sites/' + SITE_SLUG + '/posts?per_page=100&page=' + page + '&_embed=true');
+          }
+
+          function fetchTags() {
+            return fetchJSON('/wp/v2/sites/' + SITE_SLUG + '/tags?per_page=100');
+          }
+
+          function fetchCategories() {
+            return fetchJSON('/wp/v2/sites/' + SITE_SLUG + '/categories?per_page=100');
+          }
+
+          function convertToHexo(post, tagMap, categoryMap) {
             const date = new Date(post.date);
-            const dateStr = date.toISOString().slice(0, 10);
             const filename = post.slug + '.md';
             const filepath = path.join(POSTS_DIR, filename);
 
@@ -92,10 +113,21 @@ jobs:
             content += 'wordpress_url: ' + post.link + '\n';
             content += 'categories:\n';
             content += '  - WordPress\n';
-            if (post._embedded && post._embedded['wp:term'] && post._embedded['wp:term'].length > 1 && post._embedded['wp:term'][1].length > 0) {
+            if (post.categories && post.categories.length > 0 && categoryMap) {
+              post.categories.forEach(catId => {
+                const catName = categoryMap[catId];
+                if (catName && catName !== 'WordPress') {
+                  content += '  - ' + catName + '\n';
+                }
+              });
+            }
+            if (post.tags && post.tags.length > 0 && tagMap) {
               content += 'tags:\n';
-              post._embedded['wp:term'][1].forEach(tag => {
-                content += '  - ' + tag.name + '\n';
+              post.tags.forEach(tagId => {
+                const tagName = tagMap[tagId];
+                if (tagName) {
+                  content += '  - ' + tagName + '\n';
+                }
               });
             }
             content += '---\n\n';
@@ -146,16 +178,34 @@ jobs:
           async function main() {
             try {
               console.log('开始同步 WordPress 博客...');
-              const { posts, headers } = await fetchPosts(1);
+
+              let tagMap = {};
+              try {
+                const { data: tags } = await fetchTags();
+                tags.forEach(tag => { tagMap[tag.id] = tag.name; });
+                console.log('已加载', Object.keys(tagMap).length, '个标签');
+              } catch (e) {
+                console.log('标签加载失败，跳过标签同步:', e.message);
+              }
+
+              let categoryMap = {};
+              try {
+                const { data: categories } = await fetchCategories();
+                categories.forEach(cat => { categoryMap[cat.id] = cat.name; });
+                console.log('已加载', Object.keys(categoryMap).length, '个分类');
+              } catch (e) {
+                console.log('分类加载失败，跳过分类同步:', e.message);
+              }
+
+              const { data: posts, headers } = await fetchPosts(1);
               const totalPages = parseInt(headers['x-wp-totalpages'] || '1');
               const totalPosts = parseInt(headers['x-wp-total'] || '0');
               console.log('共找到', totalPosts, '篇文章，分', totalPages, '页');
 
               let allPosts = [...posts];
 
-              // 如果有多页，继续获取
               for (let page = 2; page <= totalPages; page++) {
-                const { posts: morePosts } = await fetchPosts(page);
+                const { data: morePosts } = await fetchPosts(page);
                 allPosts = allPosts.concat(morePosts);
               }
 
@@ -164,7 +214,7 @@ jobs:
 
               for (const post of allPosts) {
                 if (!syncedIds.includes(post.id)) {
-                  const { filepath, content, id } = convertToHexo(post);
+                  const { filepath, content, id } = convertToHexo(post, tagMap, categoryMap);
                   fs.writeFileSync(filepath, content);
                   console.log('已同步:', post.title.rendered);
                   newCount++;
@@ -172,7 +222,6 @@ jobs:
                 }
               }
 
-              // 更新已同步ID列表
               syncedIds = [...syncedIds, ...newIds];
               fs.writeFileSync(POSTS_FILE, JSON.stringify(syncedIds));
 
@@ -194,11 +243,13 @@ jobs:
           node sync.js
 
       - name: Configure Git
+        if: success()
         run: |
           git config --global user.name 'GitHub Actions Bot'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
 
       - name: Commit and Push Changes
+        if: success()
         run: |
           git add -A
           git status

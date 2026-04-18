@@ -1,0 +1,83 @@
+menu:
+  Home: / || fas fa-home
+  Archives: /archives/ || fas fa-archive
+  Tags: /tags/ || fas fa-tags
+  Categories: /categories/ || fas fa-folder
+  Link: /link/ || fas fa-link
+  About: /about/ || fas fa-user
+
+social:
+  fab fa-github: https://github.com/mc-yzy15 || Github || '#24292e'
+  fas fa-envelope: mailto:yingmoliuguang@yeah.net || Email || '#4a7dbe'
+  fab fa-bilibili: https://space.bilibili.com/1338637552 || Bilibili || '#00a1d6'
+  fab fa-telegram: https://t.me/ShuangXiang_Dddddavidd_bot || Telegram || '#0088cc'
+  fas fa-rss: /atom.xml || RSS || '#ff6600'
+
+aside:
+  enable: true
+  hide: false
+  button: true
+  mobile: true
+  position: right
+  display:
+    archive: true
+    tag: true
+    category: true
+  card_author:
+    enable: true
+    description: 技术分享 / 记录生活 / 学习笔记
+    button:
+      enable: true
+      icon: fab fa-github
+      text: Follow Me
+      link: https://github.com/mc-yzy15
+  card_announcement:
+    enable: true
+    content: 欢迎来到我的博客！这里记录着我的技术分享和生活点滴~<br>📢 <a href="/link/">广告位招租</a> | 💼 商业合作见<a href="/link/">友链页</a>
+  card_recent_post:
+    enable: true
+    limit: 5
+    sort: date
+    sort_order:
+  card_newest_comments:
+    enable: false
+    sort_order:
+    limit: 6
+    storage: 10
+    avatar: true
+  card_categories:
+    enable: true
+    limit: 8
+    expand: none
+    sort_order:
+  card_tags:
+    enable: true
+    limit: 40
+    color: false
+    custom_colors:
+    orderby: random
+    order: 1
+    sort_order:
+  card_archives:
+    enable: true
+    type: monthly
+    format: MMMM YYYY
+    order: -1
+    limit: 8
+    sort_order:
+  card_post_series:
+    enable: true
+    series_title: false
+    orderBy: 'date'
+    order: -1
+  card_webinfo:
+    enable: true
+    post_count: true
+    last_push_date: true
+    sort_order:
+    runtime_date:
+
+ad:
+  index:
+  aside: '<div style="text-align:center;padding:20px 10px;border:2px dashed #49b1f5;border-radius:8px;margin:0 auto;"><div style="font-size:18px;font-weight:bold;color:#49b1f5;">📢 广告位招租</div><div style="font-size:12px;color:#858585;margin-top:8px;">联系企业微信洽谈合作</div><div style="font-size:12px;color:#858585;margin-top:4px;">不影响阅读体验</div></div>'
+  post:

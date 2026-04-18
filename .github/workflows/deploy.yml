@@ -23,10 +23,15 @@ jobs:
         with:
           node-version: "20"
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
       - name: Install Dependencies
         run: |
-          npm install
-          npm install hexo-cli -g
+          pnpm install
+          pnpm add -g hexo-cli
 
       - name: Clean and Generate Static Files
         run: |
