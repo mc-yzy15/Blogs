@@ -260,6 +260,7 @@ jobs:
         if: success()
         run: |
           git add -A
+          git reset HEAD source/_posts/wordpress_sync.json
           git status
           git diff --staged --quiet || git commit -m "docs: sync WordPress posts $(date +'%Y-%m-%d %H:%M:%S')"
           git push origin master
