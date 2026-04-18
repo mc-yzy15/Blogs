@@ -8,7 +8,7 @@ type: link
 - class_name: 我的项目
   class_desc: 我搭建的一些服务和项目
   link_list:
-    - name: Yzy15 AI
+    - name: 瀛光 API
       link: https://ai.yzy15.dpdns.org
       avatar: https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f916.png
       descr: AI 工具与服务网站

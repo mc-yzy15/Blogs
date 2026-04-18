@@ -32,11 +32,11 @@ cover:
 
 ---
 
-## 🤖 我的 AI 网站
+## 🤖 瀛光 API
 
-我还搭建了一个 AI 网站，提供各种 AI 工具和服务，欢迎体验！
+我还搭建了一个 AI 网站——瀛光 API，提供各种 AI 工具和服务，欢迎体验！
 
-- **AI 网站地址**：[https://ai.yzy15.dpdns.org](https://ai.yzy15.dpdns.org)
+- **瀛光 API 地址**：[https://ai.yzy15.dpdns.org](https://ai.yzy15.dpdns.org)
 
 无论是日常对话、代码辅助、文案生成还是知识问答，都可以来试试。持续更新中，后续会加入更多功能，敬请期待！
 
