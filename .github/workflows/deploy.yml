@@ -24,11 +24,8 @@ jobs:
           node-version: "20"
 
       - name: Install Dependencies
-        run: npm install
-
-      - name: Install Hexo Git Deployer
         run: |
-          npm install hexo-deployer-git --save
+          npm install
           npm install hexo-cli -g
 
       - name: Clean and Generate Static Files

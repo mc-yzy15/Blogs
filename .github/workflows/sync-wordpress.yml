@@ -13,13 +13,14 @@ on:
 jobs:
   sync-wordpress:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           submodules: false
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -56,7 +57,7 @@ jobs:
             return new Promise((resolve, reject) => {
               const options = {
                 hostname: WORDPRESS_URL,
-                path: '/wp-json/wp/v2/posts?per_page=100&page=' + page,
+                path: '/wp-json/wp/v2/posts?per_page=100&_embed&page=' + page,
                 headers: {
                   'User-Agent': 'Hexo-WordPress-Sync/1.0'
                 }
@@ -91,9 +92,9 @@ jobs:
             content += 'wordpress_url: ' + post.link + '\n';
             content += 'categories:\n';
             content += '  - WordPress\n';
-            if (post.tags && post.tags.length > 0) {
+            if (post._embedded && post._embedded['wp:term'] && post._embedded['wp:term'].length > 1 && post._embedded['wp:term'][1].length > 0) {
               content += 'tags:\n';
-              post.tags.forEach(tag => {
+              post._embedded['wp:term'][1].forEach(tag => {
                 content += '  - ' + tag.name + '\n';
               });
             }
@@ -193,13 +194,11 @@ jobs:
           node sync.js
 
       - name: Configure Git
-        if: success()
         run: |
           git config --global user.name 'GitHub Actions Bot'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
 
       - name: Commit and Push Changes
-        if: success()
         run: |
           git add -A
           git status
