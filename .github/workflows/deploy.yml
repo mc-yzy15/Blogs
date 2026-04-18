@@ -34,18 +34,9 @@ jobs:
           hexo clean
           hexo generate
 
-      - name: Configure Git
-        run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-
       - name: Deploy to GitHub Pages
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          cd public/
-          git init
-          git add -A
-          git commit -m "Create by workflows"
-          git remote add origin https://${{ secrets.GITHUB_TOKEN }}@github.com/mc-yzy15/Blogs.git
-          git push origin HEAD:gh-pages -f
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          publish_branch: gh-pages
