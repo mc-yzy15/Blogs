@@ -4,14 +4,14 @@
     <name>mc-yzy15</name>
   </author>
   <generator uri="https://hexo.io/">Hexo</generator>
-  <icon>https://blogs.yzy15.dpdns.org/img/favicon.png</icon>
+  <icon>https://blogs.yzy15.dpdns.org/img/favicon.ico</icon>
   <id>https://blogs.yzy15.dpdns.org/</id>
   <link href="https://blogs.yzy15.dpdns.org/" rel="alternate"/>
   <link href="https://blogs.yzy15.dpdns.org/atom.xml" rel="self"/>
   <rights>All rights reserved 2026, mc-yzy15</rights>
   <subtitle>技术分享 / 记录生活 / 学习笔记</subtitle>
   <title>Yzy15's Blog</title>
-  <updated>2026-04-18T20:12:52.610Z</updated>
+  <updated>2026-04-18T20:13:05.182Z</updated>
   <entry>
     <author>
       <name>mc-yzy15</name>
@@ -30,7 +30,7 @@
 <p>欢迎各位大佬前来访问]]>
     </summary>
     <title>博客搭建完成，欢迎来访！</title>
-    <updated>2026-04-18T20:12:52.610Z</updated>
+    <updated>2026-04-18T20:13:05.182Z</updated>
   </entry>
   <entry>
     <author>
@@ -48,6 +48,6 @@
       <![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can]]>
     </summary>
     <title>Hello World</title>
-    <updated>2026-04-18T20:12:52.611Z</updated>
+    <updated>2026-04-18T20:13:05.182Z</updated>
   </entry>
 </feed>
