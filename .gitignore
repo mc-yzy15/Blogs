@@ -7,5 +7,6 @@ public/
 .deploy*/
 _multiconfig.yml
 sync.js
+sync.js
 wordpress_sync.json
 source/_posts/WordPress/
