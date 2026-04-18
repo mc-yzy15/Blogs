@@ -4,9 +4,11 @@ menu:
   Tags: /tags/ || fas fa-tags
   Categories: /categories/ || fas fa-folder
   Link: /link/ || fas fa-link
+  Homepage: /homepage/ || fas fa-globe
   About: /about/ || fas fa-user
 
 social:
+  fas fa-home: https://yzy15.dpdns.org || 个人主页 || '#ff6600'
   fab fa-github: https://github.com/mc-yzy15 || Github || '#24292e'
   fas fa-envelope: mailto:yingmoliuguang@yeah.net || Email || '#4a7dbe'
   fab fa-bilibili: https://space.bilibili.com/1338637552 || Bilibili || '#00a1d6'

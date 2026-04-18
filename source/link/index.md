@@ -16,10 +16,6 @@ type: link
       link: https://eftserver.yzy15.dpdns.org
       avatar: https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f3ae.png
       descr: 逃离塔科夫社区服务器 | QQ群：1034718897
-    - name: Yzy15 个人主页
-      link: https://yzy15.dpdns.org
-      avatar: https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f3e0.png
-      descr: 我的个人主页 | GitHub & 项目导航
 
 - class_name: 朋友们
   class_desc: 朋友的网站和项目
