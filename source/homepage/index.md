@@ -5,4 +5,4 @@ type: homepage
 aside: false
 ---
 
-<iframe src="https://yzy15.dpdns.org" style="width: 100%; height: 85vh; border: none; border-radius: 8px;" loading="lazy" allowfullscreen></iframe>
+<script>window.location.href = "https://yzy15.dpdns.org";</script>
