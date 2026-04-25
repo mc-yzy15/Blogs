@@ -133,7 +133,7 @@
     if (!isChina) return;
 
     var style = document.createElement('style');
-    style.textContent = '@media(min-width:1200px){.side-banner{position:fixed;top:50%;transform:translateY(-50%);z-index:9999;}.side-banner-left{left:8px;}.side-banner-right{right:8px;}.side-banner a{display:block;text-decoration:none;}.side-banner img{border-radius:8px;box-shadow:0 2px 12px rgba(0,0,0,.15);transition:transform .2s;}.side-banner img:hover{transform:scale(1.05);}.side-banner .close-btn{position:absolute;top:-8px;right:-8px;width:20px;height:20px;border-radius:50%;background:rgba(0,0,0,.6);color:#fff;font-size:12px;line-height:20px;text-align:center;cursor:pointer;}}@media(max-width:1199px){.side-banner{display:none!important;}}';
+    style.textContent = '@media(min-width:1200px){.side-banner{position:fixed;top:50%;transform:translateY(-50%);z-index:9999;}.side-banner-left{left:8px;}.side-banner-right{right:8px;}.side-banner a{display:block;text-decoration:none;}.side-banner img{border-radius:8px;box-shadow:0 2px 12px rgba(0,0,0,.15);transition:transform .2s;}.side-banner img:hover{transform:scale(1.05);}.side-banner .close-btn{position:absolute;top:-3px;right:-3px;width:8px;height:8px;border-radius:50%;background:rgba(0,0,0,.25);color:transparent;font-size:0;line-height:8px;text-align:center;cursor:pointer;overflow:hidden;}.side-banner .close-btn:hover{background:rgba(0,0,0,.5);}}@media(max-width:1199px){.side-banner{display:none!important;}}';
     document.head.appendChild(style);
 
     var leftBanner = document.createElement('div');
@@ -172,7 +172,7 @@
     var el = document.createElement('div');
     el.id = 'footer-promo';
     el.style.cssText = 'position:fixed;bottom:0;left:0;right:0;z-index:99998;background:linear-gradient(90deg,#ff6b6b,#ee5a24);color:#fff;text-align:center;padding:8px 0;font-size:13px;box-shadow:0 -2px 12px rgba(255,107,107,.3);';
-    el.innerHTML = '<span style="margin-right:8px;">\u2601\uFE0F \u5357\u5F71\u4E91 - \u672C\u7AD9\u670D\u52A1\u5668\u6258\u7BA1\u65B9 | T+\u7EA7DDoS\u9632\u62A4 | \u65E0\u9650\u9632CC | \u8D85\u4F4E\u5355\u4EF7</span><a href="https://idc.ofoca.net/aff/PJQGAEKY" target="_blank" rel="noopener" style="display:inline-block;padding:4px 14px;background:rgba(255,255,255,.25);border-radius:14px;color:#fff;text-decoration:none;font-weight:bold;font-size:12px;margin-left:6px;">\u7ACB\u5373\u6CE8\u518C\u9886\u4F18\u60E0</a><span onclick="this.parentElement.style.display=\'none\'" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:16px;opacity:.7;">\u00D7</span>';
+    el.innerHTML = '<span style="margin-right:8px;">\u2601\uFE0F \u5357\u5F71\u4E91 - \u672C\u7AD9\u670D\u52A1\u5668\u6258\u7BA1\u65B9 | T+\u7EA7DDoS\u9632\u62A4 | \u65E0\u9650\u9632CC | \u8D85\u4F4E\u5355\u4EF7</span><a href="https://idc.ofoca.net/aff/PJQGAEKY" target="_blank" rel="noopener" style="display:inline-block;padding:4px 14px;background:rgba(255,255,255,.25);border-radius:14px;color:#fff;text-decoration:none;font-weight:bold;font-size:12px;margin-left:6px;">\u7ACB\u5373\u6CE8\u518C\u9886\u4F18\u60E0</a><span onclick="this.parentElement.style.display=\'none\'" style="position:absolute;right:6px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:6px;opacity:.2;line-height:1;">\u00D7</span>';
     document.body.appendChild(el);
   }
 
