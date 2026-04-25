@@ -2,17 +2,94 @@
   var CACHE_KEY = 'geo_ad_region';
   var CACHE_TTL = 86400000;
 
+  function buildAd(cfg) {
+    var pad = cfg.compact ? '18px 10px' : '20px 10px';
+    var titleSize = cfg.compact ? '16px' : '18px';
+    var descSize = cfg.compact ? '12px' : '13px';
+    var btnPad = cfg.compact ? '6px 20px' : '8px 24px';
+    var btnRadius = cfg.compact ? '16px' : '20px';
+    var btnSize = cfg.compact ? '13px' : '14px';
+    var h = '<div style="text-align:center;padding:' + pad + ';border:2px dashed ' + cfg.color + ';border-radius:8px;margin:0 auto;background:linear-gradient(135deg,' + cfg.bgLight + ',' + cfg.bgDark + ');">';
+    h += '<div style="font-size:' + titleSize + ';font-weight:bold;color:' + cfg.color + ';">' + cfg.icon + ' ' + cfg.title + '</div>';
+    if (cfg.desc) h += '<div style="font-size:' + descSize + ';color:#555;margin-top:' + (cfg.compact ? '6px' : '8px') + ';">' + cfg.desc + '</div>';
+    if (cfg.sub) h += '<div style="font-size:' + descSize + ';color:#555;margin-top:4px;">' + cfg.sub + '</div>';
+    if (cfg.link && cfg.linkText) {
+      h += '<div style="margin-top:' + (cfg.compact ? '8px' : '10px') + ';"><a href="' + cfg.link + '" target="_blank" rel="noopener" style="display:inline-block;padding:' + btnPad + ';background:' + cfg.color + ';color:#fff;border-radius:' + btnRadius + ';text-decoration:none;font-size:' + btnSize + ';font-weight:bold;">' + cfg.linkText + '</a></div>';
+    }
+    if (cfg.footer) h += '<div style="font-size:11px;color:#999;margin-top:6px;">' + cfg.footer + '</div>';
+    h += '</div>';
+    return h;
+  }
+
+  // ==================== 广告配置接口 ====================
+  // 修改下方配置对象即可更换广告内容，无需改动其他代码
+  //
+  // 配置字段说明：
+  //   icon     - 标题前图标
+  //   title    - 广告标题
+  //   desc     - 描述文字（可选，null则不显示）
+  //   sub      - 副描述（可选，null则不显示）
+  //   link     - 跳转链接（可选，null则不显示按钮）
+  //   linkText - 按钮文字（可选，需配合link使用）
+  //   footer   - 底部小字（可选，null则不显示）
+  //   color    - 主题色（边框/按钮/标题）
+  //   bgLight  - 背景渐变浅色
+  //   bgDark   - 背景渐变深色
+  //   compact  - 紧凑模式（侧边栏用，true=更小间距）
+  // ========================================================
+
+  // 国内广告配置
+  var CN_AD = {
+    icon: '\u2601\uFE0F',
+    title: '\u5357\u5F71\u4E91 - \u9AD8\u6027\u4EF7\u6BD4\u4E91\u670D\u52A1\u5668',
+    desc: '\u672C\u7AD9\u670D\u52A1\u5668\u6258\u7BA1\u65B9\uFF0C\u7A33\u5B9A\u53EF\u9760',
+    sub: '\uD83C\uDF81 \u901A\u8FC7\u4E0B\u65B9\u94FE\u63A5\u6CE8\u518C\u4EAB\u4E13\u5C5E\u4F18\u60E0',
+    link: 'https://idc.ofoca.net/aff/PJQGAEKY',
+    linkText: '\u7ACB\u5373\u6CE8\u518C\u9886\u4F18\u60E0',
+    footer: '\u6CE8\u518C\u540E\u8054\u7CFB\u535A\u4E3B\u53EF\u518D\u9886\u989D\u5916\u6298\u6263',
+    color: '#ff6b6b',
+    bgLight: '#fff5f5',
+    bgDark: '#ffe0e0'
+  };
+
+  // 国内侧边栏广告（基于CN_AD覆盖部分字段）
+  var CN_AD_ASIDE = Object.assign({}, CN_AD, {
+    footer: null,
+    color: '#49b1f5',
+    bgLight: '#f0f9ff',
+    bgDark: '#e0f2fe',
+    compact: true
+  });
+
+  // 国外广告配置（当前为招租占位，有广告主时替换此配置即可）
+  var INTL_AD = {
+    icon: '\uD83D\uDCE2',
+    title: 'Ad Space Available',
+    desc: null,
+    sub: null,
+    link: null,
+    linkText: null,
+    footer: null,
+    color: '#7c3aed',
+    bgLight: '#f5f3ff',
+    bgDark: '#ede9fe'
+  };
+
+  // ==================== 广告渲染 ====================
+
   var cnAds = {
-    aside: '<div style="text-align:center;padding:18px 10px;border:2px dashed #49b1f5;border-radius:8px;margin:0 auto;background:linear-gradient(135deg,#f0f9ff,#e0f2fe);"><div style="font-size:16px;font-weight:bold;color:#49b1f5;">☁️ 南影云 - 高性价比云服务器</div><div style="font-size:12px;color:#555;margin-top:6px;">本站服务器托管方，稳定可靠</div><div style="font-size:12px;color:#555;margin-top:4px;">🎁 通过下方链接注册享专属优惠</div><div style="margin-top:8px;"><a href="https://idc.ofoca.net/aff/PJQGAEKY" target="_blank" rel="noopener" style="display:inline-block;padding:6px 20px;background:#49b1f5;color:#fff;border-radius:16px;text-decoration:none;font-size:13px;font-weight:bold;">立即注册领优惠</a></div></div>',
-    index: '<div style="text-align:center;padding:20px 10px;border:2px dashed #ff6b6b;border-radius:8px;margin:0 auto;background:linear-gradient(135deg,#fff5f5,#ffe0e0);"><div style="font-size:18px;font-weight:bold;color:#ff6b6b;">☁️ 南影云 - 高性价比云服务器</div><div style="font-size:13px;color:#555;margin-top:8px;">本站服务器托管方，稳定可靠</div><div style="font-size:13px;color:#555;margin-top:4px;">🎁 通过下方链接注册享专属优惠</div><div style="margin-top:10px;"><a href="https://idc.ofoca.net/aff/PJQGAEKY" target="_blank" rel="noopener" style="display:inline-block;padding:8px 24px;background:#ff6b6b;color:#fff;border-radius:20px;text-decoration:none;font-size:14px;font-weight:bold;">立即注册领优惠</a></div><div style="font-size:11px;color:#999;margin-top:6px;">注册后联系博主可再领额外折扣</div></div>',
-    post: '<div style="text-align:center;padding:20px 10px;border:2px dashed #ff6b6b;border-radius:8px;margin:0 auto;background:linear-gradient(135deg,#fff5f5,#ffe0e0);"><div style="font-size:18px;font-weight:bold;color:#ff6b6b;">☁️ 南影云 - 高性价比云服务器</div><div style="font-size:13px;color:#555;margin-top:8px;">本站服务器托管方，稳定可靠</div><div style="font-size:13px;color:#555;margin-top:4px;">🎁 通过下方链接注册享专属优惠</div><div style="margin-top:10px;"><a href="https://idc.ofoca.net/aff/PJQGAEKY" target="_blank" rel="noopener" style="display:inline-block;padding:8px 24px;background:#ff6b6b;color:#fff;border-radius:20px;text-decoration:none;font-size:14px;font-weight:bold;">立即注册领优惠</a></div><div style="font-size:11px;color:#999;margin-top:6px;">注册后联系博主可再领额外折扣</div></div>'
+    aside: buildAd(CN_AD_ASIDE),
+    index: buildAd(CN_AD),
+    post: buildAd(CN_AD)
   };
 
   var intlAds = {
-    aside: '<div style="text-align:center;padding:18px 10px;border:2px dashed #7c3aed;border-radius:8px;margin:0 auto;background:linear-gradient(135deg,#f5f3ff,#ede9fe);"><div style="font-size:16px;font-weight:bold;color:#7c3aed;">📢 Ad Space Available</div><div style="font-size:12px;color:#858585;margin-top:6px;">Sidebar ad: $5/month</div><div style="font-size:12px;color:#858585;margin-top:4px;">Contact via Telegram for details</div></div>',
-    index: '<div style="text-align:center;padding:20px 10px;border:2px dashed #7c3aed;border-radius:8px;margin:0 auto;background:linear-gradient(135deg,#f5f3ff,#ede9fe);"><div style="font-size:18px;font-weight:bold;color:#7c3aed;">📢 Ad Space Available</div><div style="font-size:12px;color:#858585;margin-top:8px;">Homepage ad: $10/month</div><div style="font-size:12px;color:#858585;margin-top:4px;">Contact via Telegram for details</div></div>',
-    post: '<div style="text-align:center;padding:20px 10px;border:2px dashed #7c3aed;border-radius:8px;margin:0 auto;background:linear-gradient(135deg,#f5f3ff,#ede9fe);"><div style="font-size:18px;font-weight:bold;color:#7c3aed;">📢 Ad Space Available</div><div style="font-size:12px;color:#858585;margin-top:8px;">Post ad: $8/month</div><div style="font-size:12px;color:#858585;margin-top:4px;">Contact via Telegram for details</div></div>'
+    aside: buildAd(Object.assign({}, INTL_AD, { desc: 'Sidebar ad: $5/month', sub: 'Contact via Telegram for details', compact: true })),
+    index: buildAd(Object.assign({}, INTL_AD, { desc: 'Homepage ad: $10/month', sub: 'Contact via Telegram for details' })),
+    post: buildAd(Object.assign({}, INTL_AD, { desc: 'Post ad: $8/month', sub: 'Contact via Telegram for details' }))
   };
+
+  // ==================== 地理位置检测 ====================
 
   function getCachedRegion() {
     try {
@@ -78,6 +155,8 @@
         return tryApi(idx + 1);
       });
   }
+
+  // ==================== 广告渲染 & 初始化 ====================
 
   function renderAds(isChina) {
     var ads = isChina ? cnAds : intlAds;
