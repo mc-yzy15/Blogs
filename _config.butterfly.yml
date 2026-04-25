@@ -95,7 +95,7 @@ reward:
 inject:
   head:
   bottom:
-    - <script src="/js/geo-ad.js"></script>
+    - <script src="/js/content-loader.js"></script>
 
 translate:
   enable: true
