@@ -1,164 +1,164 @@
 {
   "total": {
-    "pv": 20,
-    "uv": 13
+    "pv": 33,
+    "uv": 26
   },
   "categories": {
     "技术随笔": {
-      "pv": 1
+      "pv": 2
     },
     "- 生活": {
-      "pv": 1
+      "pv": 2
     },
     "- WordPress": {
-      "pv": 10
+      "pv": 20
     }
   },
   "tags": {
     "吐槽": {
-      "pv": 1
+      "pv": 2
     },
     "腾讯": {
-      "pv": 1
+      "pv": 2
     },
     "软件评论": {
-      "pv": 1
+      "pv": 2
     },
     "硬件门槛": {
-      "pv": 1
+      "pv": 2
     },
     "技术随笔": {
-      "pv": 1
+      "pv": 2
     },
     "腾讯开悟": {
-      "pv": 1
+      "pv": 2
     },
     "AI训练": {
-      "pv": 1
+      "pv": 2
     },
     "GPU": {
-      "pv": 1
+      "pv": 2
     },
     "嵌套虚拟化": {
-      "pv": 1
+      "pv": 2
     },
     "WSL2": {
-      "pv": 1
+      "pv": 2
     },
     "Docker": {
-      "pv": 1
+      "pv": 2
     },
     "生活": {
-      "pv": 1
+      "pv": 2
     },
     "博客": {
-      "pv": 1
+      "pv": 2
     },
     "公告": {
-      "pv": 1
+      "pv": 2
     },
     "WordPress": {
-      "pv": 10
+      "pv": 20
     },
     "未分类": {
-      "pv": 5
+      "pv": 10
     },
     "dailyprompt": {
-      "pv": 5
+      "pv": 10
     },
     "dailyprompt-2139": {
-      "pv": 1
+      "pv": 2
     },
     "每日提示": {
-      "pv": 3
+      "pv": 6
     },
     "dailyprompt-1930": {
-      "pv": 1
+      "pv": 2
     },
     "用户脚本": {
-      "pv": 1
+      "pv": 2
     },
     "解决方案": {
-      "pv": 1
+      "pv": 2
     },
     "访问问题": {
-      "pv": 1
+      "pv": 2
     },
     "Greasy Fork": {
-      "pv": 1
+      "pv": 2
     },
     "Greasy Fork国内访问指南": {
-      "pv": 1
+      "pv": 2
     },
     "SNI 阻断": {
-      "pv": 1
+      "pv": 2
     },
     "国内专用域名": {
-      "pv": 1
+      "pv": 2
     },
     "dailyprompt-1883": {
-      "pv": 1
+      "pv": 2
     },
     "论文": {
-      "pv": 2
+      "pv": 4
     },
     "社会经济不平等": {
-      "pv": 2
+      "pv": 4
     },
     "全球影响": {
-      "pv": 2
+      "pv": 4
     },
     "数字鸿沟": {
-      "pv": 2
+      "pv": 4
     },
     "互联网普及": {
-      "pv": 2
+      "pv": 4
     },
     "现代迷信": {
-      "pv": 1
+      "pv": 2
     },
     "科学与玄学": {
-      "pv": 1
+      "pv": 2
     },
     "科技人文": {
-      "pv": 1
+      "pv": 2
     },
     "dailyprompt-1875": {
-      "pv": 1
+      "pv": 2
     },
     "认知心理学": {
-      "pv": 1
+      "pv": 2
     },
     "赛博玄学": {
-      "pv": 1
+      "pv": 2
     },
     "NASA星系图": {
-      "pv": 1
+      "pv": 2
     },
     "数字护身符": {
-      "pv": 1
+      "pv": 2
     },
     "文化社会学": {
-      "pv": 1
+      "pv": 2
     },
     "概率认知陷阱": {
-      "pv": 1
+      "pv": 2
     },
     "不确定性的浪漫": {
-      "pv": 1
+      "pv": 2
     },
     "代际文化图鉴": {
-      "pv": 1
+      "pv": 2
     },
     "dailyprompt-2130": {
-      "pv": 1
+      "pv": 2
     }
   },
   "posts": [
     {
       "slug": "tencent-kaiwu-rant",
       "title": "腾讯开悟深度测评：一场硬件与软件的\"套娃\"噩梦，普通开发者的绝望指南",
-      "pv": 1,
+      "pv": 2,
       "category": "技术随笔",
       "tags": [
         "吐槽",
@@ -178,7 +178,7 @@
     {
       "slug": "blog-launched",
       "title": "博客搭建完成，欢迎来访！",
-      "pv": 1,
+      "pv": 2,
       "category": "- 生活",
       "tags": [
         "生活",
@@ -190,7 +190,7 @@
     {
       "slug": "%e5%81%a5%e5%ba%b7%e9%a5%ae%e9%a3%9f%ef%bc%9a%e9%80%82%e9%87%8f%e4%ba%ab%e5%8f%97%e7%be%8e%e5%91%b3%e9%a3%9f%e8%82%89",
       "title": "健康饮食：适量享受美味食肉",
-      "pv": 1,
+      "pv": 2,
       "category": "- WordPress",
       "tags": [
         "WordPress",
@@ -203,7 +203,7 @@
     {
       "slug": "%e6%82%a8%e5%8f%aa%e6%83%b3%e5%b9%b2%e4%b8%80%e5%a4%a9%e7%9a%84%e5%b7%a5%e4%bd%9c%e6%98%af%e4%bb%80%e4%b9%88%ef%bc%9f",
       "title": "您只想干一天的工作是什么？",
-      "pv": 1,
+      "pv": 2,
       "category": "- WordPress",
       "tags": [
         "WordPress",
@@ -216,7 +216,7 @@
     {
       "slug": "greasy-fork%ef%bc%9a%e5%9b%bd%e5%86%85%e8%ae%bf%e9%97%ae%e9%97%ae%e9%a2%98%e5%8f%8a%e8%a7%a3%e5%86%b3%e6%96%b9%e6%a1%88",
       "title": "Greasy Fork：国内访问问题及解决方案",
-      "pv": 1,
+      "pv": 2,
       "category": "- WordPress",
       "tags": [
         "WordPress",
@@ -234,7 +234,7 @@
     {
       "slug": "113",
       "title": "",
-      "pv": 1,
+      "pv": 2,
       "category": "- WordPress",
       "tags": [
         "WordPress",
@@ -247,7 +247,7 @@
     {
       "slug": "%e6%95%b0%e5%ad%97%e9%b8%bf%e6%b2%9f%e7%9a%84%e6%bc%94%e5%8f%98%ef%bc%9a%e4%ba%92%e8%81%94%e7%bd%91%e6%99%ae%e5%8f%8a%e5%af%b9%e5%85%a8%e7%90%83%e7%a4%be%e4%bc%9a%e7%bb%8f%e6%b5%8e%e4%b8%8d%e5%b9%b3",
       "title": "数字鸿沟的演变：互联网普及对全球社会经济不平等的影响分析（第一版）",
-      "pv": 1,
+      "pv": 2,
       "category": "- WordPress",
       "tags": [
         "WordPress",
@@ -262,7 +262,7 @@
     {
       "slug": "hello-world",
       "title": "世界，您好！",
-      "pv": 1,
+      "pv": 2,
       "category": "- WordPress",
       "tags": [
         "WordPress",
@@ -273,7 +273,7 @@
     {
       "slug": "100",
       "title": "每日提示词-您迷信吗？",
-      "pv": 1,
+      "pv": 2,
       "category": "- WordPress",
       "tags": [
         "WordPress",
@@ -297,7 +297,7 @@
     {
       "slug": "109",
       "title": "海滩或大山？ 您更喜欢哪个？ 为什么？",
-      "pv": 1,
+      "pv": 2,
       "category": "- WordPress",
       "tags": [
         "WordPress",
@@ -310,7 +310,7 @@
     {
       "slug": "%e5%85%ac%e5%91%8a",
       "title": "公告",
-      "pv": 1,
+      "pv": 2,
       "category": "- WordPress",
       "tags": [
         "WordPress",
@@ -321,7 +321,7 @@
     {
       "slug": "%e6%95%b0%e5%ad%97%e9%b8%bf%e6%b2%9f%e7%9a%84%e6%bc%94%e5%8f%98%ef%bc%9a%e4%ba%92%e8%81%94%e7%bd%91%e6%99%ae%e5%8f%8a%e5%af%b9%e5%85%a8%e7%90%83%e7%a4%be%e4%bc%9a%e7%bb%8f%e6%b5%8e%e4%b8%8d%e5%b9%b3-2",
       "title": "数字鸿沟的演变：互联网普及对全球社会经济不平等的影响分析",
-      "pv": 1,
+      "pv": 2,
       "category": "- WordPress",
       "tags": [
         "WordPress",
