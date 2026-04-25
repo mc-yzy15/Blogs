@@ -155,33 +155,53 @@
   }
 
   function detectBlocker(callback) {
-    var bait = document.createElement('div');
-    bait.id = 'ad-bait-detect';
-    bait.className = 'ad-banner ad ads adsbox ad-placement sponsor ad-banner-container textads banner-ads banner_ad ad-active';
-    bait.style.cssText = 'width:1px!important;height:1px!important;position:absolute!important;left:-10px!important;top:-10px!important;display:block!important;visibility:visible!important;overflow:hidden!important;';
-    bait.innerHTML = '<span style="font-size:1px;">ad</span>';
-    document.body.appendChild(bait);
-
     var checks = 0;
-    var maxChecks = 10;
+    var maxChecks = 15;
 
     function check() {
       checks++;
-      var blocked = false;
-      if (bait.offsetHeight === 0 || bait.clientHeight === 0) blocked = true;
-      if (bait.offsetParent === null) blocked = true;
-      if (window.getComputedStyle(bait).display === 'none') blocked = true;
-      if (window.getComputedStyle(bait).visibility === 'hidden') blocked = true;
+      var realAds = document.querySelectorAll('.ad-banner, .sponsor, .ad-slot, .ad-placement');
+      if (realAds.length > 0) {
+        var blocked = true;
+        for (var i = 0; i < realAds.length; i++) {
+          var el = realAds[i];
+          var style = window.getComputedStyle(el);
+          if (style.display !== 'none' && style.visibility !== 'hidden' && el.offsetHeight > 0) {
+            blocked = false;
+            break;
+          }
+        }
+        if (blocked) {
+          callback(true);
+          return;
+        }
+      }
 
-      if (blocked || checks >= maxChecks) {
-        try { document.body.removeChild(bait); } catch (e) {}
-        callback(blocked);
+      var bait = document.getElementById('ad-bait-detect');
+      if (bait) {
+        var baitStyle = window.getComputedStyle(bait);
+        if (baitStyle.display === 'none' || baitStyle.visibility === 'hidden' || bait.offsetHeight === 0) {
+          callback(true);
+          return;
+        }
+      }
+
+      if (checks >= maxChecks) {
+        callback(false);
         return;
       }
-      setTimeout(check, 100);
+      setTimeout(check, 200);
     }
 
-    setTimeout(check, 200);
+    if (!document.getElementById('ad-bait-detect')) {
+      var bait = document.createElement('div');
+      bait.id = 'ad-bait-detect';
+      bait.className = 'ad-banner ad ads adsbox ad-placement sponsor ad-banner-container textads banner-ads banner_ad ad-active';
+      bait.innerHTML = '<span style="font-size:1px;">ad</span>';
+      document.body.appendChild(bait);
+    }
+
+    setTimeout(check, 300);
   }
 
   function showBlockerAppeal() {
