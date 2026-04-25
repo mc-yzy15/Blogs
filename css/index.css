@@ -2737,7 +2737,7 @@ figure.highlight pre .javascript .function {
   -ms-transform: scale(1.1);
   transform: scale(1.1);
 }
-#recent-posts .recent-post-item.ads-wrap {
+#recent-posts .recent-post-item.rec-card {
   display: block !important;
   height: auto !important;
 }
@@ -5196,7 +5196,7 @@ figure.highlight pre .javascript .function {
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
 }
-#post .ads-wrap {
+#post .rec-card {
   margin: 40px 0;
 }
 .relatedPosts {
@@ -7236,7 +7236,7 @@ blockquote.pullquote.right {
 [data-theme='dark'] .error-img,
 [data-theme='dark'] .container iframe,
 [data-theme='dark'] .gist,
-[data-theme='dark'] .ads-wrap,
+[data-theme='dark'] .rec-card,
 [data-theme='dark'] .tag-cloud-list > a {
   filter: brightness(0.8);
 }
