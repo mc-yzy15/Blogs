@@ -8,3 +8,5 @@ public/
 _multiconfig.yml
 sync.js
 wordpress_sync.json
+__pycache__/
+*.pyc
