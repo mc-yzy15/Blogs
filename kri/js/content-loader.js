@@ -155,53 +155,211 @@
   }
 
   function detectBlocker(callback) {
-    var checks = 0;
-    var maxChecks = 15;
+    var detected = false;
 
-    function check() {
-      checks++;
-      var realAds = document.querySelectorAll('.ad-banner, .sponsor, .ad-slot, .ad-placement');
-      if (realAds.length > 0) {
-        var blocked = true;
-        for (var i = 0; i < realAds.length; i++) {
-          var el = realAds[i];
-          var style = window.getComputedStyle(el);
-          if (style.display !== 'none' && style.visibility !== 'hidden' && el.offsetHeight > 0) {
-            blocked = false;
-            break;
+    function done(result) {
+      if (detected) return;
+      detected = true;
+      callback(result);
+    }
+
+    // Method 1: Check real ad elements on page
+    function checkRealAds() {
+      var selectors = ['.ad-banner', '.sponsor', '.ad-slot', '.ad-placement', '.ads', '.adsbox', '.ad_container', '.ad-wrapper', '.ad-wrapper'];
+      for (var s = 0; s < selectors.length; s++) {
+        var els = document.querySelectorAll(selectors[s]);
+        for (var i = 0; i < els.length; i++) {
+          var style = window.getComputedStyle(els[i]);
+          if (style.display !== 'none' && style.visibility !== 'hidden' && els[i].offsetHeight > 0) {
+            return false;
           }
         }
-        if (blocked) {
-          callback(true);
-          return;
-        }
       }
-
-      var bait = document.getElementById('ad-bait-detect');
-      if (bait) {
-        var baitStyle = window.getComputedStyle(bait);
-        if (baitStyle.display === 'none' || baitStyle.visibility === 'hidden' || bait.offsetHeight === 0) {
-          callback(true);
-          return;
-        }
-      }
-
-      if (checks >= maxChecks) {
-        callback(false);
-        return;
-      }
-      setTimeout(check, 200);
+      return true;
     }
 
-    if (!document.getElementById('ad-bait-detect')) {
+    // Method 2: Bait element with tons of ad classes
+    function createBait() {
       var bait = document.createElement('div');
-      bait.id = 'ad-bait-detect';
-      bait.className = 'ad-banner ad ads adsbox ad-placement sponsor ad-banner-container textads banner-ads banner_ad ad-active';
-      bait.innerHTML = '<span style="font-size:1px;">ad</span>';
+      bait.id = 'ad-detect-bait';
+      bait.className = 'ad-banner ad ads adsbox ad-placement sponsor ad-banner-container textads banner-ads banner_ad ad-active ad_container ad-wrapper ad-slot ad_unit ad-unit adsbox adbox adcontent adframe adholder adleaderboard adlink adpane adplaceholder adrectangle adsection adserver adspace adtag adtext adtitle adtop adv ad-vertical-container ad-wrapper-center adsense adSense';
+      bait.setAttribute('data-ad', '1');
+      bait.setAttribute('data-ad-slot', '1');
+      bait.setAttribute('data-ad-client', '1');
+      bait.setAttribute('data-ad-format', 'auto');
+      bait.setAttribute('data-ad-region', 'test');
+      bait.setAttribute('data-google-query-id', 'test');
+      bait.setAttribute('id', 'google_ads_iframe_test');
+      bait.innerHTML = '<span style="font-size:1px;">&nbsp;ad&nbsp;</span><ins class="adsbygoogle" style="display:block;"></ins>';
       document.body.appendChild(bait);
+      return bait;
     }
 
-    setTimeout(check, 300);
+    function checkBait(bait) {
+      if (!bait || !bait.parentNode) return false;
+      var style = window.getComputedStyle(bait);
+      if (style.display === 'none' || style.visibility === 'hidden' || style.opacity === '0') return true;
+      if (bait.offsetHeight === 0 || bait.clientHeight === 0 || bait.offsetWidth === 0) return true;
+      if (bait.offsetParent === null) return true;
+      var rect = bait.getBoundingClientRect();
+      if (rect.width === 0 && rect.height === 0) return true;
+      var inner = bait.querySelector('ins');
+      if (inner) {
+        var innerStyle = window.getComputedStyle(inner);
+        if (innerStyle.display === 'none' || inner.offsetHeight === 0) return true;
+      }
+      return false;
+    }
+
+    // Method 3: Try fetching a known ad URL
+    function checkFetch() {
+      var urls = [
+        'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js',
+        'https://adservice.google.com/adsid/integrator.js',
+        'https://doubleclick.net/instream/ad_status.js'
+      ];
+      var blocked = 0;
+      var total = urls.length;
+      urls.forEach(function (url) {
+        var controller = new AbortController();
+        var timer = setTimeout(function () { controller.abort(); }, 3000);
+        fetch(url, { mode: 'no-cors', signal: controller.signal })
+          .then(function () { clearTimeout(timer); blocked++; checkDone(); })
+          .catch(function () { clearTimeout(timer); blocked += 0; checkDone(); });
+      });
+      var doneCount = 0;
+      function checkDone() {
+        doneCount++;
+        if (doneCount === total) {
+          // If all fetches failed, likely blocked
+          if (blocked === 0) done(true);
+        }
+      }
+    }
+
+    // Method 4: Check for Adblock-specific CSS/elements
+    function checkAdblockTraces() {
+      // uBlock Origin creates style elements with specific content
+      var styles = document.querySelectorAll('style');
+      for (var i = 0; i < styles.length; i++) {
+        var text = styles[i].textContent || '';
+        if (text.indexOf('ad-banner') !== -1 || text.indexOf('adsbox') !== -1 || text.indexOf('.ad ') !== -1 || text.indexOf('.ads') !== -1) {
+          return true;
+        }
+      }
+      // Adblock Plus creates collapsed elements
+      var collapsed = document.querySelectorAll('[style*="display: none"][class*="ad"], [style*="display:none"][class*="ad"]');
+      if (collapsed.length > 0) return true;
+      return false;
+    }
+
+    // Method 5: Check window properties
+    function checkWindowProps() {
+      if (typeof window.google_ad_status !== 'undefined') return false;
+      // Some blockers define these
+      if (typeof window.blockAdBlock !== 'undefined' || typeof window.adBlockDetected !== 'undefined') return true;
+      return false;
+    }
+
+    // Method 6: Create an ad-like iframe
+    function checkIframe() {
+      try {
+        var iframe = document.createElement('iframe');
+        iframe.src = 'about:blank';
+        iframe.name = 'google_ads_iframe_test';
+        iframe.id = 'ad-iframe-detect';
+        iframe.style.cssText = 'width:1px;height:1px;position:absolute;left:-10px;top:-10px;';
+        iframe.setAttribute('data-ad', '1');
+        document.body.appendChild(iframe);
+        setTimeout(function () {
+          var el = document.getElementById('ad-iframe-detect');
+          if (!el || !el.parentNode || el.style.display === 'none' || el.offsetHeight === 0) {
+            done(true);
+          } else {
+            try { document.body.removeChild(el); } catch (e) {}
+          }
+        }, 500);
+      } catch (e) {}
+    }
+
+    // Method 7: Image-based detection
+    function checkImage() {
+      var img = new Image();
+      img.src = 'https://pagead2.googlesyndication.com/pagead/images/ad_choices_icon.png?' + Date.now();
+      img.onload = function () {};
+      img.onerror = function () { done(true); };
+      setTimeout(function () { img.src = ''; }, 3000);
+    }
+
+    // Method 8: Script-based detection
+    function checkScript() {
+      var script = document.createElement('script');
+      script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?' + Date.now();
+      script.onerror = function () { done(true); };
+      script.onload = function () { try { document.body.removeChild(script); } catch (e) {} };
+      document.body.appendChild(script);
+      setTimeout(function () { try { document.body.removeChild(script); } catch (e) {} }, 3000);
+    }
+
+    // Method 9: Check for collapsed ad containers
+    function checkCollapsed() {
+      var all = document.querySelectorAll('div, section, aside');
+      for (var i = 0; i < all.length; i++) {
+        var el = all[i];
+        var cn = (el.className || '').toLowerCase();
+        if (cn.indexOf('ad') !== -1 || cn.indexOf('sponsor') !== -1 || cn.indexOf('banner') !== -1) {
+          var style = window.getComputedStyle(el);
+          if (style.display === 'none' || (el.offsetHeight === 0 && el.offsetWidth === 0)) {
+            return true;
+          }
+        }
+      }
+      return false;
+    }
+
+    // Method 10: XMLHttpRequest-based detection
+    function checkXHR() {
+      try {
+        var xhr = new XMLHttpRequest();
+        xhr.open('HEAD', 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?' + Date.now(), true);
+        xhr.timeout = 3000;
+        xhr.onerror = function () { done(true); };
+        xhr.ontimeout = function () {};
+        xhr.send();
+      } catch (e) {
+        done(true);
+      }
+    }
+
+    // Run all methods
+    var bait = createBait();
+
+    // Polling check for DOM-based methods
+    var pollCount = 0;
+    var maxPolls = 20;
+    function poll() {
+      pollCount++;
+      if (checkRealAds()) { done(true); return; }
+      if (checkBait(bait)) { done(true); return; }
+      if (checkAdblockTraces()) { done(true); return; }
+      if (checkWindowProps()) { done(true); return; }
+      if (checkCollapsed()) { done(true); return; }
+      if (pollCount < maxPolls) {
+        setTimeout(poll, 300);
+      } else {
+        done(false);
+      }
+    }
+
+    setTimeout(poll, 500);
+    checkFetch();
+    checkIframe();
+    checkImage();
+    checkScript();
+    checkXHR();
+
+    // Final fallback timeout
+    setTimeout(function () { done(false); }, 5000);
   }
 
   function showBlockerAppeal() {
