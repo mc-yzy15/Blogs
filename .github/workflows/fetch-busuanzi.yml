@@ -1,0 +1,80 @@
+name: Fetch Busuanzi Data
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'
+  repository_dispatch:
+    types: [fetch_busuanzi]
+  workflow_dispatch:
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Fetch site data from Busuanzi
+        run: |
+          python3 -c "
+          import json, re, urllib.request, os
+          from datetime import datetime
+
+          SITE_URL = 'https://blogs.yzy15.dpdns.org'
+          fpath = 'source/stats/views.json'
+
+          with open(fpath, 'r', encoding='utf-8') as f:
+              data = json.load(f)
+          if 'offset' not in data:
+              data['offset'] = {'total_pv': 0, 'total_uv': 0, 'categories': {}, 'posts': {}}
+
+          def fetch_busuanzi(path=''):
+              url = f'https://busuanzi.ibruce.info/busuanzi?jsonpCallback=busuanziCallback'
+              headers = {'Referer': SITE_URL + path, 'User-Agent': 'Mozilla/5.0'}
+              req = urllib.request.Request(url, headers=headers)
+              try:
+                  with urllib.request.urlopen(req, timeout=15) as resp:
+                      content = resp.read().decode('utf-8')
+                  m = re.search(r'busuanziCallback\((.*?)\);', content)
+                  if m:
+                      return json.loads(m.group(1))
+              except Exception as e:
+                  print(f'Fetch error for {path}: {e}')
+              return None
+
+          site_data = fetch_busuanzi('/')
+          if site_data:
+              new_pv = site_data.get('site_pv', 0)
+              new_uv = site_data.get('site_uv', 0)
+              off_pv = data['offset'].get('total_pv', 0)
+              off_uv = data['offset'].get('total_uv', 0)
+              data['total']['pv'] = new_pv + off_pv
+              data['total']['uv'] = new_uv + off_uv
+              print(f'Site PV: {new_pv} + offset {off_pv} = {data[\"total\"][\"pv\"]}')
+              print(f'Site UV: {new_uv} + offset {off_uv} = {data[\"total\"][\"uv\"]}')
+
+          for p in data['posts']:
+              slug = p['slug']
+              path = f'/{slug}.html'
+              page_data = fetch_busuanzi(path)
+              if page_data:
+                  new_page_pv = page_data.get('page_pv', 0)
+                  off_post = data['offset'].get('posts', {}).get(slug, 0)
+                  p['pv'] = new_page_pv + off_post
+                  print(f'Post {slug}: {new_page_pv} + offset {off_post} = {p[\"pv\"]}')
+
+          data['updated_at'] = datetime.utcnow().strftime('%Y-%m-%d')
+
+          with open(fpath, 'w', encoding='utf-8') as f:
+              json.dump(data, f, ensure_ascii=False, indent=2)
+          "
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add source/stats/views.json
+          git diff --cached --quiet || git commit -m "chore: fetch busuanzi analytics data"
+          git push
