@@ -40,6 +40,11 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add -f source/stats/views.json
+          git add source/stats/views.json
           git diff --cached --quiet || git commit -m "chore: fetch busuanzi analytics data"
-          git push
+          for i in 1 2 3; do
+            git pull --rebase origin master && git push && break || {
+              echo "Push attempt $i failed, retrying..."
+              sleep 5
+            }
+          done
