@@ -22,5 +22,11 @@
     { "slug": "hello-world", "title": "世界，您好！", "pv": 2870 },
     { "slug": "announcement", "title": "公告", "pv": 2430 }
   ],
+  "offset": {
+    "total_pv": 0,
+    "total_uv": 0,
+    "categories": {},
+    "posts": {}
+  },
   "updated_at": "2026-04-26"
 }

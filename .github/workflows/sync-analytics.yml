@@ -30,30 +30,109 @@ jobs:
         env:
           TARGET: ${{ github.event.client_payload.target }}
           VALUE: ${{ github.event.client_payload.value }}
+          MODE: ${{ github.event.client_payload.mode }}
+          MULTIPLIER: ${{ github.event.client_payload.multiplier }}
         run: |
           python3 -c "
           import json, sys, os
           fpath = 'source/stats/views.json'
           with open(fpath, 'r', encoding='utf-8') as f:
               data = json.load(f)
-          target = os.environ['TARGET']
-          value = int(os.environ['VALUE'])
-          if target == 'total':
-              data['total']['pv'] = value
-          elif target == 'total_uv':
-              data['total']['uv'] = value
-          elif target.startswith('category:'):
-              cat = target[9:]
-              if cat in data['categories']:
-                  data['categories'][cat]['pv'] = value
+          if 'offset' not in data:
+              data['offset'] = {'total_pv': 0, 'total_uv': 0, 'categories': {}, 'posts': {}}
+          target = os.environ.get('TARGET', '')
+          mode = os.environ.get('MODE', 'set')
+          multiplier = os.environ.get('MULTIPLIER', '')
+          value_str = os.environ.get('VALUE', '')
+
+          def get_current(t):
+              if t == 'total':
+                  return data['total']['pv']
+              elif t == 'total_uv':
+                  return data['total']['uv']
+              elif t.startswith('category:'):
+                  cat = t[9:]
+                  return data['categories'].get(cat, {}).get('pv', 0)
+              elif t.startswith('post:'):
+                  slug = t[5:]
+                  for p in data['posts']:
+                      if p['slug'] == slug:
+                          return p['pv']
+              return 0
+
+          def set_value(t, v):
+              if t == 'total':
+                  data['total']['pv'] = v
+              elif t == 'total_uv':
+                  data['total']['uv'] = v
+              elif t.startswith('category:'):
+                  cat = t[9:]
+                  if cat in data['categories']:
+                      data['categories'][cat]['pv'] = v
+                  else:
+                      data['categories'][cat] = {'pv': v}
+              elif t.startswith('post:'):
+                  slug = t[5:]
+                  for p in data['posts']:
+                      if p['slug'] == slug:
+                          p['pv'] = v
+                          break
+
+          def add_offset(t, delta):
+              if t == 'total':
+                  data['offset']['total_pv'] = data['offset'].get('total_pv', 0) + delta
+              elif t == 'total_uv':
+                  data['offset']['total_uv'] = data['offset'].get('total_uv', 0) + delta
+              elif t.startswith('category:'):
+                  cat = t[9:]
+                  data['offset'].setdefault('categories', {})
+                  data['offset']['categories'][cat] = data['offset']['categories'].get(cat, 0) + delta
+              elif t.startswith('post:'):
+                  slug = t[5:]
+                  data['offset'].setdefault('posts', {})
+                  data['offset']['posts'][slug] = data['offset']['posts'].get(slug, 0) + delta
+
+          if multiplier:
+              try:
+                  mul = float(multiplier)
+                  data['total']['pv'] = int(data['total']['pv'] * mul)
+                  data['total']['uv'] = int(data['total']['uv'] * mul)
+                  for cat in data['categories']:
+                      data['categories'][cat]['pv'] = int(data['categories'][cat]['pv'] * mul)
+                  for p in data['posts']:
+                      p['pv'] = int(p['pv'] * mul)
+                  data['offset']['total_pv'] = int(data['offset'].get('total_pv', 0) * mul)
+                  data['offset']['total_uv'] = int(data['offset'].get('total_uv', 0) * mul)
+                  for cat in data['offset'].get('categories', {}):
+                      data['offset']['categories'][cat] = int(data['offset']['categories'][cat] * mul)
+                  for slug in data['offset'].get('posts', {}):
+                      data['offset']['posts'][slug] = int(data['offset']['posts'][slug] * mul)
+              except ValueError:
+                  pass
+          elif target:
+              try:
+                  val = int(value_str)
+              except ValueError:
+                  val = 0
+              if mode == 'add':
+                  add_offset(target, val)
+                  set_value(target, get_current(target) + val)
               else:
-                  data['categories'][cat] = {'pv': value}
-          elif target.startswith('post:'):
-              slug = target[5:]
-              for p in data['posts']:
-                  if p['slug'] == slug:
-                      p['pv'] = value
-                      break
+                  current = get_current(target)
+                  if target == 'total':
+                      offset_val = data['offset'].get('total_pv', 0)
+                  elif target == 'total_uv':
+                      offset_val = data['offset'].get('total_uv', 0)
+                  elif target.startswith('category:'):
+                      cat = target[9:]
+                      offset_val = data['offset'].get('categories', {}).get(cat, 0)
+                  elif target.startswith('post:'):
+                      slug = target[5:]
+                      offset_val = data['offset'].get('posts', {}).get(slug, 0)
+                  else:
+                      offset_val = 0
+                  set_value(target, val + offset_val)
+
           from datetime import datetime
           data['updated_at'] = datetime.utcnow().strftime('%Y-%m-%d')
           with open(fpath, 'w', encoding='utf-8') as f:
