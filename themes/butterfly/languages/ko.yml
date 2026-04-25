@@ -29,7 +29,7 @@ post:
     author: 작성자
     link: 링크
     copyright_notice: 저작권 고지
-    copyright_content: '이 블로그의 모든 글은 <a href="%s">%s</a> 라이선스를 따르며, 별도로 명시되지 않는 한 모든 권리를 보유합니다. 재배포 시 출처를 명시해 주세요: <a href="%s">%s</a>.'
+    copyright_content: '이 블로그의 모든 글은 <a href="%s">%s</a> 라이선스를 따릅니다. <strong>상업적 이용 금지</strong>. 재배포 시 출처를 명시해 주세요: <a href="%s">%s</a>.'
   recommend: 관련 글
   edit: 편집
   back_to_home: 홈으로 돌아가기

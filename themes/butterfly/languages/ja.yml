@@ -29,7 +29,7 @@ post:
     author: 著者
     link: リンク
     copyright_notice: 著作権表示
-    copyright_content: 'このブログのすべての記事は、<a href="%s">%s</a> ライセンスの下で提供されており、特に明記されていない限り、すべての権利を留保します。転載時には出典を明記してください: <a href="%s">%s</a>。'
+    copyright_content: 'このブログのすべての記事は、<a href="%s">%s</a> ライセンスの下で提供されています。<strong>商用利用禁止</strong>。転載時には出典を明記してください: <a href="%s">%s</a>。'
   recommend: 関連記事
   edit: 編集
   back_to_home: ホームに戻る

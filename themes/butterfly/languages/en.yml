@@ -29,7 +29,7 @@ post:
     author: Author
     link: Link
     copyright_notice: Copyright Notice
-    copyright_content: 'All articles on this blog are licensed under <a href="%s">%s</a> unless otherwise stated.'
+    copyright_content: 'All articles on this blog are licensed under <a href="%s">%s</a> unless otherwise stated. <strong>No commercial use</strong>. Please attribute the source: <a href="%s">%s</a>.'
   recommend: Related Articles
   edit: Edit
   back_to_home: Back to Home
