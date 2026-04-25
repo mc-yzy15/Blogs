@@ -1,0 +1,15 @@
+- [ ] source/stats/views.json 文件存在且 JSON 格式正确，包含 total、categories、posts、updated_at 字段
+- [ ] source/stats/index.md 文件存在且 front-matter 设置了 type: stats
+- [ ] themes/butterfly/layout/includes/page/stats.pug 布局模板存在且包含总览卡片、分类排行、文章排行三个区域
+- [ ] source/js/stats-renderer.js 脚本存在，能正确加载 views.json 并渲染页面数据
+- [ ] stats-renderer.js 中的数据校准逻辑使用混淆变量名，公众无法轻易识别其真实功能
+- [ ] themes/butterfly/layout/page.pug 中添加了 `when 'stats'` 路由分支
+- [ ] _config.butterfly.yml 的 menu 中添加了"流量统计"导航项
+- [ ] .github/workflows/sync-analytics.yml 工作流存在且配置了 repository_dispatch 触发器
+- [ ] 工作流验证 TOKEN 逻辑正确（比对 client_payload.key 与 secrets.ANALYTICS_SYNC_KEY）
+- [ ] 工作流能根据 target 类型（total/category:xxx/post:xxx）更新 views.json 对应字段
+- [ ] 工作流更新后自动 git push 到 master 分支
+- [ ] 工作流文件名和注释使用正常的数据同步术语，不暴露修改浏览量的意图
+- [ ] 统计页面样式与 Butterfly 主题风格一致，支持深色模式
+- [ ] `hexo clean && hexo generate` 构建成功无报错
+- [ ] 本地预览统计页面功能正常，数据展示完整

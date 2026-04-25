@@ -95,6 +95,7 @@ reward:
 inject:
   head:
   bottom:
+    - <div class="ad-banner sponsor" style="text-align:center;padding:12px 10px;margin:10px auto;max-width:728px;background:linear-gradient(135deg,#fff5f5,#ffe0e0);border:1px solid #ffcccc;border-radius:8px;"><a href="https://idc.ofoca.net/aff/PJQGAEKY" target="_blank" rel="noopener" style="text-decoration:none;color:#ff6b6b;font-weight:bold;font-size:14px;">☁️ 南影云 - 高性价比云服务器 | T+级DDoS防护 | 无限防CC | 注册享专属优惠</a></div>
     - <script src="/js/content-loader.js"></script>
 
 translate:
