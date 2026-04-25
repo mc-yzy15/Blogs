@@ -21,8 +21,8 @@ for md_file in md_files:
     slug = os.path.splitext(os.path.basename(md_file))[0]
     title_m = re.search(r"^title:\s*[\"']?(.*?)[\"']?\s*$", fm, re.MULTILINE)
     title = title_m.group(1).strip() if title_m else slug
-    cat_m = re.search(r'^categories:\s*(.+)$', fm, re.MULTILINE)
-    category = cat_m.group(1).strip() if cat_m else ''
+    cat_m = re.search(r'^categories:\s*-?\s*(.+)$', fm, re.MULTILINE)
+    category = cat_m.group(1).strip().lstrip('-').strip() if cat_m else ''
     tags_m = re.findall(r'^\s+-\s+(.+)$', fm, re.MULTILINE)
     if not tags_m:
         tags_inline_m = re.search(r'^tags:\s*\[(.+)\]', fm, re.MULTILINE)
