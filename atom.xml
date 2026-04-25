@@ -11,7 +11,7 @@
   <rights>All rights reserved 2026, mc-yzy15</rights>
   <subtitle>技术分享 / 记录生活 / 学习笔记</subtitle>
   <title>Yzy15's Blog</title>
-  <updated>2026-04-25T19:39:30.920Z</updated>
+  <updated>2026-04-25T19:43:21.652Z</updated>
   <entry>
     <author>
       <name>mc-yzy15</name>
@@ -23,7 +23,7 @@
     <category term="硬件门槛" scheme="https://blogs.yzy15.dpdns.org/tags/%E7%A1%AC%E4%BB%B6%E9%97%A8%E6%A7%9B/"/>
     <category term="技术随笔" scheme="https://blogs.yzy15.dpdns.org/tags/%E6%8A%80%E6%9C%AF%E9%9A%8F%E7%AC%94/"/>
     <content>
-      <![CDATA[<h1 id="腾讯开悟：一场硬件与软件的”套娃”噩梦"><a href="#腾讯开悟：一场硬件与软件的”套娃”噩梦" class="headerlink" title="腾讯开悟：一场硬件与软件的”套娃”噩梦"></a>腾讯开悟：一场硬件与软件的”套娃”噩梦</h1><p>朋友们，你们用过腾讯开悟吗？没用过？那恭喜你，你是个正常人。</p><p>用了？那咱们握个手吧，同是天涯沦落人，相逢何必曾相识。</p><hr><p>话说前两天心血来潮，想体验一下腾讯开悟这个王者荣耀AI研究环境。结果呢？结果我发现，这玩意儿简直就是一场硬件与软件的”套娃”噩梦。</p><h2 id="第一层套娃：Windows-WSL2"><a href="#第一层套娃：Windows-WSL2" class="headerlink" title="第一层套娃：Windows + WSL2"></a>第一层套娃：Windows + WSL2</h2><p>腾讯开悟的架构是这样的：gamecore（游戏引擎）跑在Windows上，hok_env（AI SDK）跑在Linux上。官方推荐用WSL2来解决这个跨平台问题。</p><p>听起来挺合理是吧？但问题来了——WSL2本质上就是一个Hyper-V虚拟机，它需要你的CPU支持虚拟化，需要你在Windows里开启Hyper-V功能。这本身倒不算啥，大部分电脑都支持。</p><p>但如果你想在云服务器上跑呢？兄弟，问题就来了。</p><h2 id="第二层套娃：嵌套虚拟化"><a href="#第二层套娃：嵌套虚拟化" class="headerlink" title="第二层套娃：嵌套虚拟化"></a>第二层套娃：嵌套虚拟化</h2><p>腾讯云官方文档白纸黑字写着：<strong>WSL2需要硬件支持二次虚拟化，而普通的云服务器（包括轻量应用服务器Lighthouse）不支持二次虚拟化。</strong></p><p>翻译成人话就是：你租的普通Windows云服务器，开不了WSL2，也就跑不了Docker，也就用不了腾讯开悟。</p><p>那什么服务器才支持？裸金属服务器。裸金属多少钱？腾讯云最便宜的裸金属服务器，一个月也得<strong>大几千上万</strong>。而且裸金属服务器上有没有V100&#x2F;A100显卡？大概率没有，你得自己买卡插上去。</p><h2 id="第三层套娃：Docker-hok-env"><a href="#第三层套娃：Docker-hok-env" class="headerlink" title="第三层套娃：Docker + hok_env"></a>第三层套娃：Docker + hok_env</h2><p>好不容易搞定了虚拟化的问题，接下来你还得装Docker。腾讯开悟提供了Docker镜像（<code>tencentailab/hok_env</code>），分CPU版和GPU版。GPU版需要NVIDIA显卡支持，还得装nvidia-docker。</p><p>整个流程就是：Windows → 开Hyper-V → WSL2里跑Ubuntu → Ubuntu里装Docker → Docker里跑hok_env → hok_env连接Windows上的gamecore。</p><p>这流程，我光是打出来都觉得累。</p><h2 id="第四层套娃：显卡"><a href="#第四层套娃：显卡" class="headerlink" title="第四层套娃：显卡"></a>第四层套娃：显卡</h2><p>如果你只是本地跑个1v1测试，那随便一张NVIDIA显卡就行，甚至CPU版都能凑合。</p><p>但如果你想认真训练AI模型呢？那就得上GPU集群了。腾讯开悟官方用的就是V100，NVIDIA的博客里也明确提到了”腾讯开悟AI开放研究平台选择使用NVIDIA V100 GPU和NVIDIA TensorRT推理引擎来加速推理”。</p><p>那V100什么价？淘宝上二手的V100 SXM2 16G，单独显卡芯片大概 <strong>500-800块</strong>，但这是没有散热和转接板的”裸卡”。要想在普通电脑上用，还得买涡轮散热器（300-500块）和SXM2转PCIe转接板（300-800块），整套下来 <strong>1500-3000块</strong> 跑不掉。而且还是二手拆机货，品控全靠运气。</p><p>那A100呢？企业采购一片80GB的版本要 <strong>几万到几十万不等</strong>，个人根本买不到。算力租赁的话，A100大概 <strong>4-6.5元&#x2F;小时</strong>，包月 <strong>9800-30000元</strong>。一个月两三万，租一年就是二三十万。</p><p>腾讯云自己的GPU服务器呢？单卡V100大概 <strong>19元&#x2F;小时</strong>，8卡V100服务器 <strong>170元&#x2F;小时左右</strong>。但别忘了，腾讯云的普通GPU云服务器不支持二次虚拟化，你租了也跑不了WSL2，跑不了WSL2就用不了Docker，用不了Docker就跑不了腾讯开悟。</p><p>死循环了属于是。</p><h2 id="现实困境"><a href="#现实困境" class="headerlink" title="现实困境"></a>现实困境</h2><p>说了这么多，可能有朋友要问了：你就不能老老实实用人家的标准配置吗？</p><p>标准配置？兄弟们，我跟你们讲，腾讯开悟的环境要求是这样的：</p><ul><li>Windows 10&#x2F;11（gamecore必须跑在Windows上）</li><li>WSL2（hok_env必须跑在Linux上）</li><li>Docker（部署hok_env的推荐方式）</li><li>NVIDIA显卡（GPU训练需要）</li></ul><p>看起来每一条都不过分，但组合在一起就是灾难：</p><p>你想在云服务器上跑？普通云服务器不支持二次虚拟化，开不了WSL2。</p><p>你想租裸金属？裸金属支持二次虚拟化，但价格贵得离谱，而且大概率没有高端显卡。</p><p>你想本地跑？你得有一台Windows电脑 + NVIDIA显卡 + 支持虚拟化的CPU，然后还得折腾WSL2和Docker的环境配置，光是环境配置就能折腾一个星期。</p><p>你想用Linux服务器？可以，但gamecore是Windows程序，你得用Wine来跑，又是一堆兼容性问题。</p><h2 id="我的内心独白"><a href="#我的内心独白" class="headerlink" title="我的内心独白"></a>我的内心独白</h2><p>说实话，我是真的服了。</p><p>腾讯开悟这个平台，你说它理念先进吧，确实先进；你说它学术价值高吧，确实高。但问题是，你们这个门槛也太离谱了吧？</p><p>“为了这盘醋，包了整整一锅饺子”，说的就是腾讯开悟没错了。</p><p>我就想简简单单训练个王者荣耀AI，你告诉我我需要：</p><ol><li>一台Windows电脑（gamecore只支持Windows）</li><li>CPU支持虚拟化（跑WSL2需要）</li><li>开启Hyper-V（WSL2依赖Hyper-V）</li><li>安装WSL2（hok_env需要Linux环境）</li><li>在WSL2里装Docker（部署hok_env）</li><li>在Docker里跑hok_env镜像（连接gamecore）</li><li>还得有NVIDIA显卡（GPU训练需要）</li><li>如果用云服务器还得是裸金属（普通云服务器不支持二次虚拟化）</li></ol><p>这流程，我光是想想就觉得累。与其花这么大力气搭建环境，我不如直接去买个RTX 4090在本地跑PyTorch得了。虽然4090也是万元卡，但至少插上就能用，不用折腾那一堆有的没的。</p><hr><h2 id="免责声明（叠甲大赛）"><a href="#免责声明（叠甲大赛）" class="headerlink" title="免责声明（叠甲大赛）"></a>免责声明（叠甲大赛）</h2><p>本文纯属个人吐槽发泄，内容均为虚构，如有雷同纯属巧合，切勿对号入座。</p><p><strong>本文仅供学习交流实践</strong>，不构成任何技术建议、使用建议或投资建议。</p><p><strong>本文章无任何违法内容</strong>，所有吐槽均以教育和原理研究为目的，旨在探讨软件工程中的用户体验问题。</p><p><strong>腾讯不会告我</strong>，因为这篇文章连个真实案例都没有，全是胡编乱造的。再说了，服务器在香港，没实名，你告谁去？</p><p><strong>本文章仅代表个人观点</strong>，与本人真实经历无关。本人从未真正尝试过腾讯开悟，也从未购买过任何高端显卡，更从未遇到过文中的任何情况。</p><p><strong>如有任何不适</strong>，请联系腾讯客服，与本人无关。本人不对此文章造成的任何直接或间接损失负责，包括但不限于显卡购置费、电费、以及因此产生的精神损失费。</p><p>好了，叠甲叠完了，舒服了。</p><hr><p><em>本文章内容纯属虚构，仅供娱乐，切勿当真。如有疑问，请咨询腾讯官方客服。不过考虑到腾讯的客服水平，你可能问了他们也不知道你在说什么。</em></p><p><em>价格数据来源：淘宝、闲鱼行情、腾讯云官网、2026年GPU算力租赁市场行情</em></p>]]>
+      <![CDATA[<h1 id="腾讯开悟：一场硬件与软件的”套娃”噩梦"><a href="#腾讯开悟：一场硬件与软件的”套娃”噩梦" class="headerlink" title="腾讯开悟：一场硬件与软件的”套娃”噩梦"></a>腾讯开悟：一场硬件与软件的”套娃”噩梦</h1><p>朋友们，你们用过腾讯开悟吗？没用过？那恭喜你，你是个正常人。</p><p>用了？那咱们握个手吧，同是天涯沦落人，相逢何必曾相识。</p><hr><p>话说前两天心血来潮，想体验一下腾讯开悟这个王者荣耀AI研究环境，搞搞集群训练。结果呢？结果我发现，这玩意儿简直就是一场硬件与软件的”套娃”噩梦。</p><h2 id="第一层套娃：Windows"><a href="#第一层套娃：Windows" class="headerlink" title="第一层套娃：Windows"></a>第一层套娃：Windows</h2><p>腾讯开悟的gamecore（游戏引擎）只能跑在Windows上，这是硬性要求，没得商量。</p><p>你说你用Linux？不好意思，gamecore是Windows程序。虽然官方提供了Wine方案可以在Linux上跑gamecore，但兼容性一言难尽，各种奇奇怪怪的问题层出不穷。官方自己都推荐Windows优先。</p><p>你说你用macOS？更别想了。</p><p>所以第一步，你得有一台Windows电脑，或者租一台Windows服务器。</p><h2 id="第二层套娃：嵌套虚拟化"><a href="#第二层套娃：嵌套虚拟化" class="headerlink" title="第二层套娃：嵌套虚拟化"></a>第二层套娃：嵌套虚拟化</h2><p>好，Windows搞定了，接下来才是真正的噩梦开始。</p><p>腾讯开悟的架构是这样的：gamecore跑在Windows上，hok_env（AI训练SDK）跑在Linux上。怎么在Windows上跑Linux？官方推荐用WSL2或者Docker。</p><p>但WSL2本质上就是一个Hyper-V虚拟机，Docker Desktop for Windows也依赖WSL2后端。也就是说，不管你选哪条路，你都需要在Windows上跑虚拟机。</p><p>这本身不是问题，大部分个人电脑都支持。但如果你想在<strong>云服务器</strong>上跑呢？</p><p>腾讯云官方文档白纸黑字写着：<strong>WSL2需要硬件支持二次虚拟化（即嵌套虚拟化），而普通的云服务器（包括轻量应用服务器Lighthouse）不支持二次虚拟化。</strong></p><p>翻译成人话就是：你租的普通Windows云服务器，开不了WSL2，也就跑不了Docker，也就用不了腾讯开悟。</p><p>那什么服务器才支持？裸金属服务器。裸金属多少钱？后面再说。</p><h2 id="第三层套娃：Docker-TencentOS"><a href="#第三层套娃：Docker-TencentOS" class="headerlink" title="第三层套娃：Docker + TencentOS"></a>第三层套娃：Docker + TencentOS</h2><p>好不容易搞定了虚拟化的问题，接下来你还得装Docker。腾讯开悟提供了Docker镜像，分CPU版和GPU版。GPU版需要NVIDIA显卡支持，还得装nvidia-docker。</p><p>而且这个Docker镜像是基于<strong>TencentOS</strong>的——对，腾讯自己搞了个Linux发行版叫TencentOS Server（又名Tencent Linux，简称Tlinux），是腾讯针对云场景研发的Linux操作系统。你说你直接装TencentOS行不行？理论上可以，但腾讯开悟的官方方案就是让你在Docker里跑TencentOS镜像，不给你别的选择。</p><p>整个流程就是：Windows → 开Hyper-V → WSL2里跑Ubuntu → Ubuntu里装Docker → Docker里跑基于TencentOS的hok_env镜像 → hok_env连接Windows上的gamecore。</p><p>这流程，我光是打出来都觉得累。</p><h2 id="第四层套娃：显卡"><a href="#第四层套娃：显卡" class="headerlink" title="第四层套娃：显卡"></a>第四层套娃：显卡</h2><p>如果你只是本地跑个1v1测试，那随便一张NVIDIA显卡就行，甚至CPU版都能凑合。</p><p>但如果你想认真搞AI集群训练呢？那就得上专业计算卡了。腾讯开悟官方用的就是V100，NVIDIA的博客里明确提到了”腾讯开悟AI开放研究平台选择使用NVIDIA V100 GPU和NVIDIA TensorRT推理引擎来加速推理”。腾讯云上开悟相关的GPU实例也提供A10、V100、A100三种选择。</p><p>那这些卡什么价？</p><p><strong>V100</strong>：淘宝上二手的V100 SXM2 16G，单独显卡芯片大概 <strong>500-800块</strong>，但这是没有散热和转接板的”裸卡”。要想在普通电脑上用，还得买涡轮散热器（300-500块）和SXM2转PCIe转接板（300-800块），整套下来 <strong>1500-3000块</strong> 跑不掉。而且还是二手拆机货，品控全靠运气。V100 32GB的版本更贵，闲鱼上大概 <strong>2000-3700块</strong> 不等。</p><p><strong>A10</strong>：这是腾讯云PNV4实例搭载的显卡，24GB显存，定位中端。个人买不到，只能租。腾讯云A10单卡包月大概 <strong>4000-5000元</strong>。</p><p><strong>A100</strong>：企业采购一片80GB的版本要 <strong>几万到几十万不等</strong>，个人根本买不到。算力租赁的话，A100大概 <strong>4-6.5元&#x2F;小时</strong>，包月 <strong>9800-30000元</strong>。腾讯云A100单卡包月大概 <strong>10000元左右</strong>，8卡服务器更贵。</p><p>腾讯云自己的GPU服务器呢？单卡V100大概 <strong>19元&#x2F;小时</strong>，8卡V100服务器大概 <strong>170元&#x2F;小时</strong>。</p><p>但别忘了最关键的问题——腾讯云的普通GPU云服务器<strong>不支持二次虚拟化</strong>，你租了也跑不了WSL2，跑不了WSL2就用不了Docker，用不了Docker就跑不了腾讯开悟。</p><p>死循环了属于是。</p><h2 id="现实困境"><a href="#现实困境" class="headerlink" title="现实困境"></a>现实困境</h2><p>说了这么多，可能有朋友要问了：你就不能老老实实用人家的标准配置吗？</p><p>标准配置？兄弟们，我跟你们讲，腾讯开悟的集群训练环境要求是这样的：</p><ul><li>Windows 10&#x2F;11（gamecore必须跑在Windows上）</li><li>支持嵌套虚拟化的CPU（跑WSL2&#x2F;Docker需要）</li><li>WSL2或Docker Desktop（hok_env需要Linux环境）</li><li>基于TencentOS的Docker镜像（官方推荐）</li><li>NVIDIA专业计算卡：A10&#x2F;V100&#x2F;A100（集群训练需要）</li></ul><p>看起来每一条都不过分，但组合在一起就是灾难：</p><p><strong>你想在云服务器上跑？</strong> 普通GPU云服务器不支持二次虚拟化，开不了WSL2，跑不了Docker。你花大价钱租了A100的GPU服务器，结果连Docker都装不上，更别提跑腾讯开悟了。</p><p><strong>你想租裸金属？</strong> 裸金属支持二次虚拟化，但腾讯云带GPU的裸金属服务器（比如HCCPNV4h，8卡A100）一个月好几万，而且不一定有Windows系统可选。就算有，你还得自己装驱动、装Docker、配环境，折腾一个星期起步。</p><p><strong>你想本地跑？</strong> 你得有一台Windows电脑 + NVIDIA专业计算卡 + 支持虚拟化的CPU。V100整套二手1500-3000，A100个人买不到。然后还得折腾WSL2和Docker的环境配置，光是环境配置就能折腾好几天。</p><p><strong>你想用Linux服务器？</strong> 可以，但gamecore是Windows程序，你得用Wine来跑，又是一堆兼容性问题。而且Wine跑gamecore的稳定性远不如原生Windows，训练到一半崩了你找谁哭去？</p><h2 id="我的内心独白"><a href="#我的内心独白" class="headerlink" title="我的内心独白"></a>我的内心独白</h2><p>说实话，我是真的服了。</p><p>腾讯开悟这个平台，你说它理念先进吧，确实先进；你说它学术价值高吧，确实高。但问题是，你们这个门槛也太离谱了吧？</p><p>“为了这盘醋，包了整整一锅饺子”，说的就是腾讯开悟没错了。</p><p>我就想简简单单搞个王者荣耀AI集群训练，你告诉我我需要：</p><ol><li>一台Windows电脑或服务器（gamecore只支持Windows）</li><li>CPU支持嵌套虚拟化（跑WSL2&#x2F;Docker需要）</li><li>开启Hyper-V（WSL2依赖Hyper-V）</li><li>安装WSL2（hok_env需要Linux环境）</li><li>在WSL2里装Docker（部署hok_env）</li><li>在Docker里跑基于TencentOS的hok_env镜像</li><li>还得有NVIDIA专业计算卡A10&#x2F;V100&#x2F;A100（集群训练需要）</li><li>如果用云服务器还得是裸金属（普通GPU云服务器不支持二次虚拟化）</li></ol><p>这流程，我光是想想就觉得累。与其花这么大力气搭建环境，我不如直接去买个RTX 4090在本地跑PyTorch得了。虽然4090也是万元卡，但至少插上就能用，不用折腾那一堆有的没的。</p><p>你就算让我自己装TencentOS都行啊，你整这么一个垃圾嵌套，我真的就没招了。市面上租的根本就没有Windows + 高端显卡 + 支持嵌套虚拟化的云服务器，你总不可能大几万去买张显卡就为了这一个软件吧？为了这盘醋包了个饺子，绝了。</p><hr><h2 id="免责声明（叠甲大赛）"><a href="#免责声明（叠甲大赛）" class="headerlink" title="免责声明（叠甲大赛）"></a>免责声明（叠甲大赛）</h2><p>本文纯属个人吐槽发泄，内容均为虚构，如有雷同纯属巧合，切勿对号入座。</p><p><strong>本文仅供学习交流实践</strong>，不构成任何技术建议、使用建议或投资建议。</p><p><strong>本文章无任何违法内容</strong>，所有吐槽均以教育和原理研究为目的，旨在探讨软件工程中的用户体验问题。</p><p><strong>腾讯不会告我</strong>，因为这篇文章连个真实案例都没有，全是胡编乱造的。再说了，服务器在香港，没实名，你告谁去？</p><p><strong>本文章仅代表个人观点</strong>，与本人真实经历无关。本人从未真正尝试过腾讯开悟，也从未购买过任何高端显卡，更从未遇到过文中的任何情况。</p><p><strong>如有任何不适</strong>，请联系腾讯客服，与本人无关。本人不对此文章造成的任何直接或间接损失负责，包括但不限于显卡购置费、电费、以及因此产生的精神损失费。</p><p>好了，叠甲叠完了，舒服了。</p><hr><p><em>本文章内容纯属虚构，仅供娱乐，切勿当真。如有疑问，请咨询腾讯官方客服。不过考虑到腾讯的客服水平，你可能问了他们也不知道你在说什么。</em></p><p><em>价格数据来源：淘宝、闲鱼行情、腾讯云官网、2026年GPU算力租赁市场行情</em></p>]]>
     </content>
     <id>https://blogs.yzy15.dpdns.org/2026/04/26/tencent-kaiwu-rant/</id>
     <link href="https://blogs.yzy15.dpdns.org/2026/04/26/tencent-kaiwu-rant/"/>
@@ -33,7 +33,7 @@
 <p>用了？那咱们握个手吧，同是天涯沦落人，相逢何必曾]]>
     </summary>
     <title>腾讯开悟：一场硬件与软件的&quot;套娃&quot;噩梦</title>
-    <updated>2026-04-25T19:39:30.920Z</updated>
+    <updated>2026-04-25T19:43:21.652Z</updated>
   </entry>
   <entry>
     <author>
@@ -53,7 +53,7 @@
 <p>欢迎各位大佬前来访问]]>
     </summary>
     <title>博客搭建完成，欢迎来访！</title>
-    <updated>2026-04-25T19:39:30.920Z</updated>
+    <updated>2026-04-25T19:43:21.652Z</updated>
   </entry>
   <entry>
     <author>
@@ -75,7 +75,7 @@
 </blockquote>
 <p>我不想要纹身</p>]]>
     </summary>
-    <updated>2026-04-25T19:39:30.920Z</updated>
+    <updated>2026-04-25T19:43:21.652Z</updated>
   </entry>
   <entry>
     <author>
@@ -100,7 +100,7 @@
 <p>清晨的雾会顺着松枝往下淌，打湿石阶，踩上去软乎乎的，带着松针和腐]]>
     </summary>
     <title>海滩或大山？ 您更喜欢哪个？ 为什么？</title>
-    <updated>2026-04-25T19:39:30.920Z</updated>
+    <updated>2026-04-25T19:43:21.652Z</updated>
   </entry>
   <entry>
     <author>
@@ -118,7 +118,7 @@
       <![CDATA[<p>最近诸事不顺，朋友绝交、生病，心情极差，于是决定暂停更新一段时间</p>]]>
     </summary>
     <title>公告</title>
-    <updated>2026-04-25T19:39:30.920Z</updated>
+    <updated>2026-04-25T19:43:21.652Z</updated>
   </entry>
   <entry>
     <author>
@@ -142,7 +142,7 @@
 <p>我脑海中浮现的，是成为一名“城市梦境设计师”。这一天，我会穿梭在城市的各个角落，去探寻那些被人们忽视的空间，为它们注入全新的灵魂。清晨，我走进老]]>
     </summary>
     <title>您只想干一天的工作是什么？</title>
-    <updated>2026-04-25T19:39:30.920Z</updated>
+    <updated>2026-04-25T19:43:21.652Z</updated>
   </entry>
   <entry>
     <author>
@@ -177,7 +177,7 @@
 <p><s]]>
     </summary>
     <title>每日提示词-您迷信吗？</title>
-    <updated>2026-04-25T19:39:30.920Z</updated>
+    <updated>2026-04-25T19:43:21.652Z</updated>
   </entry>
   <entry>
     <author>
@@ -202,7 +202,7 @@
       <![CDATA[<p>在互联网的世界里，Greasy Fork 是一个备受用户喜爱的平台，它提供了丰富的用户脚本，帮助我们更好地定制网页浏览体验。然而，对于国内用户来说，访问 Greasy Fork 一直以来都面临着一些挑战。从 2025 年 2 月开始，许多国内用户发现无法正常访问 Greasy Fork 的国际域名<a href="https://greasyfork.org/">https://greasy]]>
     </summary>
     <title>Greasy Fork：国内访问问题及解决方案</title>
-    <updated>2026-04-25T19:39:30.920Z</updated>
+    <updated>2026-04-25T19:43:21.652Z</updated>
   </entry>
   <entry>
     <author>
@@ -225,7 +225,7 @@
 <h4 id="关键词"><a href="#关键词" class="headerlink" ti]]>
     </summary>
     <title>数字鸿沟的演变：互联网普及对全球社会经济不平等的影响分析</title>
-    <updated>2026-04-25T19:39:30.920Z</updated>
+    <updated>2026-04-25T19:43:21.652Z</updated>
   </entry>
   <entry>
     <author>
@@ -248,7 +248,7 @@
 <h4 id="关键词"><a href="#关键词" class="headerlink" ti]]>
     </summary>
     <title>数字鸿沟的演变：互联网普及对全球社会经济不平等的影响分析（第一版）</title>
-    <updated>2026-04-25T19:39:30.920Z</updated>
+    <updated>2026-04-25T19:43:21.652Z</updated>
   </entry>
   <entry>
     <author>
@@ -268,7 +268,7 @@
       <![CDATA[<p>每日写作提示您对吃肉有何感受？<img src="https://0.gravatar.com/avatar/9bbf893a57035bd5e2fa44ae6065930a48b3adbdf5b7e436f25a7b2130ca746a?s=96&d=identicon&r=G"><img src="https://1.gravatar.com/avatar/7c2646726d83e7a]]>
     </summary>
     <title>健康饮食：适量享受美味食肉</title>
-    <updated>2026-04-25T19:39:30.920Z</updated>
+    <updated>2026-04-25T19:43:21.652Z</updated>
   </entry>
   <entry>
     <author>
@@ -286,6 +286,6 @@
       <![CDATA[<p>欢迎使用 WordPress！ 这是您的第一篇文章。 编辑或删除它，开启您的博客之旅。</p>]]>
     </summary>
     <title>世界，您好！</title>
-    <updated>2026-04-25T19:39:30.920Z</updated>
+    <updated>2026-04-25T19:43:21.652Z</updated>
   </entry>
 </feed>
