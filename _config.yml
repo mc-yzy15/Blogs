@@ -126,3 +126,8 @@ deploy:
   type: git
   repo: https://github.com/mc-yzy15/Blogs.git
   branch: gh-pages
+
+# i18n (hexo-generator-i18n)
+i18n:
+  type: [page, post]
+  generator: [archive, category, tag, index]

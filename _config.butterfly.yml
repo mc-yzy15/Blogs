@@ -96,3 +96,11 @@ inject:
   head:
   bottom:
     - <script src="/js/geo-ad.js"></script>
+
+translate:
+  enable: true
+  default: 繁
+  defaultEncoding: 2
+  translateDelay: 0
+  msgToTraditionalChinese: '繁'
+  msgToSimplifiedChinese: '簡'
