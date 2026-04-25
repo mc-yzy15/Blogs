@@ -20,6 +20,7 @@ jobs:
   translate:
     runs-on: ubuntu-latest
     if: github.actor != 'github-actions[bot]'
+    timeout-minutes: 180
 
     steps:
       - name: Checkout repository
@@ -40,16 +41,47 @@ jobs:
       - name: Get changed files
         id: changed
         run: |
+          python -c "
+          import sys; sys.path.insert(0, 'tools')
+          from translate_posts import ALL_GOOGLE_LANGS
+          codes = sorted(ALL_GOOGLE_LANGS.keys())
+          print(':'.join(codes))
+          " > /tmp/lang_codes.txt
+          LANG_EXCLUDE=""
+          while IFS=: read -ra CODES; do
+            for code in "\${CODES[@]}"; do
+              LANG_EXCLUDE="$LANG_EXCLUDE -not -path source/_posts/$code/*"
+            done
+          done < /tmp/lang_codes.txt
           if [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ inputs.translate_all }}" == "yes" ]]; then
             echo "Translating all posts (manual trigger)..."
-            find source/_posts -name '*.md' -not -path 'source/_posts/en/*' -not -path 'source/_posts/zh-TW/*' -not -path 'source/_posts/ja/*' > /tmp/translate_files.txt
+            eval "find source/_posts -name '*.md' $LANG_EXCLUDE" > /tmp/translate_files.txt
           else
             BEFORE="${{ github.event.before }}"
             AFTER="${{ github.event.after }}"
             if [[ -z "$BEFORE" || "$BEFORE" == "0000000000000000000000000000000000000000" ]]; then
-              find source/_posts -name '*.md' -not -path 'source/_posts/en/*' -not -path 'source/_posts/zh-TW/*' -not -path 'source/_posts/ja/*' > /tmp/translate_files.txt
+              eval "find source/_posts -name '*.md' $LANG_EXCLUDE" > /tmp/translate_files.txt
             else
-              git diff --name-only --diff-filter=AM "$BEFORE" "$AFTER" -- 'source/_posts/**/*.md' | grep -v -E '^source/_posts/(en|zh-TW|ja)/' > /tmp/translate_files.txt || true
+              git diff --name-only --diff-filter=AM "$BEFORE" "$AFTER" -- 'source/_posts/**/*.md' > /tmp/translate_diff.txt || true
+              python -c "
+          import sys; sys.path.insert(0, 'tools')
+          from translate_posts import ALL_GOOGLE_LANGS, POSTS_DIR
+          from pathlib import Path
+          with open('/tmp/translate_diff.txt') as f:
+              files = [l.strip() for l in f if l.strip()]
+          filtered = []
+          for f in files:
+              try:
+                  p = Path(f)
+                  rel = p.relative_to(POSTS_DIR)
+                  if len(rel.parts) > 1 and rel.parts[0] in ALL_GOOGLE_LANGS:
+                      continue
+              except:
+                  pass
+              filtered.append(f)
+          with open('/tmp/translate_files.txt', 'w') as out:
+              out.write('\n'.join(filtered))
+          " || true
             fi
           fi
           echo "Files to translate:"
@@ -61,7 +93,7 @@ jobs:
         if: steps.changed.outputs.file_count != '0'
         env:
           DEFAULT_LANG: zh-CN
-          TARGET_LANGS: en,zh-TW,ja
+          TARGET_LANGS: af,sq,am,ar,hy,as,ay,az,bm,eu,be,bn,bho,bs,bg,ca,ceb,ny,zh-TW,co,hr,cs,da,dv,doi,nl,en,eo,et,ee,tl,fi,fr,fy,gl,ka,de,el,gn,gu,ht,ha,haw,iw,hi,hmn,hu,is,ig,ilo,id,ga,it,ja,jw,kn,kk,km,rw,gom,ko,kri,ku,ckb,ky,lo,la,lv,ln,lt,lg,lb,mk,mai,mg,ms,ml,mt,mi,mr,mni-Mtei,lus,mn,my,ne,no,or,om,ps,fa,pl,pt,pa,qu,ro,ru,sm,sa,gd,nso,sr,st,sn,sd,si,sk,sl,so,es,su,sw,sv,tg,ta,tt,te,th,ti,ts,tr,tk,ak,uk,ur,ug,uz,vi,cy,xh,yi,yo,zu
           BEFORE_SHA: ${{ github.event.before }}
           AFTER_SHA: ${{ github.event.after }}
         run: |
@@ -85,6 +117,6 @@ jobs:
       - name: Commit and Push Translations
         if: success()
         run: |
-          git add source/_posts/en/ source/_posts/zh-TW/ source/_posts/ja/ 2>/dev/null || true
+          git add source/_posts/ 2>/dev/null || true
           git diff --staged --quiet || git commit -m "i18n: auto-translate posts via Google Translate $(date +'%Y-%m-%d %H:%M:%S')"
           git push origin master
