@@ -155,16 +155,33 @@
   }
 
   function detectBlocker(callback) {
-    var testAd = document.createElement('div');
-    testAd.innerHTML = '&nbsp;';
-    testAd.className = 'ad-banner ad ads adsbox ad-placement sponsor ad-banner-container';
-    testAd.style.cssText = 'position:absolute;left:-9999px;top:-9999px;';
-    document.body.appendChild(testAd);
-    setTimeout(function () {
-      var blocked = testAd.offsetHeight === 0 || testAd.offsetParent === null;
-      document.body.removeChild(testAd);
-      callback(blocked);
-    }, 100);
+    var bait = document.createElement('div');
+    bait.id = 'ad-bait-detect';
+    bait.className = 'ad-banner ad ads adsbox ad-placement sponsor ad-banner-container textads banner-ads banner_ad ad-active';
+    bait.style.cssText = 'width:1px!important;height:1px!important;position:absolute!important;left:-10px!important;top:-10px!important;display:block!important;visibility:visible!important;overflow:hidden!important;';
+    bait.innerHTML = '<span style="font-size:1px;">ad</span>';
+    document.body.appendChild(bait);
+
+    var checks = 0;
+    var maxChecks = 10;
+
+    function check() {
+      checks++;
+      var blocked = false;
+      if (bait.offsetHeight === 0 || bait.clientHeight === 0) blocked = true;
+      if (bait.offsetParent === null) blocked = true;
+      if (window.getComputedStyle(bait).display === 'none') blocked = true;
+      if (window.getComputedStyle(bait).visibility === 'hidden') blocked = true;
+
+      if (blocked || checks >= maxChecks) {
+        try { document.body.removeChild(bait); } catch (e) {}
+        callback(blocked);
+        return;
+      }
+      setTimeout(check, 100);
+    }
+
+    setTimeout(check, 200);
   }
 
   function showBlockerAppeal() {
