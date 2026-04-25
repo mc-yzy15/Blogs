@@ -10,3 +10,5 @@ sync.js
 wordpress_sync.json
 __pycache__/
 *.pyc
+stats-manager.bat
+_convert.ps1
