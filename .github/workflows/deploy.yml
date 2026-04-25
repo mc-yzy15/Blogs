@@ -42,42 +42,10 @@ jobs:
         run: python tools/detect_langs.py
 
       - name: Sync latest stats data
-        run: |
-          python3 -c "
-          import json, os, urllib.request
-          SITE = 'https://blogs.yzy15.dpdns.org'
-          defaults = {
-              'views.json': {'total': {'pv': 0, 'uv': 0}, 'categories': {}, 'tags': {}, 'posts': [], 'updated_at': ''},
-              'offset.json': {'total_pv': 0, 'total_uv': 0, 'categories': {}, 'tags': {}, 'posts': {}}
-          }
-          os.makedirs('source/stats', exist_ok=True)
-          for fname, default in defaults.items():
-              fpath = f'source/stats/{fname}'
-              content = None
-              try:
-                  url = f'{SITE}/stats/{fname}'
-                  req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
-                  with urllib.request.urlopen(req, timeout=15) as resp:
-                      raw = resp.read().decode('utf-8')
-                      json.loads(raw)
-                      content = raw
-                  print(f'Fetched {fname} from live site ({len(raw)} bytes)')
-              except Exception as e:
-                  print(f'Live site fetch failed for {fname}: {e}')
-              if not content and os.path.exists(fpath) and os.path.getsize(fpath) > 0:
-                  try:
-                      with open(fpath, 'r', encoding='utf-8') as f:
-                          json.load(f)
-                      content = open(fpath, 'r', encoding='utf-8').read()
-                      print(f'Using repo version of {fname}')
-                  except Exception:
-                      pass
-              if not content:
-                  content = json.dumps(default, ensure_ascii=False, indent=2)
-                  print(f'Using default for {fname}')
-              with open(fpath, 'w', encoding='utf-8') as f:
-                  f.write(content)
-          "
+        run: python3 tools/sync_stats_data.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
 
       - name: Clean and Generate Static Files
         run: |
