@@ -38,8 +38,6 @@ jobs:
 
           with open(fpath, 'r', encoding='utf-8') as f:
               data = json.load(f)
-          if 'offset' not in data:
-              data['offset'] = {'total_pv': 0, 'total_uv': 0, 'categories': {}, 'tags': {}, 'posts': {}}
 
           posts_dir = 'source/_posts'
           md_files = glob.glob(os.path.join(posts_dir, '**', '*.md'), recursive=True)
@@ -56,7 +54,7 @@ jobs:
               title_m = re.search(r'^title:\s*[\"']?(.*?)[\"']?\s*$', fm, re.MULTILINE)
               title = title_m.group(1).strip() if title_m else slug
               cat_m = re.search(r'^categories:\s*(.+)$', fm, re.MULTILINE)
-              category = cat_m.group(1).strip() if cat_m else '未分类'
+              category = cat_m.group(1).strip() if cat_m else ''
               tags_m = re.findall(r'^\s+-\s+(.+)$', fm, re.MULTILINE)
               if not tags_m:
                   tags_inline_m = re.search(r'^tags:\s*\[(.+)\]', fm, re.MULTILINE)
@@ -82,12 +80,8 @@ jobs:
 
           site_data = fetch_busuanzi('/')
           if site_data:
-              new_pv = site_data.get('site_pv', 0)
-              new_uv = site_data.get('site_uv', 0)
-              off_pv = data['offset'].get('total_pv', 0)
-              off_uv = data['offset'].get('total_uv', 0)
-              data['total']['pv'] = new_pv + off_pv
-              data['total']['uv'] = new_uv + off_uv
+              data['total']['pv'] = site_data.get('site_pv', 0)
+              data['total']['uv'] = site_data.get('site_uv', 0)
 
           existing_slugs = {p['slug'] for p in data['posts']}
           new_posts = []
@@ -96,13 +90,11 @@ jobs:
               page_pv = 0
               if page_data:
                   page_pv = page_data.get('page_pv', 0)
-              off_post = data['offset'].get('posts', {}).get(pm['slug'], 0)
-              actual_pv = page_pv + off_post
 
               if pm['slug'] in existing_slugs:
                   for p in data['posts']:
                       if p['slug'] == pm['slug']:
-                          p['pv'] = actual_pv
+                          p['pv'] = page_pv
                           p['category'] = pm['category']
                           p['tags'] = pm['tags']
                           p['date'] = pm['date']
@@ -111,7 +103,7 @@ jobs:
                   new_posts.append({
                       'slug': pm['slug'],
                       'title': pm['title'],
-                      'pv': actual_pv,
+                      'pv': page_pv,
                       'category': pm['category'],
                       'tags': pm['tags'],
                       'date': pm['date']
@@ -122,18 +114,17 @@ jobs:
           cat_pv = {}
           tag_pv = {}
           for p in data['posts']:
-              cat = p.get('category', '未分类')
-              cat_pv[cat] = cat_pv.get(cat, 0) + p['pv']
+              cat = p.get('category', '')
+              if cat:
+                  cat_pv[cat] = cat_pv.get(cat, 0) + p['pv']
               for t in p.get('tags', []):
                   tag_pv[t] = tag_pv.get(t, 0) + p['pv']
           data['categories'] = {}
           for cat, pv in cat_pv.items():
-              off_cat = data['offset'].get('categories', {}).get(cat, 0)
-              data['categories'][cat] = {'pv': pv + off_cat}
+              data['categories'][cat] = {'pv': pv}
           data['tags'] = {}
           for tag, pv in tag_pv.items():
-              off_tag = data['offset'].get('tags', {}).get(tag, 0)
-              data['tags'][tag] = {'pv': pv + off_tag}
+              data['tags'][tag] = {'pv': pv}
 
           data['updated_at'] = datetime.utcnow().strftime('%Y-%m-%d')
 
@@ -145,6 +136,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add source/stats/views.json
+          git add -f source/stats/views.json
           git diff --cached --quiet || git commit -m "chore: fetch busuanzi analytics data"
           git push

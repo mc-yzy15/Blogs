@@ -25,7 +25,7 @@ jobs:
           fi
           echo "validated=true" >> $GITHUB_OUTPUT
 
-      - name: Update analytics data
+      - name: Update offset data
         if: steps.validate.outputs.validated == 'true'
         env:
           TARGET: ${{ github.event.client_payload.target }}
@@ -34,79 +34,98 @@ jobs:
           MULTIPLIER: ${{ github.event.client_payload.multiplier }}
         run: |
           python3 -c "
-          import json, sys, os
-          fpath = 'source/stats/views.json'
-          with open(fpath, 'r', encoding='utf-8') as f:
-              data = json.load(f)
-          if 'offset' not in data:
-              data['offset'] = {'total_pv': 0, 'total_uv': 0, 'categories': {}, 'posts': {}}
+          import json, os
+          from datetime import datetime
+
+          views_fpath = 'source/stats/views.json'
+          offset_fpath = 'source/stats/offset.json'
+
+          with open(views_fpath, 'r', encoding='utf-8') as f:
+              views = json.load(f)
+          with open(offset_fpath, 'r', encoding='utf-8') as f:
+              offset = json.load(f)
+
+          for key in ['total_pv', 'total_uv', 'categories', 'tags', 'posts']:
+              if key not in offset:
+                  if key in ('total_pv', 'total_uv'):
+                      offset[key] = 0
+                  else:
+                      offset[key] = {}
+
           target = os.environ.get('TARGET', '')
           mode = os.environ.get('MODE', 'set')
           multiplier = os.environ.get('MULTIPLIER', '')
           value_str = os.environ.get('VALUE', '')
 
-          def get_current(t):
+          def get_real(t):
               if t == 'total':
-                  return data['total']['pv']
+                  return views['total']['pv']
               elif t == 'total_uv':
-                  return data['total']['uv']
+                  return views['total']['uv']
               elif t.startswith('category:'):
                   cat = t[9:]
-                  return data['categories'].get(cat, {}).get('pv', 0)
+                  return views['categories'].get(cat, {}).get('pv', 0)
+              elif t.startswith('tag:'):
+                  tag = t[4:]
+                  return views['tags'].get(tag, {}).get('pv', 0)
               elif t.startswith('post:'):
                   slug = t[5:]
-                  for p in data['posts']:
+                  for p in views['posts']:
                       if p['slug'] == slug:
                           return p['pv']
               return 0
 
-          def set_value(t, v):
+          def add_off(t, delta):
               if t == 'total':
-                  data['total']['pv'] = v
+                  offset['total_pv'] += delta
               elif t == 'total_uv':
-                  data['total']['uv'] = v
+                  offset['total_uv'] += delta
               elif t.startswith('category:'):
                   cat = t[9:]
-                  if cat in data['categories']:
-                      data['categories'][cat]['pv'] = v
-                  else:
-                      data['categories'][cat] = {'pv': v}
+                  offset['categories'][cat] = offset['categories'].get(cat, 0) + delta
+              elif t.startswith('tag:'):
+                  tag = t[4:]
+                  offset['tags'][tag] = offset['tags'].get(tag, 0) + delta
               elif t.startswith('post:'):
                   slug = t[5:]
-                  for p in data['posts']:
-                      if p['slug'] == slug:
-                          p['pv'] = v
-                          break
+                  offset['posts'][slug] = offset['posts'].get(slug, 0) + delta
 
-          def add_offset(t, delta):
+          def set_off(t, val):
               if t == 'total':
-                  data['offset']['total_pv'] = data['offset'].get('total_pv', 0) + delta
+                  offset['total_pv'] = val
               elif t == 'total_uv':
-                  data['offset']['total_uv'] = data['offset'].get('total_uv', 0) + delta
+                  offset['total_uv'] = val
               elif t.startswith('category:'):
                   cat = t[9:]
-                  data['offset'].setdefault('categories', {})
-                  data['offset']['categories'][cat] = data['offset']['categories'].get(cat, 0) + delta
+                  offset['categories'][cat] = val
+              elif t.startswith('tag:'):
+                  tag = t[4:]
+                  offset['tags'][tag] = val
               elif t.startswith('post:'):
                   slug = t[5:]
-                  data['offset'].setdefault('posts', {})
-                  data['offset']['posts'][slug] = data['offset']['posts'].get(slug, 0) + delta
+                  offset['posts'][slug] = val
 
           if multiplier:
               try:
                   mul = float(multiplier)
-                  data['total']['pv'] = int(data['total']['pv'] * mul)
-                  data['total']['uv'] = int(data['total']['uv'] * mul)
-                  for cat in data['categories']:
-                      data['categories'][cat]['pv'] = int(data['categories'][cat]['pv'] * mul)
-                  for p in data['posts']:
-                      p['pv'] = int(p['pv'] * mul)
-                  data['offset']['total_pv'] = int(data['offset'].get('total_pv', 0) * mul)
-                  data['offset']['total_uv'] = int(data['offset'].get('total_uv', 0) * mul)
-                  for cat in data['offset'].get('categories', {}):
-                      data['offset']['categories'][cat] = int(data['offset']['categories'][cat] * mul)
-                  for slug in data['offset'].get('posts', {}):
-                      data['offset']['posts'][slug] = int(data['offset']['posts'][slug] * mul)
+                  real_pv = views['total']['pv']
+                  off_pv = offset.get('total_pv', 0)
+                  offset['total_pv'] = int(real_pv * (mul - 1) + off_pv * mul)
+                  real_uv = views['total']['uv']
+                  off_uv = offset.get('total_uv', 0)
+                  offset['total_uv'] = int(real_uv * (mul - 1) + off_uv * mul)
+                  for cat in views['categories']:
+                      rc = views['categories'][cat]['pv']
+                      oc = offset['categories'].get(cat, 0)
+                      offset['categories'][cat] = int(rc * (mul - 1) + oc * mul)
+                  for tag in views.get('tags', {}):
+                      rt = views['tags'][tag]['pv']
+                      ot = offset['tags'].get(tag, 0)
+                      offset['tags'][tag] = int(rt * (mul - 1) + ot * mul)
+                  for p in views['posts']:
+                      rp = p['pv']
+                      op = offset['posts'].get(p['slug'], 0)
+                      offset['posts'][p['slug']] = int(rp * (mul - 1) + op * mul)
               except ValueError:
                   pass
           elif target:
@@ -115,28 +134,14 @@ jobs:
               except ValueError:
                   val = 0
               if mode == 'add':
-                  add_offset(target, val)
-                  set_value(target, get_current(target) + val)
+                  add_off(target, val)
               else:
-                  current = get_current(target)
-                  if target == 'total':
-                      offset_val = data['offset'].get('total_pv', 0)
-                  elif target == 'total_uv':
-                      offset_val = data['offset'].get('total_uv', 0)
-                  elif target.startswith('category:'):
-                      cat = target[9:]
-                      offset_val = data['offset'].get('categories', {}).get(cat, 0)
-                  elif target.startswith('post:'):
-                      slug = target[5:]
-                      offset_val = data['offset'].get('posts', {}).get(slug, 0)
-                  else:
-                      offset_val = 0
-                  set_value(target, val + offset_val)
+                  real_val = get_real(target)
+                  new_off = val - real_val
+                  set_off(target, new_off)
 
-          from datetime import datetime
-          data['updated_at'] = datetime.utcnow().strftime('%Y-%m-%d')
-          with open(fpath, 'w', encoding='utf-8') as f:
-              json.dump(data, f, ensure_ascii=False, indent=2)
+          with open(offset_fpath, 'w', encoding='utf-8') as f:
+              json.dump(offset, f, ensure_ascii=False, indent=2)
           "
 
       - name: Commit and push changes
@@ -144,6 +149,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add source/stats/views.json
-          git diff --cached --quiet || git commit -m "chore: sync analytics data"
+          git add -f source/stats/offset.json
+          git diff --cached --quiet || git commit -m "chore: sync analytics offset data"
           git push
