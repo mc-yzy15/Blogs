@@ -154,7 +154,57 @@
     document.body.appendChild(el);
   }
 
+  function detectBlocker(callback) {
+    var testAd = document.createElement('div');
+    testAd.innerHTML = '&nbsp;';
+    testAd.className = 'ad-banner ad ads adsbox ad-placement sponsor ad-banner-container';
+    testAd.style.cssText = 'position:absolute;left:-9999px;top:-9999px;';
+    document.body.appendChild(testAd);
+    setTimeout(function () {
+      var blocked = testAd.offsetHeight === 0 || testAd.offsetParent === null;
+      document.body.removeChild(testAd);
+      callback(blocked);
+    }, 100);
+  }
+
+  function showBlockerAppeal() {
+    var dismissed = false;
+    try { dismissed = sessionStorage.getItem('blocker_appeal_dismissed'); } catch (e) {}
+    if (dismissed) return;
+
+    var overlay = document.createElement('div');
+    overlay.id = 'blocker-appeal-overlay';
+    overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:999999;display:flex;align-items:center;justify-content:center;';
+
+    var modal = document.createElement('div');
+    modal.style.cssText = 'background:#fff;border-radius:16px;padding:32px 28px;max-width:420px;width:90%;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,.2);position:relative;';
+    modal.innerHTML = '<div style="font-size:48px;margin-bottom:12px;">\uD83D\uDE4F</div><div style="font-size:20px;font-weight:bold;color:#333;margin-bottom:12px;">\u8BF7\u652F\u6301\u6211\u4EEC\u7684\u521B\u4F5C</div><div style="font-size:14px;color:#666;line-height:1.7;margin-bottom:8px;">\u6211\u4EEC\u68C0\u6D4B\u5230\u60A8\u5F00\u542F\u4E86\u5E7F\u544A\u62E6\u622A\u5668\uFF0C\u8FD9\u8BA9\u6211\u4EEC\u5F88\u96BE\u8FC7 \uD83D\uDE22</div><div style="font-size:14px;color:#666;line-height:1.7;margin-bottom:8px;">\u535A\u5BA2\u7684\u670D\u52A1\u5668\u3001\u57DF\u540D\u3001\u7EF4\u62A4\u90FD\u9700\u8981\u8D39\u7528\uFF0C\u5E7F\u544A\u6536\u5165\u662F\u6211\u4EEC\u575A\u6301\u521B\u4F5C\u7684\u91CD\u8981\u652F\u6491\u3002</div><div style="font-size:14px;color:#666;line-height:1.7;margin-bottom:16px;">\u5982\u679C\u60A8\u89C9\u5F97\u6211\u4EEC\u7684\u5185\u5BB9\u5BF9\u60A8\u6709\u5E2E\u52A9\uFF0C\u8BF7\u8003\u8651\u5C06\u672C\u7AD9\u52A0\u5165\u5E7F\u544A\u62E6\u622A\u5668\u7684\u767D\u540D\u5355\uFF0C\u6216\u4E34\u65F6\u5173\u95ED\u62E6\u622A\u5668\u3002</div><div style="font-size:13px;color:#999;margin-bottom:20px;">\u6211\u4EEC\u7684\u5E7F\u544A\u4E0D\u4F1A\u5F39\u7A97\u3001\u4E0D\u4F1A\u8DF3\u8F6C\u3001\u4E0D\u4F1A\u5E72\u6270\u60A8\u7684\u9605\u8BFB\u4F53\u9A8C \u2764\uFE0F</div><div style="display:flex;gap:10px;justify-content:center;"><button id="appeal-close" style="padding:10px 24px;border:1px solid #ddd;border-radius:10px;background:#fff;color:#666;font-size:14px;cursor:pointer;">\u6211\u77E5\u9053\u4E86</button><button id="appeal-whitelist" style="padding:10px 24px;border:none;border-radius:10px;background:linear-gradient(135deg,#ff6b6b,#ee5a24);color:#fff;font-size:14px;font-weight:bold;cursor:pointer;box-shadow:0 2px 8px rgba(255,107,107,.3);">\u6211\u613F\u610F\u652F\u6301</button></div>';
+
+    overlay.appendChild(modal);
+    document.body.appendChild(overlay);
+
+    document.getElementById('appeal-close').onclick = function () {
+      document.body.removeChild(overlay);
+      try { sessionStorage.setItem('blocker_appeal_dismissed', '1'); } catch (e) {}
+    };
+
+    document.getElementById('appeal-whitelist').onclick = function () {
+      document.body.removeChild(overlay);
+      try { sessionStorage.setItem('blocker_appeal_dismissed', '1'); } catch (e) {}
+    };
+
+    overlay.onclick = function (e) {
+      if (e.target === overlay) {
+        document.body.removeChild(overlay);
+        try { sessionStorage.setItem('blocker_appeal_dismissed', '1'); } catch (e) {}
+      }
+    };
+  }
+
   function init() {
+    detectBlocker(function (blocked) {
+      if (blocked) showBlockerAppeal();
+    });
     var cached = getCachedRegion();
     if (cached !== null) {
       renderCards(cached);
