@@ -69,11 +69,11 @@ jobs:
             while IFS= read -r file; do
               if [[ -n "$file" ]]; then
                 echo "Translating: $file"
-                python scripts/translate_posts.py "$file"
+                python tools/translate_posts.py "$file"
               fi
             done < /tmp/translate_files.txt
           else
-            python scripts/translate_posts.py
+            python tools/translate_posts.py
           fi
 
       - name: Configure Git
