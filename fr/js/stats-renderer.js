@@ -30,27 +30,28 @@
     requestAnimationFrame(step);
   }
 
-  function renderOverview(data) {
-    var off = data.offset || {};
-    var totalPv = data.total.pv + (off.total_pv || 0);
-    var totalUv = data.total.uv + (off.total_uv || 0);
+  function renderOverview(views, offset) {
+    var totalPv = views.total.pv + (offset.total_pv || 0);
+    var totalUv = views.total.uv + (offset.total_uv || 0);
     animateNumber(document.getElementById('stat-total-pv'), _normalizeMetric(totalPv, 1));
     animateNumber(document.getElementById('stat-total-uv'), _normalizeMetric(totalUv, 2));
-    animateNumber(document.getElementById('stat-total-posts'), data.posts.length);
-    animateNumber(document.getElementById('stat-total-cats'), Object.keys(data.categories).length);
+    animateNumber(document.getElementById('stat-total-posts'), views.posts.length);
+    animateNumber(document.getElementById('stat-total-cats'), Object.keys(views.categories).length);
   }
 
-  function renderCategories(data) {
+  function renderCategories(views, offset) {
     var container = document.getElementById('cat-bar-chart');
     if (!container) return;
-    var off = (data.offset || {}).categories || {};
-    var entries = Object.entries(data.categories).sort(function (a, b) { return b[1].pv - a[1].pv; });
-    var maxPv = entries.length ? entries[0][1].pv + (off[entries[0][0]] || 0) : 1;
+    var catOff = offset.categories || {};
+    var entries = Object.entries(views.categories).sort(function (a, b) {
+      return (b[1].pv + (catOff[b[0]] || 0)) - (a[1].pv + (catOff[a[0]] || 0));
+    });
+    var maxPv = entries.length ? entries[0][1].pv + (catOff[entries[0][0]] || 0) : 1;
     var html = '';
     entries.forEach(function (entry, i) {
       var name = entry[0];
-      var pv = _normalizeMetric(entry[1].pv + (off[name] || 0), i + 10);
-      var rawPv = entry[1].pv + (off[name] || 0);
+      var pv = _normalizeMetric(entry[1].pv + (catOff[name] || 0), i + 10);
+      var rawPv = entry[1].pv + (catOff[name] || 0);
       var pct = Math.round((rawPv / maxPv) * 100);
       html += '<div class="cat-bar-item">' +
         '<div class="cat-bar-label"><span>' + name + '</span><span>' + pv.toLocaleString() + ' PV</span></div>' +
@@ -64,14 +65,16 @@
     }, 100);
   }
 
-  function renderPosts(data) {
+  function renderPosts(views, offset) {
     var container = document.getElementById('post-rank-list');
     if (!container) return;
-    var off = (data.offset || {}).posts || {};
-    var sorted = data.posts.slice().sort(function (a, b) { return (b.pv + (off[b.slug] || 0)) - (a.pv + (off[a.slug] || 0)); });
+    var postOff = offset.posts || {};
+    var sorted = views.posts.slice().sort(function (a, b) {
+      return (b.pv + (postOff[b.slug] || 0)) - (a.pv + (postOff[a.slug] || 0));
+    });
     var html = '';
     sorted.forEach(function (post, i) {
-      var pv = _normalizeMetric(post.pv + (off[post.slug] || 0), i + 20);
+      var pv = _normalizeMetric(post.pv + (postOff[post.slug] || 0), i + 20);
       var cls = i === 0 ? 'top1' : i === 1 ? 'top2' : i === 2 ? 'top3' : 'normal';
       html += '<div class="post-rank-item">' +
         '<div class="post-rank-num ' + cls + '">' + (i + 1) + '</div>' +
@@ -82,21 +85,25 @@
     container.innerHTML = html;
   }
 
-  function renderTimestamp(data) {
+  function renderTimestamp(views) {
     var el = document.getElementById('stat-updated-time');
-    if (el && data.updated_at) el.textContent = data.updated_at;
+    if (el && views.updated_at) el.textContent = views.updated_at;
   }
 
   function init() {
-    fetch('/stats/views.json')
-      .then(function (r) { return r.json(); })
-      .then(function (data) {
-        renderOverview(data);
-        renderCategories(data);
-        renderPosts(data);
-        renderTimestamp(data);
-      })
-      .catch(function (e) { console.error('Stats data load failed:', e); });
+    var viewsPromise = fetch('/stats/views.json').then(function (r) { return r.json(); });
+    var offsetPromise = fetch('/stats/offset.json').then(function (r) { return r.json(); }).catch(function () {
+      return { total_pv: 0, total_uv: 0, categories: {}, tags: {}, posts: {} };
+    });
+
+    Promise.all([viewsPromise, offsetPromise]).then(function (results) {
+      var views = results[0];
+      var offset = results[1];
+      renderOverview(views, offset);
+      renderCategories(views, offset);
+      renderPosts(views, offset);
+      renderTimestamp(views);
+    }).catch(function (e) { console.error('Stats data load failed:', e); });
   }
 
   if (document.readyState === 'loading') {
