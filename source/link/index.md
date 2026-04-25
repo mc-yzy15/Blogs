@@ -24,6 +24,14 @@ type: link
       link: https://www.gediaocq.top
       avatar: https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f3c6.png
       descr: 兄弟的格调传奇
+
+- class_name: 推荐服务
+  class_desc: 我亲测好用的服务推荐
+  link_list:
+    - name: 南影云
+      link: https://idc.ofoca.net/aff/PJQGAEKY
+      avatar: https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/2601.png
+      descr: 本站服务器托管方 | 高性价比云服务器 | 通过此链接注册享专属优惠，注册后联系我可再领额外折扣
 {% endflink %}
 
 ---
@@ -39,3 +47,23 @@ type: link
 ## 📢 广告位招租
 
 本站开放广告位招租，位置合理、不影响阅读体验。如有推广需求，欢迎通过上述企业微信联系洽谈。
+
+**广告位价格**：
+
+| 位置 | 价格 |
+|------|------|
+| 侧边栏广告位 | ¥30/月 |
+| 首页信息流广告位 | ¥50/月 |
+| 文章页广告位 | ¥40/月 |
+
+长期合作可享折扣，具体详谈。
+
+---
+
+## ☁️ 服务器推荐 - 南影云
+
+本站服务器托管于**南影云**，运行稳定、性价比超高！如果你也需要云服务器，强烈推荐！
+
+- **注册链接**：[南影云](https://idc.ofoca.net/aff/PJQGAEKY)
+- 🎁 通过上方链接注册即可享受专属优惠
+- 💬 注册完成后联系我，还可以领取**额外折扣**！

@@ -1,20 +1,20 @@
-- [ ] Butterfly 主题文件已纳入主仓库 git 管理，不再作为 submodule 引用
-- [ ] `git submodule status` 不再报错
-- [ ] `git ls-files themes/butterfly/` 列出主题的所有文件（而非仅目录名）
-- [ ] 根目录不再存在冗余的 CNAME 文件，仅保留 source/CNAME
-- [ ] favicon 路径指向实际存在的文件，浏览器可正确加载
-- [ ] RSS feed icon 路径指向实际存在的文件
-- [ ] source/_posts/hello-world.md 已删除
-- [ ] _config.landscape.yml 已删除
-- [ ] package.json 中不再包含 hexo-theme-landscape 依赖
-- [ ] source/tags/index.md 已创建且 type 为 "tags"
-- [ ] source/categories/index.md 已创建且 type 为 "categories"
-- [ ] .gitignore 包含 WordPress 同步临时文件规则
-- [ ] Dependabot 配置为每周更新，PR 限制为 5
-- [ ] 404 页面已启用
-- [ ] lightbox 已配置（fancybox 或 medium_zoom）
-- [ ] post_copyright 的 author_href 已设置为 https://github.com/mc-yzy15
-- [ ] sync-wordpress workflow 在提交前清理临时文件
-- [ ] `hexo clean && hexo generate` 构建成功无错误
-- [ ] `hexo server` 本地预览正常，所有页面可访问
-- [ ] 所有更改已提交并推送到 master 分支
+- [x] Butterfly 主题文件已纳入主仓库 git 管理，不再作为 submodule 引用
+- [x] `git submodule status` 不再报错
+- [x] `git ls-files themes/butterfly/` 列出主题的所有文件（而非仅目录名）
+- [x] 根目录不再存在冗余的 CNAME 文件，仅保留 source/CNAME
+- [x] favicon 路径指向实际存在的文件，浏览器可正确加载
+- [x] RSS feed icon 路径指向实际存在的文件
+- [x] source/_posts/hello-world.md 已删除
+- [x] _config.landscape.yml 已删除
+- [x] package.json 中不再包含 hexo-theme-landscape 依赖
+- [x] source/tags/index.md 已创建且 type 为 "tags"
+- [x] source/categories/index.md 已创建且 type 为 "categories"
+- [x] .gitignore 包含 WordPress 同步临时文件规则
+- [x] Dependabot 配置为每周更新，PR 限制为 5
+- [x] 404 页面已启用
+- [x] lightbox 已配置（fancybox 或 medium_zoom）
+- [x] post_copyright 的 author_href 已设置为 https://github.com/mc-yzy15
+- [x] sync-wordpress workflow 在提交前清理临时文件
+- [x] `hexo clean && hexo generate` 构建成功无错误
+- [x] `hexo server` 本地预览正常，所有页面可访问
+- [x] 所有更改已提交并推送到 master 分支
