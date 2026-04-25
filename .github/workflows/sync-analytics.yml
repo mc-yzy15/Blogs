@@ -39,6 +39,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add -f source/stats/offset.json
+          git add source/stats/offset.json
           git diff --cached --quiet || git commit -m "chore: sync analytics offset data"
           git push

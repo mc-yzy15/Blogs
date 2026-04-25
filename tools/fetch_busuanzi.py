@@ -23,7 +23,10 @@ for md_file in md_files:
     title = title_m.group(1).strip() if title_m else slug
     cat_m = re.search(r'^categories:\s*-?\s*(.+)$', fm, re.MULTILINE)
     category = cat_m.group(1).strip().lstrip('-').strip() if cat_m else ''
-    tags_m = re.findall(r'^\s+-\s+(.+)$', fm, re.MULTILINE)
+    tags_m = []
+    tags_section = re.search(r'^tags:\s*(.*?)^(?=\S)', fm, re.MULTILINE | re.DOTALL)
+    if tags_section:
+        tags_m = re.findall(r'^\s+-\s+(.+)$', tags_section.group(1), re.MULTILINE)
     if not tags_m:
         tags_inline_m = re.search(r'^tags:\s*\[(.+)\]', fm, re.MULTILINE)
         if tags_inline_m:

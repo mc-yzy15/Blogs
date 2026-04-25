@@ -41,11 +41,24 @@ jobs:
       - name: Detect languages
         run: python tools/detect_langs.py
 
-      - name: Sync latest stats data
-        run: python3 tools/sync_stats_data.py
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
+      - name: Ensure stats data files exist
+        run: |
+          python3 -c "
+          import json, os
+          defaults = {
+              'views.json': {'total': {'pv': 0, 'uv': 0}, 'categories': {}, 'tags': {}, 'posts': [], 'updated_at': ''},
+              'offset.json': {'total_pv': 0, 'total_uv': 0, 'categories': {}, 'tags': {}, 'posts': {}}
+          }
+          os.makedirs('source/stats', exist_ok=True)
+          for fname, default in defaults.items():
+              fpath = f'source/stats/{fname}'
+              if not os.path.exists(fpath) or os.path.getsize(fpath) == 0:
+                  with open(fpath, 'w', encoding='utf-8') as f:
+                      json.dump(default, f, ensure_ascii=False, indent=2)
+                  print(f'Created default {fname}')
+              else:
+                  print(f'{fname} exists, skipping')
+          "
 
       - name: Clean and Generate Static Files
         run: |

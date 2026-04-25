@@ -1,11 +1,29 @@
-import json, os
+import json, os, urllib.request
 from datetime import datetime
 
 views_fpath = 'source/stats/views.json'
 offset_fpath = 'source/stats/offset.json'
+SITE_URL = 'https://blogs.yzy15.dpdns.org'
 
 with open(views_fpath, 'r', encoding='utf-8') as f:
     views = json.load(f)
+
+if views['total']['pv'] == 0 and views['total']['uv'] == 0:
+    try:
+        req = urllib.request.Request(
+            SITE_URL + '/stats/views.json',
+            headers={'User-Agent': 'Mozilla/5.0'}
+        )
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            live = json.loads(resp.read().decode('utf-8'))
+            if live['total']['pv'] > 0:
+                views = live
+                print(f'Using live views data: PV={live["total"]["pv"]}, UV={live["total"]["uv"]}')
+                with open(views_fpath, 'w', encoding='utf-8') as f:
+                    json.dump(views, f, ensure_ascii=False, indent=2)
+    except Exception as e:
+        print(f'Live fetch failed: {e}')
+
 with open(offset_fpath, 'r', encoding='utf-8') as f:
     offset = json.load(f)
 
