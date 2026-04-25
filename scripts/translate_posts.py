@@ -1,35 +1,35 @@
 import os
 import sys
-import json
 import re
+import time
 import subprocess
 from pathlib import Path
-from urllib.request import Request, urlopen
-from urllib.error import URLError, HTTPError
 
 POSTS_DIR = Path("source/_posts")
 DEFAULT_LANG = os.environ.get("DEFAULT_LANG", "zh-CN")
 TARGET_LANGS = [l.strip() for l in os.environ.get("TARGET_LANGS", "en,zh-TW,ja").split(",") if l.strip()]
-OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "")
-OPENAI_BASE_URL = os.environ.get("OPENAI_BASE_URL", "https://api.openai.com/v1")
-OPENAI_MODEL = os.environ.get("OPENAI_MODEL", "gpt-4o-mini")
-LANG_NAMES = {
-    "en": "English",
-    "zh-TW": "Traditional Chinese",
-    "ja": "Japanese",
-    "ko": "Korean",
-    "fr": "French",
-    "de": "German",
-    "es": "Spanish",
-    "ru": "Russian",
+
+GOOGLE_LANG_MAP = {
+    "en": "en",
+    "zh-TW": "zh-TW",
+    "ja": "ja",
+    "ko": "ko",
+    "fr": "fr",
+    "de": "de",
+    "es": "es",
+    "ru": "ru",
+    "zh-CN": "zh-CN",
 }
+
+CODE_BLOCK_RE = re.compile(r'(```[\s\S]*?```|`[^`\n]+`)', re.DOTALL)
+PLACEHOLDER_TMPL = "__CODE_BLOCK_{}__"
 
 
 def get_changed_files():
     try:
         before = os.environ.get("BEFORE_SHA", "")
         after = os.environ.get("AFTER_SHA", "HEAD")
-        if before:
+        if before and before != "0000000000000000000000000000000000000000":
             result = subprocess.run(
                 ["git", "diff", "--name-only", "--diff-filter=AM", before, after],
                 capture_output=True, text=True, check=True
@@ -90,45 +90,87 @@ def build_front_matter(fm):
     return "\n".join(lines)
 
 
-def translate_text(text, target_lang):
-    if not OPENAI_API_KEY:
-        print(f"Error: OPENAI_API_KEY not set, skipping translation to {target_lang}")
+def protect_code_blocks(text):
+    placeholders = {}
+    counter = [0]
+
+    def replacer(m):
+        key = PLACEHOLDER_TMPL.format(counter[0])
+        placeholders[key] = m.group(0)
+        counter[0] += 1
+        return key
+
+    protected = CODE_BLOCK_RE.sub(replacer, text)
+    return protected, placeholders
+
+
+def restore_code_blocks(text, placeholders):
+    for key, val in placeholders.items():
+        text = text.replace(key, val)
+    return text
+
+
+def google_translate(text, source_lang, target_lang):
+    from deep_translator import GoogleTranslator
+    src = GOOGLE_LANG_MAP.get(source_lang, "auto")
+    tgt = GOOGLE_LANG_MAP.get(target_lang, target_lang)
+    max_chars = 4500
+    if len(text) <= max_chars:
+        try:
+            return GoogleTranslator(source=src, target=tgt).translate(text)
+        except Exception as e:
+            print(f"    Google Translate error: {e}")
+            return None
+    chunks = split_into_chunks(text, max_chars)
+    translated_parts = []
+    for i, chunk in enumerate(chunks):
+        try:
+            result = GoogleTranslator(source=src, target=tgt).translate(chunk)
+            if result:
+                translated_parts.append(result)
+            else:
+                translated_parts.append(chunk)
+            time.sleep(0.5)
+        except Exception as e:
+            print(f"    Google Translate error on chunk {i+1}/{len(chunks)}: {e}")
+            translated_parts.append(chunk)
+    return "".join(translated_parts)
+
+
+def split_into_chunks(text, max_chars):
+    paragraphs = text.split("\n\n")
+    chunks = []
+    current_chunk = ""
+    for para in paragraphs:
+        if len(current_chunk) + len(para) + 2 > max_chars:
+            if current_chunk:
+                chunks.append(current_chunk)
+            if len(para) > max_chars:
+                lines = para.split("\n")
+                current_chunk = ""
+                for line in lines:
+                    if len(current_chunk) + len(line) + 1 > max_chars:
+                        if current_chunk:
+                            chunks.append(current_chunk)
+                        current_chunk = line + "\n"
+                    else:
+                        current_chunk += line + "\n"
+            else:
+                current_chunk = para + "\n\n"
+        else:
+            current_chunk += para + "\n\n"
+    if current_chunk.strip():
+        chunks.append(current_chunk)
+    return chunks
+
+
+def translate_body(body, target_lang):
+    protected, placeholders = protect_code_blocks(body)
+    translated = google_translate(protected, DEFAULT_LANG, target_lang)
+    if translated is None:
         return None
-    lang_name = LANG_NAMES.get(target_lang, target_lang)
-    prompt = (
-        f"You are a professional translator for a technical blog. "
-        f"Translate the following Markdown content to {lang_name}. "
-        f"Rules:\n"
-        f"1. Keep ALL Markdown formatting exactly as-is (headings, links, images, code blocks, tables, etc.)\n"
-        f"2. Keep ALL URLs, image paths, and link targets unchanged\n"
-        f"3. Keep code blocks and inline code unchanged (do not translate code)\n"
-        f"4. Keep HTML tags unchanged\n"
-        f"5. Translate naturally and fluently, maintaining the original tone and style\n"
-        f"6. Do NOT add any extra content, explanations, or notes\n"
-        f"7. Output ONLY the translated Markdown, nothing else\n"
-        f"8. For emoji, keep them as-is\n"
-        f"9. For proper nouns (product names, company names, etc.), keep the original unless there is a well-known translation\n"
-    )
-    body = [{"role": "system", "content": prompt}, {"role": "user", "content": text}]
-    payload = json.dumps({"model": OPENAI_MODEL, "messages": body, "temperature": 0.3}).encode("utf-8")
-    url = OPENAI_BASE_URL.rstrip("/") + "/chat/completions"
-    req = Request(url, data=payload, method="POST")
-    req.add_header("Content-Type", "application/json")
-    req.add_header("Authorization", f"Bearer {OPENAI_API_KEY}")
-    try:
-        with urlopen(req, timeout=120) as resp:
-            data = json.loads(resp.read().decode("utf-8"))
-            return data["choices"][0]["message"]["content"].strip()
-    except HTTPError as e:
-        err_body = e.read().decode("utf-8", errors="replace")
-        print(f"API Error {e.code}: {err_body[:500]}")
-        return None
-    except URLError as e:
-        print(f"Network Error: {e}")
-        return None
-    except Exception as e:
-        print(f"Unexpected Error: {e}")
-        return None
+    translated = restore_code_blocks(translated, placeholders)
+    return translated
 
 
 def get_output_path(original_path, target_lang):
@@ -172,8 +214,8 @@ def process_file(filepath):
         if out_path.exists():
             print(f"  Skipping {lang}: translation already exists at {out_path}")
             continue
-        print(f"  Translating to {lang}...")
-        translated_body = translate_text(body, lang)
+        print(f"  Translating to {lang} via Google Translate...")
+        translated_body = translate_body(body, lang)
         if translated_body is None:
             print(f"  Failed to translate to {lang}, skipping")
             continue
@@ -181,12 +223,12 @@ def process_file(filepath):
         new_fm["lang"] = lang
         if "title" in new_fm and isinstance(new_fm["title"], str):
             print(f"  Translating title to {lang}...")
-            translated_title = translate_text(new_fm["title"], lang)
+            translated_title = google_translate(new_fm["title"], DEFAULT_LANG, lang)
             if translated_title:
                 new_fm["title"] = translated_title.strip().strip('"')
         if "description" in new_fm and isinstance(new_fm["description"], str):
             print(f"  Translating description to {lang}...")
-            translated_desc = translate_text(new_fm["description"], lang)
+            translated_desc = google_translate(new_fm["description"], DEFAULT_LANG, lang)
             if translated_desc:
                 new_fm["description"] = translated_desc.strip().strip('"')
         out_path.parent.mkdir(parents=True, exist_ok=True)
@@ -196,10 +238,6 @@ def process_file(filepath):
 
 
 def main():
-    if not OPENAI_API_KEY:
-        print("Error: OPENAI_API_KEY environment variable is not set.")
-        print("Please set it in your GitHub repository secrets.")
-        sys.exit(1)
     files_to_process = []
     if len(sys.argv) > 1:
         files_to_process = [a for a in sys.argv[1:] if a.endswith(".md")]

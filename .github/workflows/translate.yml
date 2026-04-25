@@ -34,6 +34,9 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Install dependencies
+        run: pip install deep-translator
+
       - name: Get changed files
         id: changed
         run: |
@@ -57,9 +60,6 @@ jobs:
       - name: Run translation
         if: steps.changed.outputs.file_count != '0'
         env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          OPENAI_BASE_URL: ${{ secrets.OPENAI_BASE_URL }}
-          OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
           DEFAULT_LANG: zh-CN
           TARGET_LANGS: en,zh-TW,ja
           BEFORE_SHA: ${{ github.event.before }}
@@ -86,5 +86,5 @@ jobs:
         if: success()
         run: |
           git add source/_posts/en/ source/_posts/zh-TW/ source/_posts/ja/ 2>/dev/null || true
-          git diff --staged --quiet || git commit -m "i18n: auto-translate posts $(date +'%Y-%m-%d %H:%M:%S')"
+          git diff --staged --quiet || git commit -m "i18n: auto-translate posts via Google Translate $(date +'%Y-%m-%d %H:%M:%S')"
           git push origin master
