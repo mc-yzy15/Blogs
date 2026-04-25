@@ -2,7 +2,7 @@ name: Fetch Busuanzi Data
 
 on:
   schedule:
-    - cron: '*/5 * * * *'
+    - cron: '0 0 * * *'
   repository_dispatch:
     types: [fetch_busuanzi]
   workflow_dispatch:
@@ -16,10 +16,21 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Fetch site data from Busuanzi
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Hexo
+        run: npm install -g hexo-cli
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Fetch data from Busuanzi and update views.json
         run: |
           python3 -c "
-          import json, re, urllib.request, os
+          import json, re, urllib.request, subprocess, os, glob
           from datetime import datetime
 
           SITE_URL = 'https://blogs.yzy15.dpdns.org'
@@ -28,10 +39,35 @@ jobs:
           with open(fpath, 'r', encoding='utf-8') as f:
               data = json.load(f)
           if 'offset' not in data:
-              data['offset'] = {'total_pv': 0, 'total_uv': 0, 'categories': {}, 'posts': {}}
+              data['offset'] = {'total_pv': 0, 'total_uv': 0, 'categories': {}, 'tags': {}, 'posts': {}}
+
+          posts_dir = 'source/_posts'
+          md_files = glob.glob(os.path.join(posts_dir, '**', '*.md'), recursive=True)
+
+          posts_meta = []
+          for md_file in md_files:
+              with open(md_file, 'r', encoding='utf-8') as f:
+                  content = f.read()
+              fm_match = re.search(r'^---\s*\n(.*?)\n---', content, re.DOTALL)
+              if not fm_match:
+                  continue
+              fm = fm_match.group(1)
+              slug = os.path.splitext(os.path.basename(md_file))[0]
+              title_m = re.search(r'^title:\s*[\"']?(.*?)[\"']?\s*$', fm, re.MULTILINE)
+              title = title_m.group(1).strip() if title_m else slug
+              cat_m = re.search(r'^categories:\s*(.+)$', fm, re.MULTILINE)
+              category = cat_m.group(1).strip() if cat_m else '未分类'
+              tags_m = re.findall(r'^\s+-\s+(.+)$', fm, re.MULTILINE)
+              if not tags_m:
+                  tags_inline_m = re.search(r'^tags:\s*\[(.+)\]', fm, re.MULTILINE)
+                  if tags_inline_m:
+                      tags_m = [t.strip() for t in tags_inline_m.group(1).split(',')]
+              date_m = re.search(r'^date:\s*(\d{4}-\d{2}-\d{2})', fm, re.MULTILINE)
+              post_date = date_m.group(1) if date_m else ''
+              posts_meta.append({'slug': slug, 'title': title, 'category': category, 'tags': tags_m, 'date': post_date})
 
           def fetch_busuanzi(path=''):
-              url = f'https://busuanzi.ibruce.info/busuanzi?jsonpCallback=busuanziCallback'
+              url = 'https://busuanzi.ibruce.info/busuanzi?jsonpCallback=busuanziCallback'
               headers = {'Referer': SITE_URL + path, 'User-Agent': 'Mozilla/5.0'}
               req = urllib.request.Request(url, headers=headers)
               try:
@@ -52,18 +88,52 @@ jobs:
               off_uv = data['offset'].get('total_uv', 0)
               data['total']['pv'] = new_pv + off_pv
               data['total']['uv'] = new_uv + off_uv
-              print(f'Site PV: {new_pv} + offset {off_pv} = {data[\"total\"][\"pv\"]}')
-              print(f'Site UV: {new_uv} + offset {off_uv} = {data[\"total\"][\"uv\"]}')
 
-          for p in data['posts']:
-              slug = p['slug']
-              path = f'/{slug}.html'
-              page_data = fetch_busuanzi(path)
+          existing_slugs = {p['slug'] for p in data['posts']}
+          new_posts = []
+          for pm in posts_meta:
+              page_data = fetch_busuanzi('/' + pm['slug'] + '.html')
+              page_pv = 0
               if page_data:
-                  new_page_pv = page_data.get('page_pv', 0)
-                  off_post = data['offset'].get('posts', {}).get(slug, 0)
-                  p['pv'] = new_page_pv + off_post
-                  print(f'Post {slug}: {new_page_pv} + offset {off_post} = {p[\"pv\"]}')
+                  page_pv = page_data.get('page_pv', 0)
+              off_post = data['offset'].get('posts', {}).get(pm['slug'], 0)
+              actual_pv = page_pv + off_post
+
+              if pm['slug'] in existing_slugs:
+                  for p in data['posts']:
+                      if p['slug'] == pm['slug']:
+                          p['pv'] = actual_pv
+                          p['category'] = pm['category']
+                          p['tags'] = pm['tags']
+                          p['date'] = pm['date']
+                          break
+              else:
+                  new_posts.append({
+                      'slug': pm['slug'],
+                      'title': pm['title'],
+                      'pv': actual_pv,
+                      'category': pm['category'],
+                      'tags': pm['tags'],
+                      'date': pm['date']
+                  })
+
+          data['posts'] = data['posts'] + new_posts
+
+          cat_pv = {}
+          tag_pv = {}
+          for p in data['posts']:
+              cat = p.get('category', '未分类')
+              cat_pv[cat] = cat_pv.get(cat, 0) + p['pv']
+              for t in p.get('tags', []):
+                  tag_pv[t] = tag_pv.get(t, 0) + p['pv']
+          data['categories'] = {}
+          for cat, pv in cat_pv.items():
+              off_cat = data['offset'].get('categories', {}).get(cat, 0)
+              data['categories'][cat] = {'pv': pv + off_cat}
+          data['tags'] = {}
+          for tag, pv in tag_pv.items():
+              off_tag = data['offset'].get('tags', {}).get(tag, 0)
+              data['tags'][tag] = {'pv': pv + off_tag}
 
           data['updated_at'] = datetime.utcnow().strftime('%Y-%m-%d')
 
