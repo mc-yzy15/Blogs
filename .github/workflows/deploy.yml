@@ -33,6 +33,14 @@ jobs:
           pnpm install
           pnpm add -g hexo-cli
 
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Detect languages
+        run: python tools/detect_langs.py
+
       - name: Clean and Generate Static Files
         run: |
           hexo clean

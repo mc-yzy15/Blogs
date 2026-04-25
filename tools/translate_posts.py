@@ -4,12 +4,16 @@ import re
 import time
 import subprocess
 from pathlib import Path
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 POSTS_DIR = Path("source/_posts")
 DEFAULT_LANG = os.environ.get("DEFAULT_LANG", "zh-CN")
 PIVOT_LANG = "en"
-TARGET_LANGS = [l.strip() for l in os.environ.get("TARGET_LANGS", "").split(",") if l.strip()]
+MAX_WORKERS = int(os.environ.get("MAX_WORKERS", "5"))
 SIMILARITY_THRESHOLD = float(os.environ.get("SIMILARITY_THRESHOLD", "0.4"))
+
+POPULAR_LANGS = "en,zh-TW,ja,ko,fr,de,es,ru,pt,ar,hi,it,th,vi,id,tr,uk,pl,nl,sv,da,fi,el,cs,ro,hu,sk,bg,hr,sl,sr,no,he,ms,fa,bn,ta,te,ur"
+TARGET_LANGS = [l.strip() for l in os.environ.get("TARGET_LANGS", POPULAR_LANGS).split(",") if l.strip()]
 
 ALL_GOOGLE_LANGS = {
     "af": "af", "sq": "sq", "am": "am", "ar": "ar", "hy": "hy", "as": "as",
@@ -150,7 +154,7 @@ def google_translate(text, source_lang, target_lang):
                 translated_parts.append(result)
             else:
                 translated_parts.append(chunk)
-            time.sleep(0.3)
+            time.sleep(0.2)
         except Exception as e:
             print(f"    Google Translate error on chunk {i+1}/{len(chunks)} ({src}->{tgt}): {e}")
             translated_parts.append(chunk)
@@ -260,6 +264,31 @@ def is_translation_file(filepath):
     return False
 
 
+def translate_lang(filepath, lang, fm, body, en_body):
+    out_path = get_output_path(filepath, lang)
+    if out_path.exists():
+        return lang, None, f"  Skipping {lang}: already exists"
+    translated_body = translate_body_pivot(body, lang, en_body)
+    if translated_body is None:
+        return lang, None, f"  Failed {lang}"
+    new_fm = dict(fm)
+    new_fm["lang"] = lang
+    if "title" in new_fm and isinstance(new_fm["title"], str):
+        src = PIVOT_LANG if en_body else DEFAULT_LANG
+        t = google_translate(new_fm["title"], src, lang)
+        if t:
+            new_fm["title"] = t.strip().strip('"')
+    if "description" in new_fm and isinstance(new_fm["description"], str):
+        src = PIVOT_LANG if en_body else DEFAULT_LANG
+        t = google_translate(new_fm["description"], src, lang)
+        if t:
+            new_fm["description"] = t.strip().strip('"')
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    output = build_front_matter(new_fm) + "\n\n" + translated_body + "\n"
+    out_path.write_text(output, encoding="utf-8")
+    return lang, out_path, f"  Saved {lang}"
+
+
 def process_file(filepath):
     if is_translation_file(filepath):
         print(f"\nSkipping: {filepath} is already a translation file")
@@ -301,34 +330,27 @@ def process_file(filepath):
         en_content = en_out.read_text(encoding="utf-8")
         _, en_body = parse_front_matter(en_content)
         print(f"  Pivot ({PIVOT_LANG}) already exists, using it as source")
-    for lang in langs:
-        if not lang or lang == PIVOT_LANG:
-            continue
-        out_path = get_output_path(filepath, lang)
-        if out_path.exists():
-            print(f"  Skipping {lang}: translation already exists at {out_path}")
-            continue
-        print(f"  Translating to {lang}...")
-        translated_body = translate_body_pivot(body, lang, en_body)
-        if translated_body is None:
-            print(f"  Failed to translate to {lang}, skipping")
-            continue
-        new_fm = dict(fm)
-        new_fm["lang"] = lang
-        if "title" in new_fm and isinstance(new_fm["title"], str):
-            src = PIVOT_LANG if en_body else DEFAULT_LANG
-            t = google_translate(new_fm["title"], src, lang)
-            if t:
-                new_fm["title"] = t.strip().strip('"')
-        if "description" in new_fm and isinstance(new_fm["description"], str):
-            src = PIVOT_LANG if en_body else DEFAULT_LANG
-            t = google_translate(new_fm["description"], src, lang)
-            if t:
-                new_fm["description"] = t.strip().strip('"')
-        out_path.parent.mkdir(parents=True, exist_ok=True)
-        output = build_front_matter(new_fm) + "\n\n" + translated_body + "\n"
-        out_path.write_text(output, encoding="utf-8")
-        print(f"  Saved: {out_path}")
+    other_langs = [l for l in langs if l and l != PIVOT_LANG]
+    existing = [l for l in other_langs if get_output_path(filepath, l).exists()]
+    to_translate = [l for l in other_langs if l not in existing]
+    for l in existing:
+        print(f"  Skipping {l}: already exists")
+    if not to_translate:
+        print(f"  All translations already exist.")
+        return
+    print(f"  Translating {len(to_translate)} languages with {MAX_WORKERS} workers...")
+    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+        futures = {
+            executor.submit(translate_lang, filepath, lang, fm, body, en_body): lang
+            for lang in to_translate
+        }
+        for future in as_completed(futures):
+            lang = futures[future]
+            try:
+                _, path, msg = future.result()
+                print(msg)
+            except Exception as e:
+                print(f"  Error translating {lang}: {e}")
 
 
 def main():
@@ -341,6 +363,8 @@ def main():
         print("No new or modified post files detected.")
         return
     print(f"Found {len(files_to_process)} post(s) to translate:")
+    print(f"Target languages ({len(TARGET_LANGS)}): {', '.join(TARGET_LANGS)}")
+    print(f"Concurrency: {MAX_WORKERS} workers")
     for f in files_to_process:
         print(f"  - {f}")
     for filepath in files_to_process:
