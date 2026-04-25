@@ -158,14 +158,10 @@
     var cached = getCachedRegion();
     if (cached !== null) {
       renderCards(cached);
-      createSideBanners(cached);
-      createFloatingCorner(cached);
       return;
     }
     tryApi(0).then(function (isChina) {
       renderCards(isChina);
-      createSideBanners(isChina);
-      createFloatingCorner(isChina);
     });
   }
 
