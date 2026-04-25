@@ -3,12 +3,18 @@ name: Fetch Busuanzi Data
 on:
   schedule:
     - cron: '0 0 * * *'
+  push:
+    branches:
+      - master
+    paths:
+      - 'source/_posts/**/*.md'
   repository_dispatch:
     types: [fetch_busuanzi]
   workflow_dispatch:
 
 jobs:
   fetch:
+    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     permissions:
       contents: write
