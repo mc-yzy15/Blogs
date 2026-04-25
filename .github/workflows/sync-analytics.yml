@@ -1,0 +1,70 @@
+name: Sync Analytics Data
+
+on:
+  repository_dispatch:
+    types: [sync_analytics]
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate sync request
+        id: validate
+        env:
+          SYNC_KEY: ${{ secrets.ANALYTICS_SYNC_KEY }}
+        run: |
+          PAYLOAD_KEY="${{ github.event.client_payload.key }}"
+          if [ "$SYNC_KEY" != "$PAYLOAD_KEY" ]; then
+            echo "Validation failed"
+            exit 1
+          fi
+          echo "validated=true" >> $GITHUB_OUTPUT
+
+      - name: Update analytics data
+        if: steps.validate.outputs.validated == 'true'
+        env:
+          TARGET: ${{ github.event.client_payload.target }}
+          VALUE: ${{ github.event.client_payload.value }}
+        run: |
+          python3 -c "
+          import json, sys, os
+          fpath = 'source/stats/views.json'
+          with open(fpath, 'r', encoding='utf-8') as f:
+              data = json.load(f)
+          target = os.environ['TARGET']
+          value = int(os.environ['VALUE'])
+          if target == 'total':
+              data['total']['pv'] = value
+          elif target == 'total_uv':
+              data['total']['uv'] = value
+          elif target.startswith('category:'):
+              cat = target[9:]
+              if cat in data['categories']:
+                  data['categories'][cat]['pv'] = value
+              else:
+                  data['categories'][cat] = {'pv': value}
+          elif target.startswith('post:'):
+              slug = target[5:]
+              for p in data['posts']:
+                  if p['slug'] == slug:
+                      p['pv'] = value
+                      break
+          from datetime import datetime
+          data['updated_at'] = datetime.utcnow().strftime('%Y-%m-%d')
+          with open(fpath, 'w', encoding='utf-8') as f:
+              json.dump(data, f, ensure_ascii=False, indent=2)
+          "
+
+      - name: Commit and push changes
+        if: steps.validate.outputs.validated == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add source/stats/views.json
+          git diff --cached --quiet || git commit -m "chore: sync analytics data"
+          git push

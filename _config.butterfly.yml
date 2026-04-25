@@ -6,6 +6,7 @@ menu:
   Link: /link/ || fas fa-link
   Homepage: /homepage/ || fas fa-globe
   About: /about/ || fas fa-user
+  Stats: /stats/ || fas fa-chart-bar
 
 social:
   fas fa-home: https://yzy15.dpdns.org || 个人主页 || '#ff6600'
