@@ -201,6 +201,21 @@
     };
   }
 
+  function createFooterPromo(isChina) {
+    var existing = document.getElementById('footer-promo-slot');
+    if (existing) return;
+    if (!isChina) return;
+
+    var footer = document.getElementById('footer');
+    if (!footer) return;
+
+    var el = document.createElement('div');
+    el.id = 'footer-promo-slot';
+    el.style.cssText = 'text-align:center;padding:12px 10px;border-top:1px solid #eee;background:#fafafa;';
+    el.innerHTML = '<a href="https://idc.ofoca.net/aff/PJQGAEKY" target="_blank" rel="noopener" style="text-decoration:none;color:#666;font-size:12px;">\u2601\uFE0F \u672C\u7AD9\u670D\u52A1\u5668\u7531 <strong style="color:#ff6b6b;">\u5357\u5F71\u4E91</strong> \u63D0\u4F9B\u6258\u7BA1 | T+\u7EA7DDoS\u9632\u62A4 | \u65E0\u9650\u9632CC | \u8D85\u4F4E\u5355\u4EF7 | <span style="color:#ff6b6b;font-weight:bold;">\u6CE8\u518C\u4EAB\u4E13\u5C5E\u4F18\u60E0</span></a>';
+    footer.parentNode.insertBefore(el, footer.nextSibling);
+  }
+
   function init() {
     detectBlocker(function (blocked) {
       if (blocked) showBlockerAppeal();
@@ -209,11 +224,13 @@
     if (cached !== null) {
       renderCards(cached);
       createSideBanners(cached);
+      createFooterPromo(cached);
       return;
     }
     tryApi(0).then(function (isChina) {
       renderCards(isChina);
       createSideBanners(isChina);
+      createFooterPromo(isChina);
     });
   }
 
