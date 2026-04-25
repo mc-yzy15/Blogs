@@ -1,36 +1,11 @@
 {
   "total": {
-    "pv": 128456,
-    "uv": 45678
+    "pv": 0,
+    "uv": 0
   },
-  "categories": {
-    "技术随笔": { "pv": 45200 },
-    "WordPress": { "pv": 38900 },
-    "生活随笔": { "pv": 22300 },
-    "未分类": { "pv": 22056 }
-  },
-  "tags": {
-    "测评": { "pv": 12680 },
-    "博客": { "pv": 8930 },
-    "Greasy Fork": { "pv": 7450 },
-    "数字鸿沟": { "pv": 9440 },
-    "健康": { "pv": 5180 },
-    "生活": { "pv": 11690 },
-    "公告": { "pv": 2430 }
-  },
-  "posts": [
-    { "slug": "tencent-kaiwu-rant", "title": "腾讯开悟深度测评：一场硬件与软件的套娃噩梦，普通开发者的绝望指南", "pv": 12680, "category": "技术随笔", "tags": ["测评"], "date": "2025-01-15" },
-    { "slug": "blog-launched", "title": "博客搭建完成，欢迎来访！", "pv": 8930, "category": "WordPress", "tags": ["博客"], "date": "2025-02-01" },
-    { "slug": "greasy-fork", "title": "Greasy Fork：国内访问问题及解决方案", "pv": 7450, "category": "技术随笔", "tags": ["Greasy Fork"], "date": "2025-03-10" },
-    { "slug": "digital-divide", "title": "数字鸿沟的演变：互联网普及对全球社会经济不平等的影响分析", "pv": 6320, "category": "技术随笔", "tags": ["数字鸿沟"], "date": "2025-04-20" },
-    { "slug": "healthy-eating", "title": "健康饮食：适量享受美味食肉", "pv": 5180, "category": "生活随笔", "tags": ["健康"], "date": "2025-05-05" },
-    { "slug": "beach-or-mountain", "title": "海滩或大山？您更喜欢哪个？", "pv": 4260, "category": "生活随笔", "tags": ["生活"], "date": "2025-06-12" },
-    { "slug": "daily-prompt-superstition", "title": "每日提示词-您迷信吗？", "pv": 3890, "category": "生活随笔", "tags": ["生活"], "date": "2025-07-08" },
-    { "slug": "one-day-job", "title": "您只想干一天的工作是什么？", "pv": 3540, "category": "生活随笔", "tags": ["生活"], "date": "2025-08-15" },
-    { "slug": "digital-divide-v1", "title": "数字鸿沟的演变：互联网普及对全球社会经济不平等的影响分析（第一版）", "pv": 3120, "category": "技术随笔", "tags": ["数字鸿沟"], "date": "2025-04-01" },
-    { "slug": "hello-world", "title": "世界，您好！", "pv": 2870, "category": "未分类", "tags": [], "date": "2025-01-01" },
-    { "slug": "announcement", "title": "公告", "pv": 2430, "category": "未分类", "tags": ["公告"], "date": "2025-01-01" }
-  ],
+  "categories": {},
+  "tags": {},
+  "posts": [],
   "offset": {
     "total_pv": 0,
     "total_uv": 0,
@@ -38,5 +13,5 @@
     "tags": {},
     "posts": {}
   },
-  "updated_at": "2026-04-26"
+  "updated_at": ""
 }
