@@ -114,6 +114,6 @@ mixin indexPostUI()
 
         if theme.ad && theme.ad.index
           if (index + 1) % 3 === 0
-            .recent-post-item.rec-card!= theme.ad.index
+            .recent-post-item.rec-card.ad-slot.ad-placement!= theme.ad.index
 
     include ../pagination.pug

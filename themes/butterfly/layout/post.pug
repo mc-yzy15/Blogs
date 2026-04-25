@@ -23,7 +23,7 @@ block content
 
     //- ad
     if theme.ad && theme.ad.post
-      .rec-card!=theme.ad.post
+      .rec-card.ad-slot.ad-placement!=theme.ad.post
 
     if theme.post_pagination
       include includes/pagination.pug

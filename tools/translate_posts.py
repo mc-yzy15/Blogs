@@ -7,19 +7,37 @@ from pathlib import Path
 
 POSTS_DIR = Path("source/_posts")
 DEFAULT_LANG = os.environ.get("DEFAULT_LANG", "zh-CN")
-TARGET_LANGS = [l.strip() for l in os.environ.get("TARGET_LANGS", "en,zh-TW,ja").split(",") if l.strip()]
+PIVOT_LANG = "en"
+TARGET_LANGS = [l.strip() for l in os.environ.get("TARGET_LANGS", "").split(",") if l.strip()]
+SIMILARITY_THRESHOLD = float(os.environ.get("SIMILARITY_THRESHOLD", "0.4"))
 
-GOOGLE_LANG_MAP = {
-    "en": "en",
-    "zh-TW": "zh-TW",
-    "ja": "ja",
-    "ko": "ko",
-    "fr": "fr",
-    "de": "de",
-    "es": "es",
-    "ru": "ru",
-    "zh-CN": "zh-CN",
+ALL_GOOGLE_LANGS = {
+    "af": "af", "sq": "sq", "am": "am", "ar": "ar", "hy": "hy", "as": "as",
+    "ay": "ay", "az": "az", "bm": "bm", "eu": "eu", "be": "be", "bn": "bn",
+    "bho": "bho", "bs": "bs", "bg": "bg", "ca": "ca", "ceb": "ceb", "ny": "ny",
+    "zh-CN": "zh-CN", "zh-TW": "zh-TW", "co": "co", "hr": "hr", "cs": "cs",
+    "da": "da", "dv": "dv", "doi": "doi", "nl": "nl", "en": "en", "eo": "eo",
+    "et": "et", "ee": "ee", "tl": "tl", "fi": "fi", "fr": "fr", "fy": "fy",
+    "gl": "gl", "ka": "ka", "de": "de", "el": "el", "gn": "gn", "gu": "gu",
+    "ht": "ht", "ha": "ha", "haw": "haw", "iw": "iw", "hi": "hi", "hmn": "hmn",
+    "hu": "hu", "is": "is", "ig": "ig", "ilo": "ilo", "id": "id", "ga": "ga",
+    "it": "it", "ja": "ja", "jw": "jw", "kn": "kn", "kk": "kk", "km": "km",
+    "rw": "rw", "gom": "gom", "ko": "ko", "kri": "kri", "ku": "ku", "ckb": "ckb",
+    "ky": "ky", "lo": "lo", "la": "la", "lv": "lv", "ln": "ln", "lt": "lt",
+    "lg": "lg", "lb": "lb", "mk": "mk", "mai": "mai", "mg": "mg", "ms": "ms",
+    "ml": "ml", "mt": "mt", "mi": "mi", "mr": "mr", "mni-Mtei": "mni-Mtei",
+    "lus": "lus", "mn": "mn", "my": "my", "ne": "ne", "no": "no", "or": "or",
+    "om": "om", "ps": "ps", "fa": "fa", "pl": "pl", "pt": "pt", "pa": "pa",
+    "qu": "qu", "ro": "ro", "ru": "ru", "sm": "sm", "sa": "sa", "gd": "gd",
+    "nso": "nso", "sr": "sr", "st": "st", "sn": "sn", "sd": "sd", "si": "si",
+    "sk": "sk", "sl": "sl", "so": "so", "es": "es", "su": "su", "sw": "sw",
+    "sv": "sv", "tg": "tg", "ta": "ta", "tt": "tt", "te": "te", "th": "th",
+    "ti": "ti", "ts": "ts", "tr": "tr", "tk": "tk", "ak": "ak", "uk": "uk",
+    "ur": "ur", "ug": "ug", "uz": "uz", "vi": "vi", "cy": "cy", "xh": "xh",
+    "yi": "yi", "yo": "yo", "zu": "zu",
 }
+
+CJK_LANGS = {"ja", "ko", "zh-TW"}
 
 CODE_BLOCK_RE = re.compile(r'(```[\s\S]*?```|`[^`\n]+`)', re.DOTALL)
 PLACEHOLDER_TMPL = "__CODE_BLOCK_{}__"
@@ -40,8 +58,10 @@ def get_changed_files():
                 capture_output=True, text=True, check=True
             )
         files = result.stdout.strip().split("\n")
-        lang_dirs = [f"source/_posts/{lang}/" for lang in TARGET_LANGS]
-        return [f for f in files if f.startswith("source/_posts/") and f.endswith(".md") and not any(f.startswith(d) for d in lang_dirs)]
+        all_lang_codes = set(ALL_GOOGLE_LANGS.keys())
+        return [f for f in files if f.startswith("source/_posts/") and f.endswith(".md")
+                and not (Path(f).relative_to(POSTS_DIR).parts[0] in all_lang_codes
+                         if len(Path(f).relative_to(POSTS_DIR).parts) > 1 else False)]
     except Exception as e:
         print(f"Warning: Could not get changed files from git: {e}")
         return []
@@ -112,14 +132,14 @@ def restore_code_blocks(text, placeholders):
 
 def google_translate(text, source_lang, target_lang):
     from deep_translator import GoogleTranslator
-    src = GOOGLE_LANG_MAP.get(source_lang, "auto")
-    tgt = GOOGLE_LANG_MAP.get(target_lang, target_lang)
+    src = ALL_GOOGLE_LANGS.get(source_lang, source_lang)
+    tgt = ALL_GOOGLE_LANGS.get(target_lang, target_lang)
     max_chars = 4500
     if len(text) <= max_chars:
         try:
             return GoogleTranslator(source=src, target=tgt).translate(text)
         except Exception as e:
-            print(f"    Google Translate error: {e}")
+            print(f"    Google Translate error ({src}->{tgt}): {e}")
             return None
     chunks = split_into_chunks(text, max_chars)
     translated_parts = []
@@ -130,9 +150,9 @@ def google_translate(text, source_lang, target_lang):
                 translated_parts.append(result)
             else:
                 translated_parts.append(chunk)
-            time.sleep(0.5)
+            time.sleep(0.3)
         except Exception as e:
-            print(f"    Google Translate error on chunk {i+1}/{len(chunks)}: {e}")
+            print(f"    Google Translate error on chunk {i+1}/{len(chunks)} ({src}->{tgt}): {e}")
             translated_parts.append(chunk)
     return "".join(translated_parts)
 
@@ -164,13 +184,59 @@ def split_into_chunks(text, max_chars):
     return chunks
 
 
-def translate_body(body, target_lang):
+def compute_similarity(text_a, text_b):
+    set_a = set(text_a.lower().split())
+    set_b = set(text_b.lower().split())
+    if not set_a or not set_b:
+        return 0.0
+    intersection = set_a & set_b
+    union = set_a | set_b
+    return len(intersection) / len(union)
+
+
+def translate_body_pivot(body, target_lang, en_body=None):
     protected, placeholders = protect_code_blocks(body)
+    if target_lang == PIVOT_LANG:
+        translated = google_translate(protected, DEFAULT_LANG, PIVOT_LANG)
+        if translated is None:
+            return None
+        return restore_code_blocks(translated, placeholders)
+    if target_lang in CJK_LANGS:
+        direct = google_translate(protected, DEFAULT_LANG, target_lang)
+        if direct is None and en_body:
+            en_protected, en_placeholders = protect_code_blocks(en_body)
+            pivot = google_translate(en_protected, PIVOT_LANG, target_lang)
+            if pivot is None:
+                return None
+            return restore_code_blocks(pivot, en_placeholders)
+        if direct is None:
+            return None
+        if en_body:
+            en_protected, en_ph = protect_code_blocks(en_body)
+            pivot = google_translate(en_protected, PIVOT_LANG, target_lang)
+            if pivot is not None:
+                direct_back = google_translate(direct, target_lang, DEFAULT_LANG)
+                pivot_back = google_translate(pivot, target_lang, DEFAULT_LANG)
+                if direct_back and pivot_back:
+                    direct_sim = compute_similarity(direct_back, body)
+                    pivot_sim = compute_similarity(pivot_back, body)
+                    print(f"    Quality: direct={direct_sim:.2f} pivot={pivot_sim:.2f}")
+                    if pivot_sim > direct_sim + 0.1:
+                        return restore_code_blocks(pivot, en_ph)
+        return restore_code_blocks(direct, placeholders)
+    if en_body:
+        en_protected, en_placeholders = protect_code_blocks(en_body)
+        pivot = google_translate(en_protected, PIVOT_LANG, target_lang)
+        if pivot is None:
+            direct = google_translate(protected, DEFAULT_LANG, target_lang)
+            if direct is None:
+                return None
+            return restore_code_blocks(direct, placeholders)
+        return restore_code_blocks(pivot, en_placeholders)
     translated = google_translate(protected, DEFAULT_LANG, target_lang)
     if translated is None:
         return None
-    translated = restore_code_blocks(translated, placeholders)
-    return translated
+    return restore_code_blocks(translated, placeholders)
 
 
 def get_output_path(original_path, target_lang):
@@ -187,7 +253,7 @@ def is_translation_file(filepath):
     try:
         rel = p.relative_to(POSTS_DIR)
         parts = rel.parts
-        if len(parts) > 1 and parts[0] in TARGET_LANGS:
+        if len(parts) > 1 and parts[0] in ALL_GOOGLE_LANGS:
             return True
     except ValueError:
         pass
@@ -201,36 +267,64 @@ def process_file(filepath):
     print(f"\nProcessing: {filepath}")
     content = Path(filepath).read_text(encoding="utf-8")
     fm, body = parse_front_matter(content)
-    if fm.get("lang") and fm["lang"] in TARGET_LANGS:
+    if fm.get("lang") and fm["lang"] in ALL_GOOGLE_LANGS:
         print(f"  Skipping: already a translation (lang={fm['lang']})")
         return
     if not body.strip():
         print(f"  Skipping: empty body")
         return
-    for lang in TARGET_LANGS:
-        if not lang:
+    langs = TARGET_LANGS if TARGET_LANGS else [k for k in ALL_GOOGLE_LANGS if k != DEFAULT_LANG]
+    en_body = None
+    en_out = get_output_path(filepath, PIVOT_LANG)
+    if PIVOT_LANG in langs and not en_out.exists():
+        print(f"  Step 1: Translating to {PIVOT_LANG} (pivot)...")
+        en_translated = translate_body_pivot(body, PIVOT_LANG)
+        if en_translated:
+            en_body = en_translated
+            new_fm = dict(fm)
+            new_fm["lang"] = PIVOT_LANG
+            if "title" in new_fm and isinstance(new_fm["title"], str):
+                t = google_translate(new_fm["title"], DEFAULT_LANG, PIVOT_LANG)
+                if t:
+                    new_fm["title"] = t.strip().strip('"')
+            if "description" in new_fm and isinstance(new_fm["description"], str):
+                t = google_translate(new_fm["description"], DEFAULT_LANG, PIVOT_LANG)
+                if t:
+                    new_fm["description"] = t.strip().strip('"')
+            en_out.parent.mkdir(parents=True, exist_ok=True)
+            output = build_front_matter(new_fm) + "\n\n" + en_translated + "\n"
+            en_out.write_text(output, encoding="utf-8")
+            print(f"  Saved pivot: {en_out}")
+        else:
+            print(f"  Failed to translate pivot ({PIVOT_LANG}), continuing without pivot...")
+    elif en_out.exists():
+        en_content = en_out.read_text(encoding="utf-8")
+        _, en_body = parse_front_matter(en_content)
+        print(f"  Pivot ({PIVOT_LANG}) already exists, using it as source")
+    for lang in langs:
+        if not lang or lang == PIVOT_LANG:
             continue
         out_path = get_output_path(filepath, lang)
         if out_path.exists():
             print(f"  Skipping {lang}: translation already exists at {out_path}")
             continue
-        print(f"  Translating to {lang} via Google Translate...")
-        translated_body = translate_body(body, lang)
+        print(f"  Translating to {lang}...")
+        translated_body = translate_body_pivot(body, lang, en_body)
         if translated_body is None:
             print(f"  Failed to translate to {lang}, skipping")
             continue
         new_fm = dict(fm)
         new_fm["lang"] = lang
         if "title" in new_fm and isinstance(new_fm["title"], str):
-            print(f"  Translating title to {lang}...")
-            translated_title = google_translate(new_fm["title"], DEFAULT_LANG, lang)
-            if translated_title:
-                new_fm["title"] = translated_title.strip().strip('"')
+            src = PIVOT_LANG if en_body else DEFAULT_LANG
+            t = google_translate(new_fm["title"], src, lang)
+            if t:
+                new_fm["title"] = t.strip().strip('"')
         if "description" in new_fm and isinstance(new_fm["description"], str):
-            print(f"  Translating description to {lang}...")
-            translated_desc = google_translate(new_fm["description"], DEFAULT_LANG, lang)
-            if translated_desc:
-                new_fm["description"] = translated_desc.strip().strip('"')
+            src = PIVOT_LANG if en_body else DEFAULT_LANG
+            t = google_translate(new_fm["description"], src, lang)
+            if t:
+                new_fm["description"] = t.strip().strip('"')
         out_path.parent.mkdir(parents=True, exist_ok=True)
         output = build_front_matter(new_fm) + "\n\n" + translated_body + "\n"
         out_path.write_text(output, encoding="utf-8")
