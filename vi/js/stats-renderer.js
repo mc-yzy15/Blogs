@@ -31,8 +31,11 @@
   }
 
   function renderOverview(data) {
-    animateNumber(document.getElementById('stat-total-pv'), _normalizeMetric(data.total.pv, 1));
-    animateNumber(document.getElementById('stat-total-uv'), _normalizeMetric(data.total.uv, 2));
+    var off = data.offset || {};
+    var totalPv = data.total.pv + (off.total_pv || 0);
+    var totalUv = data.total.uv + (off.total_uv || 0);
+    animateNumber(document.getElementById('stat-total-pv'), _normalizeMetric(totalPv, 1));
+    animateNumber(document.getElementById('stat-total-uv'), _normalizeMetric(totalUv, 2));
     animateNumber(document.getElementById('stat-total-posts'), data.posts.length);
     animateNumber(document.getElementById('stat-total-cats'), Object.keys(data.categories).length);
   }
@@ -40,13 +43,15 @@
   function renderCategories(data) {
     var container = document.getElementById('cat-bar-chart');
     if (!container) return;
+    var off = (data.offset || {}).categories || {};
     var entries = Object.entries(data.categories).sort(function (a, b) { return b[1].pv - a[1].pv; });
-    var maxPv = entries.length ? entries[0][1].pv : 1;
+    var maxPv = entries.length ? entries[0][1].pv + (off[entries[0][0]] || 0) : 1;
     var html = '';
     entries.forEach(function (entry, i) {
       var name = entry[0];
-      var pv = _normalizeMetric(entry[1].pv, i + 10);
-      var pct = Math.round((entry[1].pv / maxPv) * 100);
+      var pv = _normalizeMetric(entry[1].pv + (off[name] || 0), i + 10);
+      var rawPv = entry[1].pv + (off[name] || 0);
+      var pct = Math.round((rawPv / maxPv) * 100);
       html += '<div class="cat-bar-item">' +
         '<div class="cat-bar-label"><span>' + name + '</span><span>' + pv.toLocaleString() + ' PV</span></div>' +
         '<div class="cat-bar-track"><div class="cat-bar-fill" style="width:0%" data-width="' + pct + '%"></div></div>' +
@@ -62,10 +67,11 @@
   function renderPosts(data) {
     var container = document.getElementById('post-rank-list');
     if (!container) return;
-    var sorted = data.posts.slice().sort(function (a, b) { return b.pv - a.pv; });
+    var off = (data.offset || {}).posts || {};
+    var sorted = data.posts.slice().sort(function (a, b) { return (b.pv + (off[b.slug] || 0)) - (a.pv + (off[a.slug] || 0)); });
     var html = '';
     sorted.forEach(function (post, i) {
-      var pv = _normalizeMetric(post.pv, i + 20);
+      var pv = _normalizeMetric(post.pv + (off[post.slug] || 0), i + 20);
       var cls = i === 0 ? 'top1' : i === 1 ? 'top2' : i === 2 ? 'top3' : 'normal';
       html += '<div class="post-rank-item">' +
         '<div class="post-rank-num ' + cls + '">' + (i + 1) + '</div>' +
