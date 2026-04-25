@@ -120,26 +120,26 @@
   }
 
   function createSideBanners(isChina) {
-    var existing = document.getElementById('side-banner-left');
+    var existing = document.getElementById('side-slot-left');
     if (existing) return;
     if (!isChina) return;
 
     var style = document.createElement('style');
-    style.textContent = '@media(min-width:1300px){.side-banner{position:fixed;top:50%;transform:translateY(-50%);z-index:9999;}.side-banner-left{left:8px;}.side-banner-right{right:8px;}.side-banner .close-btn{position:absolute;top:-8px;right:-8px;width:20px;height:20px;border-radius:50%;background:rgba(0,0,0,.5);color:#fff;font-size:12px;line-height:20px;text-align:center;cursor:pointer;}.side-banner .close-btn:hover{background:rgba(0,0,0,.7);}}@media(max-width:1299px){.side-banner{display:none!important;}}';
+    style.textContent = '@media(min-width:1300px){.side-slot{position:fixed;top:15%;width:120px;z-index:1;text-align:center;}.side-slot-left{left:0;}.side-slot-right{right:0;}.side-slot .slot-card{margin:0 auto 12px;padding:10px 8px;background:#fff;border:1px solid #eee;border-radius:8px;box-shadow:0 1px 6px rgba(0,0,0,.06);transition:box-shadow .2s;}.side-slot .slot-card:hover{box-shadow:0 2px 12px rgba(0,0,0,.12);}.side-slot .slot-card img{width:60px;height:60px;border-radius:8px;margin:0 auto 6px;display:block;}.side-slot .slot-title{font-size:12px;font-weight:bold;color:#333;margin-bottom:2px;}.side-slot .slot-desc{font-size:10px;color:#999;line-height:1.3;}.side-slot .slot-btn{display:inline-block;margin-top:6px;padding:3px 10px;background:linear-gradient(135deg,#ff6b6b,#ee5a24);color:#fff;border-radius:10px;font-size:10px;font-weight:bold;text-decoration:none;}.side-slot .slot-btn-blue{background:linear-gradient(135deg,#49b1f5,#2d8fd5);}}@media(max-width:1299px){.side-slot{display:none!important;}}';
     document.head.appendChild(style);
 
-    var leftBanner = document.createElement('div');
-    leftBanner.id = 'side-banner-left';
-    leftBanner.className = 'side-banner side-banner-left';
-    leftBanner.innerHTML = '<a href="https://idc.ofoca.net/aff/PJQGAEKY" target="_blank" rel="noopener" title="\u5357\u5F71\u4E91"><div style="width:90px;padding:8px 6px;background:linear-gradient(180deg,#ff6b6b,#ee5a24);border-radius:10px;text-align:center;box-shadow:0 3px 12px rgba(255,107,107,.35);"><div style="font-size:24px;">\u2601\uFE0F</div><div style="color:#fff;font-size:12px;font-weight:bold;margin-top:3px;">\u5357\u5F71\u4E91</div><div style="color:#ffe0e0;font-size:9px;margin-top:2px;">T+\u7EA7\u9632\u62A4</div><div style="color:#ffe0e0;font-size:9px;">\u65E0\u9650\u9632CC</div><div style="margin-top:5px;padding:2px 6px;background:rgba(255,255,255,.3);border-radius:8px;color:#fff;font-size:9px;font-weight:bold;">\u4E13\u5C5E\u4F18\u60E0</div></div></a><div class="close-btn" onclick="this.parentElement.style.display=\'none\'">\u00D7</div>';
+    var leftSlot = document.createElement('div');
+    leftSlot.id = 'side-slot-left';
+    leftSlot.className = 'side-slot side-slot-left';
+    leftSlot.innerHTML = '<a href="https://idc.ofoca.net/aff/PJQGAEKY" target="_blank" rel="noopener" class="slot-card" style="display:block;text-decoration:none;"><div style="font-size:32px;">\u2601\uFE0F</div><div class="slot-title">\u5357\u5F71\u4E91</div><div class="slot-desc">T+\u7EA7DDoS\u9632\u62A4<br>\u65E0\u9650\u9632CC</div><span class="slot-btn">\u4E13\u5C5E\u4F18\u60E0</span></a>';
 
-    var rightBanner = document.createElement('div');
-    rightBanner.id = 'side-banner-right';
-    rightBanner.className = 'side-banner side-banner-right';
-    rightBanner.innerHTML = '<a href="https://idc.ofoca.net/aff/PJQGAEKY" target="_blank" rel="noopener" title="\u5357\u5F71\u4E91"><div style="width:90px;padding:8px 6px;background:linear-gradient(180deg,#49b1f5,#2d8fd5);border-radius:10px;text-align:center;box-shadow:0 3px 12px rgba(73,177,245,.35);"><div style="font-size:24px;">\u2601\uFE0F</div><div style="color:#fff;font-size:12px;font-weight:bold;margin-top:3px;">\u5357\u5F71\u4E91</div><div style="color:#e0f2fe;font-size:9px;margin-top:2px;">\u8D85\u4F4E\u5355\u4EF7</div><div style="color:#e0f2fe;font-size:9px;">\u7A33\u5B9A\u53EF\u9760</div><div style="margin-top:5px;padding:2px 6px;background:rgba(255,255,255,.3);border-radius:8px;color:#fff;font-size:9px;font-weight:bold;">\u7ACB\u5373\u6CE8\u518C</div></div></a><div class="close-btn" onclick="this.parentElement.style.display=\'none\'">\u00D7</div>';
+    var rightSlot = document.createElement('div');
+    rightSlot.id = 'side-slot-right';
+    rightSlot.className = 'side-slot side-slot-right';
+    rightSlot.innerHTML = '<a href="https://idc.ofoca.net/aff/PJQGAEKY" target="_blank" rel="noopener" class="slot-card" style="display:block;text-decoration:none;"><div style="font-size:32px;">\u2601\uFE0F</div><div class="slot-title">\u5357\u5F71\u4E91</div><div class="slot-desc">\u8D85\u4F4E\u5355\u4EF7<br>\u7A33\u5B9A\u53EF\u9760</div><span class="slot-btn slot-btn-blue">\u7ACB\u5373\u6CE8\u518C</span></a>';
 
-    document.body.appendChild(leftBanner);
-    document.body.appendChild(rightBanner);
+    document.body.appendChild(leftSlot);
+    document.body.appendChild(rightSlot);
   }
 
   function createFloatingCorner(isChina) {
@@ -158,10 +158,12 @@
     var cached = getCachedRegion();
     if (cached !== null) {
       renderCards(cached);
+      createSideBanners(cached);
       return;
     }
     tryApi(0).then(function (isChina) {
       renderCards(isChina);
+      createSideBanners(isChina);
     });
   }
 
