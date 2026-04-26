@@ -2,25 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://blogs.yzy15.dpdns.org/stats/index.html</loc>
-    
-    <lastmod>2026-04-26</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blogs.yzy15.dpdns.org/link/index.html</loc>
-    
-    <lastmod>2026-04-26</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blogs.yzy15.dpdns.org/stats/offset.json</loc>
+    <loc>https://blogs.yzy15.dpdns.org/stats/views.json</loc>
     
     <lastmod>2026-04-26</lastmod>
     
@@ -38,7 +20,25 @@
   </url>
   
   <url>
-    <loc>https://blogs.yzy15.dpdns.org/stats/views.json</loc>
+    <loc>https://blogs.yzy15.dpdns.org/stats/offset.json</loc>
+    
+    <lastmod>2026-04-26</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/link/index.html</loc>
+    
+    <lastmod>2026-04-26</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/stats/index.html</loc>
     
     <lastmod>2026-04-26</lastmod>
     
@@ -92,7 +92,7 @@
   </url>
   
   <url>
-    <loc>https://blogs.yzy15.dpdns.org/WordPress/%E6%95%B0%E5%AD%97%E9%B8%BF%E6%B2%9F%E7%9A%84%E6%BC%94%E5%8F%98%EF%BC%9A%E4%BA%92%E8%81%94%E7%BD%91%E6%99%AE%E5%8F%8A%E5%AF%B9%E5%85%A8%E7%90%83%E7%A4%BE%E4%BC%9A%E7%BB%8F%E6%B5%8E%E4%B8%8D%E5%B9%B3/</loc>
+    <loc>https://blogs.yzy15.dpdns.org/WordPress/%E6%95%B0%E5%AD%97%E9%B8%BF%E6%B2%9F%E7%9A%84%E6%BC%94%E5%8F%98%EF%BC%9A%E4%BA%92%E8%81%94%E7%BD%91%E6%99%AE%E5%8F%8A%E5%AF%B9%E5%85%A8%E7%90%83%E7%A4%BE%E4%BC%9A%E7%BB%8F%E6%B5%8E%E4%B8%8D%E5%B9%B3-2/</loc>
     
     <lastmod>2026-04-26</lastmod>
     
@@ -101,7 +101,7 @@
   </url>
   
   <url>
-    <loc>https://blogs.yzy15.dpdns.org/WordPress/%E6%95%B0%E5%AD%97%E9%B8%BF%E6%B2%9F%E7%9A%84%E6%BC%94%E5%8F%98%EF%BC%9A%E4%BA%92%E8%81%94%E7%BD%91%E6%99%AE%E5%8F%8A%E5%AF%B9%E5%85%A8%E7%90%83%E7%A4%BE%E4%BC%9A%E7%BB%8F%E6%B5%8E%E4%B8%8D%E5%B9%B3-2/</loc>
+    <loc>https://blogs.yzy15.dpdns.org/WordPress/%E6%95%B0%E5%AD%97%E9%B8%BF%E6%B2%9F%E7%9A%84%E6%BC%94%E5%8F%98%EF%BC%9A%E4%BA%92%E8%81%94%E7%BD%91%E6%99%AE%E5%8F%8A%E5%AF%B9%E5%85%A8%E7%90%83%E7%A4%BE%E4%BC%9A%E7%BB%8F%E6%B5%8E%E4%B8%8D%E5%B9%B3/</loc>
     
     <lastmod>2026-04-26</lastmod>
     
@@ -119,7 +119,7 @@
   </url>
   
   <url>
-    <loc>https://blogs.yzy15.dpdns.org/WordPress/109/</loc>
+    <loc>https://blogs.yzy15.dpdns.org/WordPress/113/</loc>
     
     <lastmod>2026-04-26</lastmod>
     
@@ -128,7 +128,7 @@
   </url>
   
   <url>
-    <loc>https://blogs.yzy15.dpdns.org/WordPress/113/</loc>
+    <loc>https://blogs.yzy15.dpdns.org/WordPress/109/</loc>
     
     <lastmod>2026-04-26</lastmod>
     
@@ -155,15 +155,6 @@
   </url>
   
   <url>
-    <loc>https://blogs.yzy15.dpdns.org/homepage/index.html</loc>
-    
-    <lastmod>2026-04-26</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://blogs.yzy15.dpdns.org/about/index.html</loc>
     
     <lastmod>2026-04-26</lastmod>
@@ -174,6 +165,15 @@
   
   <url>
     <loc>https://blogs.yzy15.dpdns.org/categories/index.html</loc>
+    
+    <lastmod>2026-04-26</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/homepage/index.html</loc>
     
     <lastmod>2026-04-26</lastmod>
     
@@ -415,14 +415,14 @@
   </url>
   
   <url>
-    <loc>https://blogs.yzy15.dpdns.org/tags/dailyprompt-2130/</loc>
+    <loc>https://blogs.yzy15.dpdns.org/tags/dailyprompt-1883/</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://blogs.yzy15.dpdns.org/tags/dailyprompt-1883/</loc>
+    <loc>https://blogs.yzy15.dpdns.org/tags/dailyprompt-2130/</loc>
     <lastmod>2026-04-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
