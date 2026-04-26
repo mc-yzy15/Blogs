@@ -1,4 +1,4 @@
-import json, os, urllib.request
+import json, os, math, random, urllib.request
 from datetime import datetime
 
 views_fpath = 'source/stats/views.json'
@@ -39,75 +39,81 @@ mode = os.environ.get('MODE', 'set')
 multiplier = os.environ.get('MULTIPLIER', '')
 value_str = os.environ.get('VALUE', '')
 
-def get_real(t):
-    if t == 'total':
-        return views['total']['pv']
-    elif t == 'total_uv':
-        return views['total']['uv']
-    elif t.startswith('category:'):
-        cat = t[9:]
-        return views['categories'].get(cat, {}).get('pv', 0)
-    elif t.startswith('tag:'):
-        tag = t[4:]
-        return views['tags'].get(tag, {}).get('pv', 0)
-    elif t.startswith('post:'):
-        slug = t[5:]
-        for p in views['posts']:
-            if p['slug'] == slug:
-                return p['pv']
-    return 0
+def get_display_pv(slug):
+    real = 0
+    for p in views['posts']:
+        if p['slug'] == slug:
+            real = p['pv']
+            break
+    return real + offset['posts'].get(slug, 0)
 
-def add_off(t, delta):
-    if t == 'total':
-        offset['total_pv'] += delta
-    elif t == 'total_uv':
-        offset['total_uv'] += delta
-    elif t.startswith('category:'):
-        cat = t[9:]
-        offset['categories'][cat] = offset['categories'].get(cat, 0) + delta
-    elif t.startswith('tag:'):
-        tag = t[4:]
-        offset['tags'][tag] = offset['tags'].get(tag, 0) + delta
-    elif t.startswith('post:'):
-        slug = t[5:]
-        offset['posts'][slug] = offset['posts'].get(slug, 0) + delta
+def get_total_display():
+    return sum(get_display_pv(p['slug']) for p in views['posts'])
 
-def set_off(t, val):
-    if t == 'total':
-        offset['total_pv'] = val
-    elif t == 'total_uv':
-        offset['total_uv'] = val
-    elif t.startswith('category:'):
-        cat = t[9:]
-        offset['categories'][cat] = val
-    elif t.startswith('tag:'):
-        tag = t[4:]
-        offset['tags'][tag] = val
-    elif t.startswith('post:'):
-        slug = t[5:]
-        offset['posts'][slug] = val
+def smart_alloc(posts, total_delta):
+    if not posts or total_delta == 0:
+        return {}
+
+    current_total = sum(get_display_pv(p['slug']) for p in posts)
+    weights = {}
+    if current_total == 0:
+        for p in posts:
+            weights[p['slug']] = 1.0
+    else:
+        for p in posts:
+            dp = get_display_pv(p['slug'])
+            base = dp / current_total
+            weights[p['slug']] = math.pow(base, 0.7)
+
+    wsum = sum(weights.values())
+    norm = {s: w / wsum for s, w in weights.items()}
+
+    raw = {s: total_delta * n for s, n in norm.items()}
+
+    rng = random.Random()
+    jittered = {}
+    for s, v in raw.items():
+        noise = 1.0 + rng.uniform(-0.15, 0.15)
+        jittered[s] = v * noise
+
+    jsum = sum(jittered.values())
+    scaled = {s: round(v / jsum * total_delta) for s, v in jittered.items()}
+
+    diff = total_delta - sum(scaled.values())
+    if diff != 0:
+        slugs = list(scaled.keys())
+        rng.shuffle(slugs)
+        for i in range(abs(diff)):
+            s = slugs[i % len(slugs)]
+            scaled[s] += 1 if diff > 0 else -1
+
+    return scaled
+
+def recalculate():
+    cat_off = {}
+    tag_off = {}
+    for p in views['posts']:
+        p_off = offset['posts'].get(p['slug'], 0)
+        cat = p.get('category', '')
+        if cat:
+            cat_off[cat] = cat_off.get(cat, 0) + p_off
+        for t in p.get('tags', []):
+            tag_off[t] = tag_off.get(t, 0) + p_off
+    offset['categories'] = cat_off
+    offset['tags'] = tag_off
+    offset['total_pv'] = sum(offset['posts'].get(p['slug'], 0) for p in views['posts'])
 
 if multiplier:
     try:
         mul = float(multiplier)
-        real_pv = views['total']['pv']
-        off_pv = offset.get('total_pv', 0)
-        offset['total_pv'] = int(real_pv * (mul - 1) + off_pv * mul)
-        real_uv = views['total']['uv']
-        off_uv = offset.get('total_uv', 0)
-        offset['total_uv'] = int(real_uv * (mul - 1) + off_uv * mul)
-        for cat in views['categories']:
-            rc = views['categories'][cat]['pv']
-            oc = offset['categories'].get(cat, 0)
-            offset['categories'][cat] = int(rc * (mul - 1) + oc * mul)
-        for tag in views.get('tags', {}):
-            rt = views['tags'][tag]['pv']
-            ot = offset['tags'].get(tag, 0)
-            offset['tags'][tag] = int(rt * (mul - 1) + ot * mul)
         for p in views['posts']:
             rp = p['pv']
             op = offset['posts'].get(p['slug'], 0)
             offset['posts'][p['slug']] = int(rp * (mul - 1) + op * mul)
+        real_uv = views['total']['uv']
+        off_uv = offset.get('total_uv', 0)
+        offset['total_uv'] = int(real_uv * (mul - 1) + off_uv * mul)
+        recalculate()
     except ValueError:
         pass
 elif target:
@@ -115,12 +121,62 @@ elif target:
         val = int(value_str)
     except ValueError:
         val = 0
-    if mode == 'add':
-        add_off(target, val)
-    else:
-        real_val = get_real(target)
-        new_off = val - real_val
-        set_off(target, new_off)
+
+    if target == 'total':
+        if mode == 'add':
+            delta = val
+        else:
+            current = get_total_display()
+            delta = val - current
+        alloc = smart_alloc(views['posts'], delta)
+        for slug, amount in alloc.items():
+            offset['posts'][slug] = offset['posts'].get(slug, 0) + amount
+        recalculate()
+
+    elif target == 'total_uv':
+        if mode == 'add':
+            offset['total_uv'] += val
+        else:
+            offset['total_uv'] = val - views['total']['uv']
+
+    elif target.startswith('category:'):
+        cat = target[9:]
+        cat_posts = [p for p in views['posts'] if p.get('category', '') == cat]
+        if mode == 'add':
+            delta = val
+        else:
+            current_cat = sum(get_display_pv(p['slug']) for p in cat_posts)
+            delta = val - current_cat
+        alloc = smart_alloc(cat_posts, delta)
+        for slug, amount in alloc.items():
+            offset['posts'][slug] = offset['posts'].get(slug, 0) + amount
+        recalculate()
+
+    elif target.startswith('tag:'):
+        tag = target[4:]
+        tag_posts = [p for p in views['posts'] if tag in p.get('tags', [])]
+        if mode == 'add':
+            delta = val
+        else:
+            current_tag = sum(get_display_pv(p['slug']) for p in tag_posts)
+            delta = val - current_tag
+        alloc = smart_alloc(tag_posts, delta)
+        for slug, amount in alloc.items():
+            offset['posts'][slug] = offset['posts'].get(slug, 0) + amount
+        recalculate()
+
+    elif target.startswith('post:'):
+        slug = target[5:]
+        if mode == 'add':
+            offset['posts'][slug] = offset['posts'].get(slug, 0) + val
+        else:
+            real = 0
+            for p in views['posts']:
+                if p['slug'] == slug:
+                    real = p['pv']
+                    break
+            offset['posts'][slug] = val - real
+        recalculate()
 
 with open(offset_fpath, 'w', encoding='utf-8') as f:
     json.dump(offset, f, ensure_ascii=False, indent=2)
