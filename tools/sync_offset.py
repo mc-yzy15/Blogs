@@ -103,6 +103,11 @@ def recalculate():
     offset['tags'] = tag_off
     offset['total_pv'] = sum(offset['posts'].get(p['slug'], 0) for p in views['posts'])
 
+PV_UV_RATIO = 15
+
+def auto_uv_for_pv(target_pv):
+    return max(1, target_pv // PV_UV_RATIO)
+
 if multiplier:
     try:
         mul = float(multiplier)
@@ -132,6 +137,8 @@ elif target:
         for slug, amount in alloc.items():
             offset['posts'][slug] = offset['posts'].get(slug, 0) + amount
         recalculate()
+        if mode == 'set':
+            offset['total_uv'] = auto_uv_for_pv(val) - views['total']['uv']
 
     elif target == 'total_uv':
         if mode == 'add':
