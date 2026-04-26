@@ -31,7 +31,8 @@
   }
 
   function renderOverview(views, offset) {
-    var totalPv = views.total.pv + (offset.total_pv || 0);
+    var postOff = offset.posts || {};
+    var totalPv = views.posts.reduce(function (s, p) { return s + p.pv + (postOff[p.slug] || 0); }, 0);
     var totalUv = views.total.uv + (offset.total_uv || 0);
     animateNumber(document.getElementById('stat-total-pv'), _normalizeMetric(totalPv, 1));
     animateNumber(document.getElementById('stat-total-uv'), _normalizeMetric(totalUv, 2));
