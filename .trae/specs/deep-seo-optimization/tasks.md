@@ -1,6 +1,6 @@
 # 深度SEO优化 - 实施计划（分解和优先级排序的任务列表）
 
-## [/] 任务1：配置站点地图（Sitemap）
+## [x] 任务1：配置站点地图（Sitemap）
 - **优先级**：P0
 - **依赖**：None
 - **描述**：
@@ -12,7 +12,7 @@
   - `programmatic` TR-1.1: 验证sitemap.xml文件存在且包含所有页面
   - `programmatic` TR-1.2: 验证多语言版本的站点地图正确生成
 
-## [ ] 任务2：创建robots.txt文件
+## [x] 任务2：创建robots.txt文件
 - **优先级**：P0
 - **依赖**：None
 - **描述**：
@@ -24,7 +24,7 @@
   - `programmatic` TR-2.1: 验证robots.txt文件存在且格式正确
   - `programmatic` TR-2.2: 验证robots.txt包含站点地图链接
 
-## [ ] 任务3：优化URL结构
+## [/] 任务3：优化URL结构
 - **优先级**：P0
 - **依赖**：None
 - **描述**：

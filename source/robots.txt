@@ -1,8 +1,0 @@
-User-agent: *
-Allow: /
-Disallow: /node_modules/
-Disallow: /public/
-Disallow: /themes/
-Disallow: /tools/
-
-Sitemap: https://blogs.yzy15.dpdns.org/sitemap.xml
