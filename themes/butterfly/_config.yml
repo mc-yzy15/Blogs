@@ -1035,13 +1035,9 @@ pwa:
 Open_Graph_meta:
   enable: true
   option:
-    # twitter_card:
-    # twitter_image:
-    # twitter_id:
-    # twitter_site:
-    # google_plus:
-    # fb_admins:
-    # fb_app_id:
+    twitter_card: summary_large_image
+    twitter_site: @mc_yzy15
+    twitter_image: https://blogs.yzy15.dpdns.org/img/favicon.ico
 
 # Structured Data
 # https://developers.google.com/search/docs/guides/intro-structured-data

@@ -24,7 +24,7 @@
   - `programmatic` TR-2.1: 验证robots.txt文件存在且格式正确
   - `programmatic` TR-2.2: 验证robots.txt包含站点地图链接
 
-## [/] 任务3：优化URL结构
+## [x] 任务3：优化URL结构
 - **优先级**：P0
 - **依赖**：None
 - **描述**：
@@ -36,7 +36,7 @@
   - `programmatic` TR-3.1: 验证URL格式符合SEO最佳实践
   - `human-judgment` TR-3.2: 检查URL是否简洁易读
 
-## [ ] 任务4：优化页面元标签
+## [/] 任务4：优化页面元标签
 - **优先级**：P0
 - **依赖**：None
 - **描述**：

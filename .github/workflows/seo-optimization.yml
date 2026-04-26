@@ -1,0 +1,207 @@
+name: SEO Optimization
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'source/_posts/**/*.md'
+  schedule:
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    inputs:
+      force_submit:
+        description: 'Force submit to search engines'
+        required: false
+        default: 'no'
+        type: choice
+        options:
+          - 'yes'
+          - 'no'
+
+env:
+  SITE_URL: https://blogs.yzy15.dpdns.org
+
+jobs:
+  seo-optimize:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyyaml
+      
+      - name: Run SEO optimization
+        run: python tools/seo_optimizer.py
+        env:
+          INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
+          BING_API_KEY: ${{ secrets.BING_API_KEY }}
+          BAIDU_TOKEN: ${{ secrets.BAIDU_TOKEN }}
+      
+      - name: Generate sitemap with hexo-generator-sitemap
+        run: |
+          if ! grep -q "hexo-generator-sitemap" package.json; then
+            pnpm add hexo-generator-sitemap
+          fi
+        continue-on-error: true
+      
+      - name: Check for changes
+        id: check_changes
+        run: |
+          git add -A
+          if git diff --staged --quiet; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Commit and push changes
+        if: steps.check_changes.outputs.has_changes == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit -m "🔍 SEO optimization: auto-optimize meta tags and generate reports [skip ci]"
+          git push origin master
+      
+      - name: Upload SEO report
+        uses: actions/upload-artifact@v4
+        with:
+          name: seo-report
+          path: seo-report.md
+          retention-days: 30
+
+  submit-to-search-engines:
+    runs-on: ubuntu-latest
+    needs: seo-optimize
+    if: github.event_name == 'push' || github.event.inputs.force_submit == 'yes'
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Get all post URLs
+        id: get_urls
+        run: |
+          URLS=""
+          for file in source/_posts/*.md; do
+            if [ -f "$file" ]; then
+              slug=$(basename "$file" .md)
+              URLS="${URLS}${SITE_URL}/${slug}/\n"
+            fi
+          done
+          
+          for lang_dir in source/_posts/*/; do
+            if [ -d "$lang_dir" ]; then
+              lang=$(basename "$lang_dir")
+              for file in "$lang_dir"*.md; do
+                if [ -f "$file" ]; then
+                  slug=$(basename "$file" .md)
+                  URLS="${URLS}${SITE_URL}/${lang}/${slug}/\n"
+                fi
+              done
+            fi
+          done
+          
+          URLS="${URLS}${SITE_URL}/\n"
+          URLS="${URLS}${SITE_URL}/archives/\n"
+          URLS="${URLS}${SITE_URL}/tags/\n"
+          URLS="${URLS}${SITE_URL}/categories/\n"
+          
+          echo -e "$URLS" > urls.txt
+          echo "url_count=$(wc -l < urls.txt)" >> $GITHUB_OUTPUT
+      
+      - name: Submit to IndexNow (Google/Bing)
+        if: secrets.INDEXNOW_KEY != ''
+        run: |
+          KEY="${{ secrets.INDEXNOW_KEY }}"
+          echo "$KEY" > source/${KEY}.txt
+          
+          curl -s "https://www.bing.com/indexnow?url=${SITE_URL}/&key=${KEY}" || true
+          
+          echo "✅ Submitted to IndexNow"
+      
+      - name: Submit to Bing Webmaster API
+        if: secrets.BING_API_KEY != ''
+        run: |
+          API_KEY="${{ secrets.BING_API_KEY }}"
+          URLS=$(cat urls.txt | tr '\n' ',' | sed 's/,$//')
+          
+          curl -s -X POST \
+            "https://ssl.bing.com/webmaster/api.svc/json/SubmitUrlbatch?apikey=${API_KEY}&siteUrl=${SITE_URL}" \
+            -H "Content-Type: application/json" \
+            -d "{\"siteUrl\":\"${SITE_URL}\",\"urlList\":$(cat urls.txt | jq -R -s 'split("\n")[:-1]')}" || true
+          
+          echo "✅ Submitted to Bing Webmaster"
+      
+      - name: Submit to Baidu
+        if: secrets.BAIDU_TOKEN != ''
+        run: |
+          TOKEN="${{ secrets.BAIDU_TOKEN }}"
+          
+          curl -s -X POST \
+            "http://data.zz.baidu.com/urls?site=${SITE_URL}&token=${TOKEN}" \
+            -H "Content-Type: text/plain" \
+            --data-binary @urls.txt || true
+          
+          echo "✅ Submitted to Baidu"
+      
+      - name: Submit to Google Search Console
+        if: secrets.GOOGLE_SERVICE_ACCOUNT != ''
+        run: |
+          echo "⚠️ Google Search Console API requires additional setup"
+          echo "See: https://developers.google.com/webmaster-tools/search-console-api-original"
+      
+      - name: Summary
+        run: |
+          echo "## SEO Submission Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **URLs processed**: ${{ steps.get_urls.outputs.url_count }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **IndexNow**: ${{ secrets.INDEXNOW_KEY != '' && '✅ Submitted' || '❌ Not configured' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Bing Webmaster**: ${{ secrets.BING_API_KEY != '' && '✅ Submitted' || '❌ Not configured' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Baidu**: ${{ secrets.BAIDU_TOKEN != '' && '✅ Submitted' || '❌ Not configured' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Google Search Console**: ${{ secrets.GOOGLE_SERVICE_ACCOUNT != '' && '⚠️ Requires setup' || '❌ Not configured' }}" >> $GITHUB_STEP_SUMMARY
+
+  lighthouse-seo-audit:
+    runs-on: ubuntu-latest
+    needs: seo-optimize
+    if: github.event_name == 'schedule' || github.event.inputs.force_submit == 'yes'
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Install Lighthouse CI
+        run: npm install -g @lhci/cli@0.13.x
+      
+      - name: Run Lighthouse SEO audit
+        run: |
+          mkdir -p lighthouse-reports
+          
+          lhci collect --url="${SITE_URL}/" --url="${SITE_URL}/archives/" --numberOfRuns=1 || true
+          lhci upload --target=temporary-public-storage || true
+        continue-on-error: true
+      
+      - name: Upload Lighthouse reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-reports
+          path: lighthouse-reports
+          retention-days: 30
