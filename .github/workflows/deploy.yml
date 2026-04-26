@@ -5,6 +5,12 @@ on:
     branches:
       - master
   workflow_dispatch:
+  workflow_run:
+    workflows: ["Sync Analytics Data"]
+    types:
+      - completed
+    branches:
+      - master
 
 jobs:
   build:
