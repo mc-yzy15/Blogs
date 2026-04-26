@@ -36,7 +36,7 @@
   - `programmatic` TR-3.1: 验证URL格式符合SEO最佳实践
   - `human-judgment` TR-3.2: 检查URL是否简洁易读
 
-## [/] 任务4：优化页面元标签
+## [x] 任务4：优化页面元标签
 - **优先级**：P0
 - **依赖**：None
 - **描述**：
@@ -48,7 +48,7 @@
   - `programmatic` TR-4.1: 验证title和description标签长度符合要求
   - `human-judgment` TR-4.2: 检查meta标签内容是否吸引人
 
-## [ ] 任务5：添加结构化数据（Schema.org）
+## [x] 任务5：添加结构化数据（Schema.org）
 - **优先级**：P1
 - **依赖**：None
 - **描述**：
@@ -61,7 +61,7 @@
   - `programmatic` TR-5.1: 使用Google结构化数据测试工具验证schema标记
   - `programmatic` TR-5.2: 确保所有页面都有正确的schema标记
 
-## [ ] 任务6：性能优化 - 图片优化
+## [/] 任务6：性能优化 - 图片优化
 - **优先级**：P1
 - **依赖**：None
 - **描述**：
