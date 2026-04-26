@@ -131,3 +131,11 @@ deploy:
 i18n:
   type: [page, post]
   generator: [archive, category, tag, index]
+
+# Sitemap
+sitemap:
+  path: sitemap.xml
+  template: 
+  rel: false
+  tags: true
+  categories: true
