@@ -122,4 +122,4 @@
 - **测试要求**：
   - `programmatic` TR-10.1: 验证分析代码正确安装
   - `programmatic` TR-10.2: 确保能够正常收集数据
-- **备注**：需要用户提供Google Analytics跟踪ID才能完成配置
+- **备注**：已添加Google Analytics跟踪代码，Google Search Console需要用户在Google Search Console中验证网站
