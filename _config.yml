@@ -3,10 +3,10 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Yzy15's Blog
-subtitle: ''
-description: '技术分享 / 记录生活 / 学习笔记'
-keywords:
+title: Yzy15's Blog - 技术分享与生活记录
+subtitle: '技术教程 | 编程经验 | 学习笔记'
+description: 'Yzy15的个人博客，专注于分享技术教程、编程经验、生活记录和学习心得。内容涵盖前端开发、后端技术、工具使用、云服务器等多个技术领域，记录成长路上的点滴。'
+keywords: 博客,技术分享,编程,前端开发,后端,学习笔记,Yzy15
 author: mc-yzy15
 language: [zh-CN, en, zh-TW, ja, ko, fr, de, es, ru, pt, ar, hi, it, th, vi, id, tr, uk, pl, nl]
 timezone: 'Asia/Shanghai'
@@ -17,8 +17,8 @@ url: https://blogs.yzy15.dpdns.org
 permalink: :title/
 permalink_defaults:
 pretty_urls:
-  trailing_index: true # Set to false to remove trailing 'index.html' from permalinks
-  trailing_html: true # Set to false to remove trailing '.html' from permalinks
+  trailing_index: false
+  trailing_html: false
 
 # Directory
 source_dir: source

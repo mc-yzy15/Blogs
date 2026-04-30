@@ -28,7 +28,7 @@ aside:
     category: true
   card_author:
     enable: true
-    description: 技术分享 / 记录生活 / 学习笔记
+    description: Yzy15的个人博客 | 技术教程 · 编程经验 · 学习笔记
     button:
       enable: true
       icon: fab fa-github
@@ -113,3 +113,20 @@ translate:
   translateDelay: 0
   msgToTraditionalChinese: '繁'
   msgToSimplifiedChinese: '簡'
+
+# SEO优化
+# Open Graph meta tags
+Open_Graph_meta:
+  enable: true
+  option:
+    twitter_card: summary_large_image
+    twitter_site: '@mc_yzy15'
+    twitter_creator: '@mc_yzy15'
+    twitter_image: https://blogs.yzy15.dpdns.org/img/favicon.ico
+
+# Structured Data (JSON-LD)
+structured_data:
+  enable: true
+  alternate_name:
+    - Yzy15博客
+    - "Yzy15's Blog"
