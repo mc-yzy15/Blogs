@@ -31,11 +31,10 @@
     });
     var maxPv = entries.length ? entries[0][1].pv + (catOff[entries[0][0]] || 0) : 1;
     var html = '';
-    entries.forEach(function (entry, i) {
+    entries.forEach(function (entry) {
       var name = entry[0];
-      var pv = _normalizeMetric(entry[1].pv + (catOff[name] || 0), i + 10);
-      var rawPv = entry[1].pv + (catOff[name] || 0);
-      var pct = Math.round((rawPv / maxPv) * 100);
+      var pv = entry[1].pv + (catOff[name] || 0);
+      var pct = Math.round((pv / maxPv) * 100);
       html += '<div class="cat-bar-item">' +
         '<div class="cat-bar-header"><span class="cat-bar-name">' + name + '</span><span class="cat-bar-value">' + pv.toLocaleString() + ' PV</span></div>' +
         '<div class="cat-bar-track"><div class="cat-bar-fill" style="width:0%" data-width="' + pct + '%"></div></div>' +
