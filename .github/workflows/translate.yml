@@ -1,0 +1,122 @@
+name: Translate Posts
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - "source/_posts/**/*.md"
+  workflow_dispatch:
+    inputs:
+      translate_all:
+        description: "Translate all posts (yes/no)"
+        required: false
+        default: "no"
+
+permissions:
+  contents: write
+
+jobs:
+  translate:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-actions[bot]'
+    timeout-minutes: 180
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: false
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install deep-translator
+
+      - name: Get changed files
+        id: changed
+        run: |
+          python -c "
+          import sys; sys.path.insert(0, 'tools')
+          from translate_posts import ALL_GOOGLE_LANGS
+          codes = sorted(ALL_GOOGLE_LANGS.keys())
+          print(':'.join(codes))
+          " > /tmp/lang_codes.txt
+          LANG_EXCLUDE=""
+          while IFS=: read -ra CODES; do
+            for code in "\${CODES[@]}"; do
+              LANG_EXCLUDE="$LANG_EXCLUDE -not -path source/_posts/$code/*"
+            done
+          done < /tmp/lang_codes.txt
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ inputs.translate_all }}" == "yes" ]]; then
+            echo "Translating all posts (manual trigger)..."
+            eval "find source/_posts -name '*.md' $LANG_EXCLUDE" > /tmp/translate_files.txt
+          else
+            BEFORE="${{ github.event.before }}"
+            AFTER="${{ github.event.after }}"
+            if [[ -z "$BEFORE" || "$BEFORE" == "0000000000000000000000000000000000000000" ]]; then
+              eval "find source/_posts -name '*.md' $LANG_EXCLUDE" > /tmp/translate_files.txt
+            else
+              git diff --name-only --diff-filter=AM "$BEFORE" "$AFTER" -- 'source/_posts/**/*.md' > /tmp/translate_diff.txt || true
+              python -c "
+          import sys; sys.path.insert(0, 'tools')
+          from translate_posts import ALL_GOOGLE_LANGS, POSTS_DIR
+          from pathlib import Path
+          with open('/tmp/translate_diff.txt') as f:
+              files = [l.strip() for l in f if l.strip()]
+          filtered = []
+          for f in files:
+              try:
+                  p = Path(f)
+                  rel = p.relative_to(POSTS_DIR)
+                  if len(rel.parts) > 1 and rel.parts[0] in ALL_GOOGLE_LANGS:
+                      continue
+              except:
+                  pass
+              filtered.append(f)
+          with open('/tmp/translate_files.txt', 'w') as out:
+              out.write('\n'.join(filtered))
+          " || true
+            fi
+          fi
+          echo "Files to translate:"
+          cat /tmp/translate_files.txt
+          FILE_COUNT=$(grep -c '.' /tmp/translate_files.txt 2>/dev/null || echo "0")
+          echo "file_count=$FILE_COUNT" >> $GITHUB_OUTPUT
+
+      - name: Run translation
+        if: steps.changed.outputs.file_count != '0'
+        env:
+          DEFAULT_LANG: zh-CN
+          TARGET_LANGS: en,zh-TW,ja,ko,fr,de,es,ru,pt,ar,hi,it,th,vi,id,tr,uk,pl,nl,sv,da,fi,el,cs,ro,hu,sk,bg,hr,sl,sr,no,he,ms,fa,bn,ta,te,ur
+          BEFORE_SHA: ${{ github.event.before }}
+          AFTER_SHA: ${{ github.event.after }}
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ inputs.translate_all }}" == "yes" ]]; then
+            while IFS= read -r file; do
+              if [[ -n "$file" ]]; then
+                echo "Translating: $file"
+                python tools/translate_posts.py "$file"
+              fi
+            done < /tmp/translate_files.txt
+          else
+            python tools/translate_posts.py
+          fi
+
+      - name: Configure Git
+        if: success()
+        run: |
+          git config --global user.name 'GitHub Actions Bot'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+      - name: Commit and Push Translations
+        if: success()
+        run: |
+          git add source/_posts/ 2>/dev/null || true
+          git diff --staged --quiet || git commit -m "i18n: auto-translate posts via Google Translate $(date +'%Y-%m-%d %H:%M:%S')"
+          git push origin master

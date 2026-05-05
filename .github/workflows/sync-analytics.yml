@@ -1,0 +1,49 @@
+name: Sync Analytics Data
+
+on:
+  repository_dispatch:
+    types: [sync_analytics]
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate sync request
+        id: validate
+        env:
+          SYNC_KEY: ${{ secrets.ANALYTICS_SYNC_KEY }}
+        run: |
+          PAYLOAD_KEY="${{ github.event.client_payload.key }}"
+          if [ "$SYNC_KEY" != "$PAYLOAD_KEY" ]; then
+            echo "Validation failed"
+            exit 1
+          fi
+          echo "validated=true" >> $GITHUB_OUTPUT
+
+      - name: Update offset data
+        if: steps.validate.outputs.validated == 'true'
+        env:
+          TARGET: ${{ github.event.client_payload.target }}
+          VALUE: ${{ github.event.client_payload.value }}
+          MODE: ${{ github.event.client_payload.mode }}
+          MULTIPLIER: ${{ github.event.client_payload.multiplier }}
+        run: python3 tools/sync_offset.py
+
+      - name: Commit and push changes
+        if: steps.validate.outputs.validated == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add source/stats/offset.json
+          git diff --cached --quiet || git commit -m "chore: sync analytics offset data"
+          for i in 1 2 3; do
+            git pull --rebase origin master && git push && break || {
+              echo "Push attempt $i failed, retrying..."
+              sleep 5
+            }
+          done

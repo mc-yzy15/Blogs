@@ -1,0 +1,6 @@
+- [x] stats-renderer.js不再从views.json累加计算总PV，改为读取webinfo卡片DOM元素值
+- [x] 统计页面的PV/UV与侧边栏webinfo卡片显示数值一致
+- [x] offset.json校准逻辑保留且正常工作
+- [x] hexo clean && hexo generate构建成功无报错
+- [x] 统计页面分类和文章排行数据正常展示
+- [x] 版权年份显示为2025-当前年份（如2025-2026）- 已在footer.pug中使用new Date().getFullYear()实现动态更新

@@ -1,0 +1,161 @@
+name: SEO Optimization
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'source/_posts/**/*.md'
+  schedule:
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+
+env:
+  SITE_URL: https://blogs.yzy15.dpdns.org
+
+jobs:
+  seo-optimize:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      
+      - name: Install dependencies
+        run: pip install pyyaml
+      
+      - name: Generate or use IndexNow key
+        id: indexnow
+        run: |
+          if [ -f "source/indexnow.txt" ]; then
+            KEY=$(cat source/indexnow.txt)
+            echo "Using existing key: ${KEY:0:8}..."
+          else
+            KEY=$(python3 -c "import secrets; print(secrets.token_hex(16))")
+            echo "$KEY" > source/indexnow.txt
+            echo "Generated new IndexNow key: ${KEY:0:8}..."
+          fi
+          echo "key=$KEY" >> $GITHUB_OUTPUT
+      
+      - name: Run SEO optimization
+        run: python tools/seo_optimizer.py
+        env:
+          INDEXNOW_KEY: ${{ steps.indexnow.outputs.key }}
+      
+      - name: Check for changes
+        id: check_changes
+        run: |
+          git add -A
+          if git diff --staged --quiet; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Commit and push changes
+        if: steps.check_changes.outputs.has_changes == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit -m "🔍 SEO optimization: auto-optimize meta tags and generate sitemap [skip ci]"
+          git push origin master
+      
+      - name: Upload SEO report
+        uses: actions/upload-artifact@v4
+        with:
+          name: seo-report
+          path: seo-report.md
+          retention-days: 30
+
+  submit-to-indexnow:
+    runs-on: ubuntu-latest
+    needs: seo-optimize
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Get IndexNow key
+        id: key
+        run: |
+          if [ -f "source/indexnow.txt" ]; then
+            echo "key=$(cat source/indexnow.txt)" >> $GITHUB_OUTPUT
+          else
+            echo "key=" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Submit homepage to IndexNow
+        if: steps.key.outputs.key != ''
+        run: |
+          KEY="${{ steps.key.outputs.key }}"
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" "https://www.bing.com/indexnow?url=${SITE_URL}/&key=${KEY}")
+          if [ "$RESPONSE" = "200" ]; then
+            echo "✅ IndexNow submission successful (HTTP $RESPONSE)"
+            echo "- IndexNow: ✅ Submitted homepage" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "⚠️ IndexNow returned HTTP $RESPONSE"
+            echo "- IndexNow: ⚠️ HTTP $RESPONSE" >> $GITHUB_STEP_SUMMARY
+          fi
+      
+      - name: Submit sitemap to search engines
+        run: |
+          echo "Submitting sitemap..."
+          
+          curl -s "https://www.google.com/ping?sitemap=${SITE_URL}/sitemap.xml" && echo "✅ Google sitemap ping" || true
+          curl -s "https://www.bing.com/ping?sitemap=${SITE_URL}/sitemap.xml" && echo "✅ Bing sitemap ping" || true
+          
+          echo "- Sitemap pinged: ✅ Google & Bing" >> $GITHUB_STEP_SUMMARY
+      
+      - name: Summary
+        run: |
+          echo "## SEO Submission Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Site**: ${SITE_URL}" >> $GITHUB_STEP_SUMMARY
+          echo "- **IndexNow Key**: \`${{ steps.key.outputs.key }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### What happens next?" >> $GITHUB_STEP_SUMMARY
+          echo "1. Google and Bing will crawl your site within 24-48 hours" >> $GITHUB_STEP_SUMMARY
+          echo "2. Check indexing status at:" >> $GITHUB_STEP_SUMMARY
+          echo "   - [Google Search Console](https://search.google.com/search-console)" >> $GITHUB_STEP_SUMMARY
+          echo "   - [Bing Webmaster Tools](https://www.bing.com/webmasters)" >> $GITHUB_STEP_SUMMARY
+
+  lighthouse-audit:
+    runs-on: ubuntu-latest
+    needs: seo-optimize
+    if: github.event_name == 'schedule'
+    
+    steps:
+      - name: Audit with PageSpeed Insights API
+        run: |
+          echo "## Lighthouse SEO Audit" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          RESPONSE=$(curl -s "https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${SITE_URL}/&category=seo&strategy=desktop")
+          
+          SCORE=$(echo "$RESPONSE" | jq -r '.lighthouseResult.categories.seo.score // "N/A"')
+          
+          if [ "$SCORE" != "null" ] && [ "$SCORE" != "N/A" ]; then
+            SCORE_INT=$(echo "$SCORE * 100" | bc | cut -d. -f1)
+            echo "- **SEO Score**: ${SCORE_INT}/100" >> $GITHUB_STEP_SUMMARY
+            
+            if [ "$SCORE_INT" -ge 90 ]; then
+              echo "- **Status**: ✅ Excellent" >> $GITHUB_STEP_SUMMARY
+            elif [ "$SCORE_INT" -ge 70 ]; then
+              echo "- **Status**: ⚠️ Good, but can improve" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "- **Status**: ❌ Needs attention" >> $GITHUB_STEP_SUMMARY
+            fi
+          else
+            echo "- **Status**: Unable to fetch score" >> $GITHUB_STEP_SUMMARY
+          fi
+        continue-on-error: true

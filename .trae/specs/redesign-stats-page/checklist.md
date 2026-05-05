@@ -1,0 +1,8 @@
+- [ ] stats-renderer.js 直接从 offset.json 获取全站 PV/UV，不再从 DOM 读取
+- [ ] stats 页面展示 4 个核心指标卡片（PV/UV/文章数/分类数）
+- [ ] 分类浏览量条形图按 PV 降序排列，样式美观
+- [ ] 文章排行榜 Top 10 展示，前三名有特殊样式
+- [ ] 页面底部显示数据来源说明和更新时间
+- [ ] webinfo 卡片 PV/UV 与 stats 页面完全一致
+- [ ] 移除 _normalizeMetric 等数据混淆逻辑，展示真实数据
+- [ ] hexo clean && hexo generate 构建成功无报错

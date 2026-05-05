@@ -1,0 +1,79 @@
+name: Deploy Hexo to GitHub Pages
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["Sync Analytics Data"]
+    types:
+      - completed
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Install Dependencies
+        run: |
+          pnpm install
+          pnpm add -g hexo-cli
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Detect languages
+        run: python tools/detect_langs.py
+
+      - name: Ensure stats data files exist
+        run: |
+          python3 -c "
+          import json, os
+          defaults = {
+              'views.json': {'total': {'pv': 0, 'uv': 0}, 'categories': {}, 'tags': {}, 'posts': [], 'updated_at': ''},
+              'offset.json': {'total_pv': 0, 'total_uv': 0, 'categories': {}, 'tags': {}, 'posts': {}}
+          }
+          os.makedirs('source/stats', exist_ok=True)
+          for fname, default in defaults.items():
+              fpath = f'source/stats/{fname}'
+              if not os.path.exists(fpath) or os.path.getsize(fpath) == 0:
+                  with open(fpath, 'w', encoding='utf-8') as f:
+                      json.dump(default, f, ensure_ascii=False, indent=2)
+                  print(f'Created default {fname}')
+              else:
+                  print(f'{fname} exists, skipping')
+          "
+
+      - name: Clean and Generate Static Files
+        run: |
+          hexo clean
+          hexo generate
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          publish_branch: gh-pages
