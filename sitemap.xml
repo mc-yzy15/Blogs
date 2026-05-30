@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://blogs.yzy15.dpdns.org/stats/views.json</loc>
+    <loc>https://blogs.yzy15.dpdns.org/link/</loc>
     
     <lastmod>2026-05-30</lastmod>
     
@@ -20,6 +20,15 @@
   </url>
   
   <url>
+    <loc>https://blogs.yzy15.dpdns.org/stats/</loc>
+    
+    <lastmod>2026-05-30</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://blogs.yzy15.dpdns.org/tags/</loc>
     
     <lastmod>2026-05-30</lastmod>
@@ -29,16 +38,7 @@
   </url>
   
   <url>
-    <loc>https://blogs.yzy15.dpdns.org/link/</loc>
-    
-    <lastmod>2026-05-30</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blogs.yzy15.dpdns.org/stats/</loc>
+    <loc>https://blogs.yzy15.dpdns.org/stats/views.json</loc>
     
     <lastmod>2026-05-30</lastmod>
     
@@ -57,15 +57,6 @@
   
   <url>
     <loc>https://blogs.yzy15.dpdns.org/tencent-kaiwu-rant/</loc>
-    
-    <lastmod>2026-05-30</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blogs.yzy15.dpdns.org/WordPress/%E5%85%AC%E5%91%8A/</loc>
     
     <lastmod>2026-05-30</lastmod>
     
@@ -110,16 +101,7 @@
   </url>
   
   <url>
-    <loc>https://blogs.yzy15.dpdns.org/WordPress/109/</loc>
-    
-    <lastmod>2026-05-30</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blogs.yzy15.dpdns.org/WordPress/113/</loc>
+    <loc>https://blogs.yzy15.dpdns.org/WordPress/%E5%85%AC%E5%91%8A/</loc>
     
     <lastmod>2026-05-30</lastmod>
     
@@ -137,7 +119,7 @@
   </url>
   
   <url>
-    <loc>https://blogs.yzy15.dpdns.org/WordPress/greasy-fork%EF%BC%9A%E5%9B%BD%E5%86%85%E8%AE%BF%E9%97%AE%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</loc>
+    <loc>https://blogs.yzy15.dpdns.org/WordPress/109/</loc>
     
     <lastmod>2026-05-30</lastmod>
     
@@ -155,7 +137,16 @@
   </url>
   
   <url>
-    <loc>https://blogs.yzy15.dpdns.org/about/</loc>
+    <loc>https://blogs.yzy15.dpdns.org/WordPress/greasy-fork%EF%BC%9A%E5%9B%BD%E5%86%85%E8%AE%BF%E9%97%AE%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</loc>
+    
+    <lastmod>2026-05-30</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/WordPress/113/</loc>
     
     <lastmod>2026-05-30</lastmod>
     
@@ -165,6 +156,15 @@
   
   <url>
     <loc>https://blogs.yzy15.dpdns.org/categories/</loc>
+    
+    <lastmod>2026-05-30</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/about/</loc>
     
     <lastmod>2026-05-30</lastmod>
     
@@ -331,20 +331,6 @@
   </url>
   
   <url>
-    <loc>https://blogs.yzy15.dpdns.org/tags/dailyprompt-2130/</loc>
-    <lastmod>2026-05-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blogs.yzy15.dpdns.org/tags/dailyprompt-1883/</loc>
-    <lastmod>2026-05-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://blogs.yzy15.dpdns.org/tags/%E7%8E%B0%E4%BB%A3%E8%BF%B7%E4%BF%A1/</loc>
     <lastmod>2026-05-30</lastmod>
     <changefreq>weekly</changefreq>
@@ -429,6 +415,13 @@
   </url>
   
   <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/dailyprompt-2130/</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://blogs.yzy15.dpdns.org/tags/%E7%94%A8%E6%88%B7%E8%84%9A%E6%9C%AC/</loc>
     <lastmod>2026-05-30</lastmod>
     <changefreq>weekly</changefreq>
@@ -472,6 +465,13 @@
   
   <url>
     <loc>https://blogs.yzy15.dpdns.org/tags/%E5%9B%BD%E5%86%85%E4%B8%93%E7%94%A8%E5%9F%9F%E5%90%8D/</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/dailyprompt-1883/</loc>
     <lastmod>2026-05-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
