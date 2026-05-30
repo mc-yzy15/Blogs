@@ -3,10 +3,10 @@
 - [x] JSON-LD 语法错误已修复：归档页、分类页、标签页等非文章非首页页面不再输出空 JSON-LD
 - [x] JSON-LD 语法错误已修复：文章页 BlogPosting JSON-LD 可正确解析
 - [x] JSON-LD 语法错误已修复：首页 WebSite JSON-LD 可正确解析
-- [ ] robots.txt 已更新：不存在重复的 User-agent: * 块
-- [ ] robots.txt 已更新：包含 GPTBot Allow: / 规则
-- [ ] robots.txt 已更新：包含 ClaudeBot Allow: / 规则
-- [ ] robots.txt 已更新：包含 PerplexityBot Allow: / 规则
+- [x] robots.txt 已更新：不存在重复的 User-agent: * 块
+- [x] robots.txt 已更新：包含 GPTBot Allow: / 规则
+- [x] robots.txt 已更新：包含 ClaudeBot Allow: / 规则
+- [x] robots.txt 已更新：包含 PerplexityBot Allow: / 规则
 - [x] robots.txt 已更新：保留 Sitemap 链接和 Crawl-delay
 - [x] llms.txt 已创建：访问 /llms.txt 返回有效内容
 - [x] llms.txt 已创建：包含网站标题、描述和主要内容链接

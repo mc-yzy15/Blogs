@@ -25,14 +25,14 @@
   - [x] SubTask 6.1: 修改 `structured_data.pug`，当文章 Front Matter 包含 `faq: true` 时生成 FAQPage Schema
   - [x] SubTask 6.2: FAQ 内容从文章中提取 `## FAQ` 或 `### Q:` 格式的问答对
 
-- [ ] Task 7: 创建 GPT-4o 自动化工作流
-  - [ ] SubTask 7.1: 在 GitHub 仓库中设置 Secret `OPENAI_API_KEY` 和 `OPENAI_BASE_URL`
-  - [ ] SubTask 7.2: 创建 `.github/workflows/ai-auto-update.yml` 工作流文件，在 push 到 master 时触发
-  - [ ] SubTask 7.3: 工作流步骤：检出代码 → 安装 Python → 读取文章列表 → 调用 GPT-4o API 生成 llms.txt → 调用 GPT-4o 为缺少 description 的文章生成描述 → 调用 GPT-4o 分析文章是否包含 FAQ 内容并添加标记 → 提交并推送变更
-  - [ ] SubTask 7.4: 添加防循环机制（`if: github.actor != 'github-actions[bot]'`）
-  - [ ] SubTask 7.5: 创建 `tools/ai_auto_update.py` 脚本，封装 GPT-4o API 调用逻辑
+- [x] Task 7: 创建 GPT-4o 自动化工作流
+  - [x] SubTask 7.1: 在 GitHub 仓库中设置 Secret `OPENAI_API_KEY` 和 `OPENAI_BASE_URL`（需用户手动设置）
+  - [x] SubTask 7.2: 创建 `.github/workflows/ai-auto-update.yml` 工作流文件，在 push 到 master 时触发
+  - [x] SubTask 7.3: 工作流步骤：检出代码 → 安装 Python → 读取文章列表 → 调用 GPT-4o API 生成 llms.txt → 调用 GPT-4o 为缺少 description 的文章生成描述 → 调用 GPT-4o 分析文章是否包含 FAQ 内容并添加标记 → 提交并推送变更
+  - [x] SubTask 7.4: 添加防循环机制（`if: github.actor != 'github-actions[bot]'`）
+  - [x] SubTask 7.5: 创建 `tools/ai_auto_update.py` 脚本，封装 GPT-4o API 调用逻辑
 
-- [ ] Task 8: 追加项目规则文件（FAQ 支持、JSON-LD 等规则）
+- [x] Task 8: 追加项目规则文件（FAQ 支持、JSON-LD 等规则）
 
 # Task Dependencies
 - Task 4 依赖 Task 1（需先修复 JSON-LD 基础结构再扩展 Schema 类型）
