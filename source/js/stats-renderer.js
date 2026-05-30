@@ -1,4 +1,8 @@
-(function () {
+﻿(function () {
+  'use strict';
+  var trendChart = null;
+  var historyData = null;
+
   function animateNumber(el, target) {
     var start = 0;
     var duration = 1200;
@@ -11,19 +15,6 @@
       if (p < 1) requestAnimationFrame(step);
     }
     requestAnimationFrame(step);
-  }
-
-  function renderOverview(views, offset) {
-    var realPv = views.total ? (views.total.pv || 0) : 0;
-    var realUv = views.total ? (views.total.uv || 0) : 0;
-    var offsetPv = offset.total_pv || 0;
-    var offsetUv = offset.total_uv || 0;
-    var totalPv = realPv + offsetPv;
-    var totalUv = realUv + offsetUv;
-    animateNumber(document.getElementById('stat-total-pv'), totalPv);
-    animateNumber(document.getElementById('stat-total-uv'), totalUv);
-    animateNumber(document.getElementById('stat-total-posts'), views.posts.length);
-    animateNumber(document.getElementById('stat-total-cats'), Object.keys(views.categories).length);
   }
 
   function renderCategories(views, offset) {
@@ -71,25 +62,236 @@
     container.innerHTML = html;
   }
 
-  function renderTimestamp(views) {
+  function renderTimestamp() {
     var el = document.getElementById('stat-updated-time');
-    if (el && views.updated_at) el.textContent = views.updated_at;
+    if (el) el.textContent = 'Busuanzi \u5b9e\u65f6\u6570\u636e';
+  }
+
+  function initBusuanzi(offset) {
+    var pvEl = document.getElementById('busuanzi_value_site_pv');
+    var uvEl = document.getElementById('busuanzi_value_site_uv');
+    var resolved = false;
+
+    function showTotal(pv, uv) {
+      if (resolved) return;
+      resolved = true;
+      animateNumber(document.getElementById('stat-total-pv'), pv + (offset.total_pv || 0));
+      animateNumber(document.getElementById('stat-total-uv'), uv + (offset.total_uv || 0));
+    }
+
+    function checkBusuanzi() {
+      if (resolved) return;
+      var pv = 0;
+      var uv = 0;
+      if (pvEl && pvEl.textContent.trim()) pv = parseInt(pvEl.textContent) || 0;
+      if (uvEl && uvEl.textContent.trim()) uv = parseInt(uvEl.textContent) || 0;
+      if (pv > 0 || uv > 0) showTotal(pv, uv);
+    }
+
+    checkBusuanzi();
+
+    if (pvEl) {
+      var obs1 = new MutationObserver(checkBusuanzi);
+      obs1.observe(pvEl, { childList: true, characterData: true, subtree: true });
+    }
+    if (uvEl) {
+      var obs2 = new MutationObserver(checkBusuanzi);
+      obs2.observe(uvEl, { childList: true, characterData: true, subtree: true });
+    }
+
+    setTimeout(function () {
+      if (resolved) return;
+      resolved = true;
+      fetch('/stats/views.json').then(function (r) { return r.json(); }).then(function (views) {
+        var pv = views.total ? (views.total.pv || 0) : 0;
+        var uv = views.total ? (views.total.uv || 0) : 0;
+        animateNumber(document.getElementById('stat-total-pv'), pv + (offset.total_pv || 0));
+        animateNumber(document.getElementById('stat-total-uv'), uv + (offset.total_uv || 0));
+      }).catch(function () {});
+    }, 10000);
+  }
+
+  function calcIncremental(snapshots, groupFn) {
+    if (!snapshots.length) return [];
+    var groups = {};
+    snapshots.forEach(function (s) {
+      var key = groupFn(s);
+      if (!groups[key]) groups[key] = [];
+      groups[key].push(s);
+    });
+    var keys = Object.keys(groups).sort();
+    var result = [];
+    for (var i = 0; i < keys.length; i++) {
+      var last = groups[keys[i]][groups[keys[i]].length - 1];
+      var prevLast = i > 0 ? groups[keys[i - 1]][groups[keys[i - 1]].length - 1] : null;
+      var incPv = prevLast ? Math.max(0, last.pv - prevLast.pv) : 0;
+      var incUv = prevLast ? Math.max(0, last.uv - prevLast.uv) : 0;
+      result.push({ key: keys[i], pv: incPv, uv: incUv });
+    }
+    return result;
+  }
+
+  function renderChart(range) {
+    if (!historyData || !historyData.snapshots) return;
+    var snapshots = historyData.snapshots;
+    var now = new Date();
+    var filtered;
+    var groupFn;
+    var labelFn;
+    var skipFirst = false;
+
+    if (range === '24h') {
+      var todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      var beforeToday = snapshots.filter(function (s) { return new Date(s.ts) < todayStart; });
+      var baseline = beforeToday.length ? [beforeToday[beforeToday.length - 1]] : [];
+      var inRange = snapshots.filter(function (s) { return new Date(s.ts) >= todayStart; });
+      filtered = baseline.concat(inRange);
+      skipFirst = baseline.length > 0;
+      groupFn = function (s) {
+        var d = new Date(s.ts);
+        return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0') + '-' + d.getHours();
+      };
+      labelFn = function (key) {
+        return key.split('-')[3] + ':00';
+      };
+    } else {
+      var days = range === '7d' ? 7 : 30;
+      var rangeStart = new Date(now.getFullYear(), now.getMonth(), now.getDate() - days);
+      var beforeRange = snapshots.filter(function (s) { return new Date(s.ts) < rangeStart; });
+      var baseline = beforeRange.length ? [beforeRange[beforeRange.length - 1]] : [];
+      var inRange = snapshots.filter(function (s) { return new Date(s.ts) >= rangeStart; });
+      filtered = baseline.concat(inRange);
+      skipFirst = baseline.length > 0;
+      groupFn = function (s) {
+        var d = new Date(s.ts);
+        return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+      };
+      labelFn = function (key) {
+        return key.substring(5);
+      };
+    }
+
+    var data = calcIncremental(filtered, groupFn);
+    if (skipFirst && data.length > 0) data = data.slice(1);
+
+    var labels = data.map(function (d) { return labelFn(d.key); });
+    var pvData = data.map(function (d) { return d.pv; });
+    var uvData = data.map(function (d) { return d.uv; });
+
+    var canvas = document.getElementById('stats-trend-chart');
+    if (!canvas) return;
+    var ctx = canvas.getContext('2d');
+
+    var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    var gridColor = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)';
+    var textColor = isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)';
+
+    var chartHeight = canvas.parentElement ? (canvas.parentElement.clientHeight || 300) : 300;
+    var pvGradient = ctx.createLinearGradient(0, 0, 0, chartHeight);
+    pvGradient.addColorStop(0, 'rgba(102,126,234,0.4)');
+    pvGradient.addColorStop(1, 'rgba(118,75,162,0.05)');
+
+    var uvGradient = ctx.createLinearGradient(0, 0, 0, chartHeight);
+    uvGradient.addColorStop(0, 'rgba(17,153,142,0.4)');
+    uvGradient.addColorStop(1, 'rgba(56,239,125,0.05)');
+
+    if (trendChart) trendChart.destroy();
+
+    trendChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: 'PV',
+            data: pvData,
+            borderColor: '#667eea',
+            backgroundColor: pvGradient,
+            fill: true,
+            tension: 0.4,
+            pointRadius: 3,
+            pointHoverRadius: 6
+          },
+          {
+            label: 'UV',
+            data: uvData,
+            borderColor: '#11998e',
+            backgroundColor: uvGradient,
+            fill: true,
+            tension: 0.4,
+            pointRadius: 3,
+            pointHoverRadius: 6
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            beginAtZero: true,
+            grid: { color: gridColor },
+            ticks: { color: textColor }
+          },
+          x: {
+            grid: { color: gridColor },
+            ticks: { color: textColor }
+          }
+        },
+        plugins: {
+          tooltip: {
+            mode: 'index',
+            intersect: false,
+            callbacks: {
+              label: function (context) {
+                return context.dataset.label + ': ' + context.parsed.y.toLocaleString();
+              }
+            }
+          }
+        }
+      }
+    });
+  }
+
+  function initToggle() {
+    var btns = document.querySelectorAll('.chart-toggle-btn');
+    btns.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        btns.forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        renderChart(btn.getAttribute('data-range'));
+      });
+    });
   }
 
   function init() {
-    var viewsPromise = fetch('/stats/views.json').then(function (r) { return r.json(); });
     var offsetPromise = fetch('/stats/offset.json').then(function (r) { return r.json(); }).catch(function () {
       return { total_pv: 0, total_uv: 0, categories: {}, tags: {}, posts: {} };
+    });
+    var viewsPromise = fetch('/stats/views.json').then(function (r) { return r.json(); });
+    var historyPromise = fetch('/stats/history.json').then(function (r) { return r.json(); }).catch(function () {
+      return { snapshots: [] };
+    });
+
+    offsetPromise.then(function (offset) {
+      initBusuanzi(offset);
     });
 
     Promise.all([viewsPromise, offsetPromise]).then(function (results) {
       var views = results[0];
       var offset = results[1];
-      renderOverview(views, offset);
+      animateNumber(document.getElementById('stat-total-posts'), views.posts.length);
+      animateNumber(document.getElementById('stat-total-cats'), Object.keys(views.categories).length);
       renderCategories(views, offset);
       renderPosts(views, offset);
-      renderTimestamp(views);
+      renderTimestamp();
     }).catch(function (e) { console.error('Stats data load failed:', e); });
+
+    historyPromise.then(function (data) {
+      historyData = data;
+      renderChart('30d');
+      initToggle();
+    });
   }
 
   if (document.readyState === 'loading') {
