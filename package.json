@@ -29,5 +29,8 @@
     "hexo-server": "^3.0.0",
     "hexo-util": "^4.0.0",
     "moment-timezone": "^0.6.1"
+  },
+  "devDependencies": {
+    "javascript-obfuscator": "^5.4.3"
   }
 }
