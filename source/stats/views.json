@@ -1,59 +1,59 @@
 {
   "total": {
-    "pv": 631,
-    "uv": 616
+    "pv": 646,
+    "uv": 631
   },
   "categories": {
     "技术随笔": {
-      "pv": 36
+      "pv": 37
     },
     "生活": {
-      "pv": 38
+      "pv": 39
     },
     "WordPress": {
-      "pv": 377
+      "pv": 381
     }
   },
   "tags": {
     "腾讯": {
-      "pv": 36
+      "pv": 37
     },
     "软件评论": {
-      "pv": 36
+      "pv": 37
     },
     "硬件门槛": {
-      "pv": 36
+      "pv": 37
     },
     "技术随笔": {
-      "pv": 36
+      "pv": 37
     },
     "腾讯开悟": {
-      "pv": 36
+      "pv": 37
     },
     "AI训练": {
-      "pv": 36
+      "pv": 37
     },
     "GPU": {
-      "pv": 36
+      "pv": 37
     },
     "嵌套虚拟化": {
-      "pv": 36
+      "pv": 37
     },
     "WSL2": {
-      "pv": 36
+      "pv": 37
     },
     "Docker": {
-      "pv": 36
+      "pv": 37
     },
     "公告": {
-      "pv": 38
+      "pv": 39
     }
   },
   "posts": [
     {
       "slug": "tencent-kaiwu-rant",
       "title": "腾讯开悟深度测评：一场硬件与软件的\"套娃\"噩梦，普通开发者的绝望指南",
-      "pv": 36,
+      "pv": 37,
       "category": "技术随笔",
       "tags": [
         "腾讯",
@@ -72,7 +72,7 @@
     {
       "slug": "blog-launched",
       "title": "博客搭建完成，欢迎来访！",
-      "pv": 38,
+      "pv": 39,
       "category": "生活",
       "tags": [
         "公告"
@@ -106,7 +106,7 @@
     {
       "slug": "113",
       "title": "",
-      "pv": 37,
+      "pv": 38,
       "category": "WordPress",
       "tags": [],
       "date": "2026-03-20"
@@ -122,7 +122,7 @@
     {
       "slug": "hello-world",
       "title": "世界，您好！",
-      "pv": 38,
+      "pv": 39,
       "category": "WordPress",
       "tags": [],
       "date": "2024-11-16"
@@ -130,7 +130,7 @@
     {
       "slug": "100",
       "title": "每日提示词-您迷信吗？",
-      "pv": 38,
+      "pv": 39,
       "category": "WordPress",
       "tags": [],
       "date": "2025-03-12"
@@ -138,7 +138,7 @@
     {
       "slug": "109",
       "title": "海滩或大山？ 您更喜欢哪个？ 为什么？",
-      "pv": 38,
+      "pv": 39,
       "category": "WordPress",
       "tags": [],
       "date": "2025-11-22"
@@ -158,6 +158,54 @@
       "category": "WordPress",
       "tags": [],
       "date": "2024-12-21"
+    },
+    {
+      "slug": "数字鸿沟的演变：互联网普及对全球社会经济不平",
+      "title": "数字鸿沟的演变：互联网普及对全球社会经济不平等的影响分析（第一版）",
+      "pv": 0,
+      "category": "WordPress",
+      "tags": [],
+      "date": "2024-12-20"
+    },
+    {
+      "slug": "您只想干一天的工作是什么？",
+      "title": "您只想干一天的工作是什么？",
+      "pv": 0,
+      "category": "WordPress",
+      "tags": [],
+      "date": "2025-05-06"
+    },
+    {
+      "slug": "greasy-fork：国内访问问题及解决方案",
+      "title": "Greasy Fork：国内访问问题及解决方案",
+      "pv": 0,
+      "category": "WordPress",
+      "tags": [],
+      "date": "2025-02-09"
+    },
+    {
+      "slug": "数字鸿沟的演变：互联网普及对全球社会经济不平-2",
+      "title": "数字鸿沟的演变：互联网普及对全球社会经济不平等的影响分析",
+      "pv": 0,
+      "category": "WordPress",
+      "tags": [],
+      "date": "2024-12-21"
+    },
+    {
+      "slug": "公告",
+      "title": "公告",
+      "pv": 0,
+      "category": "WordPress",
+      "tags": [],
+      "date": "2025-06-08"
+    },
+    {
+      "slug": "健康饮食：适量享受美味食肉",
+      "title": "健康饮食：适量享受美味食肉",
+      "pv": 0,
+      "category": "WordPress",
+      "tags": [],
+      "date": "2024-12-01"
     }
   ],
   "updated_at": "2026-05-30"
