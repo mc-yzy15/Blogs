@@ -1,23 +1,23 @@
 # GeoTools 检测问题修复 - 验证清单
 
-- [ ] JSON-LD 语法错误已修复：归档页、分类页、标签页等非文章非首页页面不再输出空 JSON-LD
-- [ ] JSON-LD 语法错误已修复：文章页 BlogPosting JSON-LD 可正确解析
-- [ ] JSON-LD 语法错误已修复：首页 WebSite JSON-LD 可正确解析
+- [x] JSON-LD 语法错误已修复：归档页、分类页、标签页等非文章非首页页面不再输出空 JSON-LD
+- [x] JSON-LD 语法错误已修复：文章页 BlogPosting JSON-LD 可正确解析
+- [x] JSON-LD 语法错误已修复：首页 WebSite JSON-LD 可正确解析
 - [ ] robots.txt 已更新：不存在重复的 User-agent: * 块
 - [ ] robots.txt 已更新：包含 GPTBot Allow: / 规则
 - [ ] robots.txt 已更新：包含 ClaudeBot Allow: / 规则
 - [ ] robots.txt 已更新：包含 PerplexityBot Allow: / 规则
-- [ ] robots.txt 已更新：保留 Sitemap 链接和 Crawl-delay
-- [ ] llms.txt 已创建：访问 /llms.txt 返回有效内容
-- [ ] llms.txt 已创建：包含网站标题、描述和主要内容链接
-- [ ] 结构化数据扩展：首页包含 Organization Schema
-- [ ] 结构化数据扩展：文章页包含 BreadcrumbList Schema
-- [ ] 导航菜单已更新：包含 About 链接指向 /about/
-- [ ] FAQ Schema 支持：faq: true 的文章生成 FAQPage Schema
-- [ ] FAQ Schema 支持：非 FAQ 文章不输出 FAQPage Schema
-- [ ] GPT-4o 工作流：push 到 master 时自动触发
-- [ ] GPT-4o 工作流：API 密钥从 GitHub Secrets 读取，不出现在代码或日志中
-- [ ] GPT-4o 工作流：自动更新 llms.txt
-- [ ] GPT-4o 工作流：自动为缺少 description 的文章生成描述
-- [ ] GPT-4o 工作流：自动分析文章 FAQ 内容并添加标记
-- [ ] GPT-4o 工作流：防循环机制生效（github-actions[bot] 的推送不触发）
+- [x] robots.txt 已更新：保留 Sitemap 链接和 Crawl-delay
+- [x] llms.txt 已创建：访问 /llms.txt 返回有效内容
+- [x] llms.txt 已创建：包含网站标题、描述和主要内容链接
+- [x] 结构化数据扩展：首页包含 Organization Schema
+- [x] 结构化数据扩展：文章页包含 BreadcrumbList Schema
+- [x] 导航菜单已更新：包含 About 链接指向 /about/
+- [x] FAQ Schema 支持：faq: true 的文章生成 FAQPage Schema
+- [x] FAQ Schema 支持：非 FAQ 文章不输出 FAQPage Schema
+- [x] GPT-4o 工作流：push 到 master 时自动触发
+- [x] GPT-4o 工作流：API 密钥从 GitHub Secrets 读取，不出现在代码或日志中
+- [x] GPT-4o 工作流：自动更新 llms.txt
+- [x] GPT-4o 工作流：自动为缺少 description 的文章生成描述
+- [x] GPT-4o 工作流：自动分析文章 FAQ 内容并添加标记
+- [x] GPT-4o 工作流：防循环机制生效（github-actions[bot] 的推送不触发）
