@@ -36,12 +36,19 @@
     .post-rank-views{font-size:14px;font-weight:600;color:#49b1f5;flex-shrink:0;margin-left:12px}
     .stats-updated{text-align:center;color:var(--text-secondary,#999);font-size:13px;margin-top:20px;padding-top:16px;border-top:1px solid var(--card-border,#eee)}
     .stats-updated i{margin-right:4px}
+    .chart-toggle-row{display:flex;gap:8px;margin-bottom:20px}
+    .chart-toggle-btn{padding:8px 18px;border-radius:20px;border:1px solid var(--card-border,#eee);background:transparent;color:var(--text-secondary,#888);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s ease}
+    .chart-toggle-btn:hover{border-color:#49b1f5;color:#49b1f5}
+    .chart-toggle-btn.active{background:linear-gradient(135deg,#49b1f5,#7ec8f8);color:#fff;border-color:transparent;box-shadow:0 4px 12px rgba(73,177,245,.3)}
+    .chart-container{position:relative;height:320px;width:100%}
     [data-theme="dark"] .stat-card,.stats-container[data-theme="dark"] .stat-card{background:#1f2937;border-color:#374151}
     [data-theme="dark"] .stats-section,.stats-container[data-theme="dark"] .stats-section{background:#1f2937;border-color:#374151}
     [data-theme="dark"] .stat-card .stat-value,[data-theme="dark"] .stats-section-title,[data-theme="dark"] .post-rank-title,[data-theme="dark"] .cat-bar-label{color:#e5e7eb}
     [data-theme="dark"] .cat-bar-track,[data-theme="dark"] .post-rank-num.normal{background:#374151}
     [data-theme="dark"] .post-rank-item:hover{background:#374151}
     [data-theme="dark"] .stats-updated,[data-theme="dark"] .stat-card .stat-label,[data-theme="dark"] .post-rank-views{color:#9ca3af}
+    [data-theme="dark"] .chart-toggle-btn{border-color:#2d3748;color:#9ca3af}
+    [data-theme="dark"] .chart-toggle-btn:hover{border-color:#49b1f5;color:#49b1f5}
     @media(max-width:768px){.stats-overview{grid-template-columns:repeat(2,1fr);gap:12px}.stat-card{padding:16px}.stat-card .stat-value{font-size:22px}.stats-section{padding:18px}.cat-chart-area{flex-direction:column}}
 
   .stats-overview
@@ -68,6 +75,17 @@
 
   .stats-section
     .stats-section-title
+      i.fas.fa-chart-line
+      | 流量趋势
+    .chart-toggle-row
+      button.chart-toggle-btn(data-range="24h") 今日
+      button.chart-toggle-btn(data-range="7d") 近7天
+      button.chart-toggle-btn.active(data-range="30d") 近30天
+    .chart-container
+      canvas#traffic-chart
+
+  .stats-section
+    .stats-section-title
       i.fas.fa-chart-bar
       | 分类浏览量排行
     .cat-chart-area
@@ -83,5 +101,7 @@
     i.fas.fa-clock
     | 数据更新于：
     span#stat-updated-time --
+  .stats-source(style="text-align:center;font-size:12px;color:var(--text-secondary,#aaa);margin-top:8px") 数据来源于 Busuanzi 实时统计
 
+  script(src="https://cdn.jsdelivr.net/npm/chart.js@4")
   script(src="/js/stats-renderer.js")

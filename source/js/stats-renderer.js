@@ -1,9 +1,10 @@
-﻿(function () {
+(function () {
   'use strict';
   var trendChart = null;
   var historyData = null;
 
   function animateNumber(el, target) {
+    if (!el) return;
     var start = 0;
     var duration = 1200;
     var startTime = null;
@@ -67,48 +68,26 @@
     if (el) el.textContent = 'Busuanzi \u5b9e\u65f6\u6570\u636e';
   }
 
-  function initBusuanzi(offset) {
-    var pvEl = document.getElementById('busuanzi_value_site_pv');
-    var uvEl = document.getElementById('busuanzi_value_site_uv');
-    var resolved = false;
+  function initTotalFromEvent() {
+    document.addEventListener('busuanzi-offset-applied', function (e) {
+      animateNumber(document.getElementById('stat-total-pv'), e.detail.pv);
+      animateNumber(document.getElementById('stat-total-uv'), e.detail.uv);
+    });
+  }
 
-    function showTotal(pv, uv) {
-      if (resolved) return;
-      resolved = true;
-      animateNumber(document.getElementById('stat-total-pv'), pv + (offset.total_pv || 0));
-      animateNumber(document.getElementById('stat-total-uv'), uv + (offset.total_uv || 0));
-    }
-
-    function checkBusuanzi() {
-      if (resolved) return;
-      var pv = 0;
-      var uv = 0;
-      if (pvEl && pvEl.textContent.trim()) pv = parseInt(pvEl.textContent) || 0;
-      if (uvEl && uvEl.textContent.trim()) uv = parseInt(uvEl.textContent) || 0;
-      if (pv > 0 || uv > 0) showTotal(pv, uv);
-    }
-
-    checkBusuanzi();
-
-    if (pvEl) {
-      var obs1 = new MutationObserver(checkBusuanzi);
-      obs1.observe(pvEl, { childList: true, characterData: true, subtree: true });
-    }
-    if (uvEl) {
-      var obs2 = new MutationObserver(checkBusuanzi);
-      obs2.observe(uvEl, { childList: true, characterData: true, subtree: true });
-    }
-
-    setTimeout(function () {
-      if (resolved) return;
-      resolved = true;
+  function initTotalFallback(offset) {
+    var fallbackTimer = setTimeout(function () {
       fetch('/stats/views.json').then(function (r) { return r.json(); }).then(function (views) {
         var pv = views.total ? (views.total.pv || 0) : 0;
         var uv = views.total ? (views.total.uv || 0) : 0;
         animateNumber(document.getElementById('stat-total-pv'), pv + (offset.total_pv || 0));
         animateNumber(document.getElementById('stat-total-uv'), uv + (offset.total_uv || 0));
       }).catch(function () {});
-    }, 10000);
+    }, 12000);
+
+    document.addEventListener('busuanzi-offset-applied', function () {
+      clearTimeout(fallbackTimer);
+    }, { once: true });
   }
 
   function calcIncremental(snapshots, groupFn) {
@@ -178,7 +157,7 @@
     var pvData = data.map(function (d) { return d.pv; });
     var uvData = data.map(function (d) { return d.uv; });
 
-    var canvas = document.getElementById('stats-trend-chart');
+    var canvas = document.getElementById('traffic-chart');
     if (!canvas) return;
     var ctx = canvas.getContext('2d');
 
@@ -274,7 +253,8 @@
     });
 
     offsetPromise.then(function (offset) {
-      initBusuanzi(offset);
+      initTotalFromEvent();
+      initTotalFallback(offset);
     });
 
     Promise.all([viewsPromise, offsetPromise]).then(function (results) {
