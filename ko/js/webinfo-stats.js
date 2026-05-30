@@ -27,6 +27,12 @@
             return true;
         }
 
+        function dispatchStatsEvent(pv, uv) {
+            document.dispatchEvent(new CustomEvent('busuanzi-offset-applied', {
+                detail: { pv: pv, uv: uv }
+            }));
+        }
+
         var offsetPromise = fetch('/stats/offset.json')
             .then(function(r) { return r.json(); })
             .catch(function() { return { total_pv: 0, total_uv: 0 }; });
@@ -36,35 +42,47 @@
             var offsetUv = offset.total_uv || 0;
             var config = { childList: true, characterData: true, subtree: true };
 
-            if (pvElement) {
-                pvObserver = new MutationObserver(function() {
-                    if (!pvApplied && tryApplyOffset(pvElement, offsetPv)) {
+            var rawPv = 0;
+            var rawUv = 0;
+
+            function checkAndApply() {
+                if (pvApplied && uvApplied) return;
+                if (pvElement) {
+                    var pvText = pvElement.textContent.trim();
+                    var pvVal = parseInt(pvText.replace(/,/g, ''), 10);
+                    if (!isNaN(pvVal) && pvVal > 0 && !pvApplied) {
+                        rawPv = pvVal;
+                        pvElement.textContent = (pvVal + offsetPv).toLocaleString();
                         pvApplied = true;
-                        pvObserver.disconnect();
-                        if (uvApplied) cleanup();
+                        if (pvObserver) pvObserver.disconnect();
                     }
-                });
-                pvObserver.observe(pvElement, config);
-                if (tryApplyOffset(pvElement, offsetPv)) {
-                    pvApplied = true;
-                    pvObserver.disconnect();
+                }
+                if (uvElement) {
+                    var uvText = uvElement.textContent.trim();
+                    var uvVal = parseInt(uvText.replace(/,/g, ''), 10);
+                    if (!isNaN(uvVal) && uvVal > 0 && !uvApplied) {
+                        rawUv = uvVal;
+                        uvElement.textContent = (uvVal + offsetUv).toLocaleString();
+                        uvApplied = true;
+                        if (uvObserver) uvObserver.disconnect();
+                    }
+                }
+                if (pvApplied && uvApplied) {
+                    cleanup();
+                    dispatchStatsEvent(rawPv + offsetPv, rawUv + offsetUv);
                 }
             }
 
-            if (uvElement) {
-                uvObserver = new MutationObserver(function() {
-                    if (!uvApplied && tryApplyOffset(uvElement, offsetUv)) {
-                        uvApplied = true;
-                        uvObserver.disconnect();
-                        if (pvApplied) cleanup();
-                    }
-                });
-                uvObserver.observe(uvElement, config);
-                if (tryApplyOffset(uvElement, offsetUv)) {
-                    uvApplied = true;
-                    uvObserver.disconnect();
-                }
+            if (pvElement) {
+                pvObserver = new MutationObserver(checkAndApply);
+                pvObserver.observe(pvElement, config);
             }
+            if (uvElement) {
+                uvObserver = new MutationObserver(checkAndApply);
+                uvObserver.observe(uvElement, config);
+            }
+
+            checkAndApply();
 
             if (pvApplied && uvApplied) {
                 cleanup();
@@ -78,14 +96,24 @@
                     .then(function(r) { return r.json(); })
                     .catch(function() { return { total: { pv: 0, uv: 0 } }; })
                     .then(function(views) {
+                        var fallbackPv = 0;
+                        var fallbackUv = 0;
                         if (!pvApplied && pvElement) {
-                            var pv = (views.total && views.total.pv) || 0;
-                            pvElement.textContent = (pv + offsetPv).toLocaleString();
+                            fallbackPv = (views.total && views.total.pv) || 0;
+                            pvElement.textContent = (fallbackPv + offsetPv).toLocaleString();
+                        } else if (pvApplied) {
+                            fallbackPv = rawPv + offsetPv;
                         }
                         if (!uvApplied && uvElement) {
-                            var uv = (views.total && views.total.uv) || 0;
-                            uvElement.textContent = (uv + offsetUv).toLocaleString();
+                            fallbackUv = (views.total && views.total.uv) || 0;
+                            uvElement.textContent = (fallbackUv + offsetUv).toLocaleString();
+                        } else if (uvApplied) {
+                            fallbackUv = rawUv + offsetUv;
                         }
+                        dispatchStatsEvent(
+                            pvApplied ? rawPv + offsetPv : fallbackPv + offsetPv,
+                            uvApplied ? rawUv + offsetUv : fallbackUv + offsetUv
+                        );
                     });
             }, 10000);
         });
