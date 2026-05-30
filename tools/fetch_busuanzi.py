@@ -1,5 +1,5 @@
 import json, re, urllib.request, os, glob
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 
 SITE_URL = 'https://blogs.yzy15.dpdns.org'
 fpath = 'source/stats/views.json'
@@ -101,3 +101,29 @@ data['updated_at'] = datetime.utcnow().strftime('%Y-%m-%d')
 
 with open(fpath, 'w', encoding='utf-8') as f:
     json.dump(data, f, ensure_ascii=False, indent=2)
+
+offset_path = 'source/stats/offset.json'
+with open(offset_path, 'r', encoding='utf-8') as f:
+    offset = json.load(f)
+total_pv = data['total']['pv'] + offset.get('total_pv', 0)
+total_uv = data['total']['uv'] + offset.get('total_uv', 0)
+
+history_path = 'source/stats/history.json'
+with open(history_path, 'r', encoding='utf-8') as f:
+    history = json.load(f)
+
+now = datetime.now(timezone.utc)
+history['snapshots'].append({
+    'ts': now.isoformat(),
+    'pv': total_pv,
+    'uv': total_uv
+})
+
+cutoff = now - timedelta(days=30)
+history['snapshots'] = [
+    s for s in history['snapshots']
+    if datetime.fromisoformat(s['ts']) >= cutoff
+]
+
+with open(history_path, 'w', encoding='utf-8') as f:
+    json.dump(history, f, ensure_ascii=False, indent=2)
