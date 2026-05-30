@@ -1,0 +1,22 @@
+- [ ] webinfo-stats.js 使用 MutationObserver 等待 Busuanzi 填充 DOM 后叠加 offset，消除竞态条件
+- [ ] webinfo-stats.js 10 秒超时回退到 views.json + offset.json 静态方案（仅降级路径）
+- [ ] webinfo-stats.js 主路径不再 fetch views.json 获取站点 PV/UV
+- [ ] stats-renderer.js 总 PV/UV 从 Busuanzi 实时 DOM 数据 + offset 计算
+- [ ] Stats 页面隐藏 Busuanzi 数据容器正常工作
+- [ ] Stats 页面折线图使用 Chart.js 渲染，支持 24h/7d/30d 切换
+- [ ] 24h 视图显示小时级增量 PV/UV
+- [ ] 7d 视图显示日级增量 PV/UV
+- [ ] 30d 视图显示日级增量 PV/UV（默认）
+- [ ] 折线图 PV 紫色渐变、UV 绿色渐变，支持暗色主题
+- [ ] history.json 小时级快照数据正确追加（含 offset）
+- [ ] history.json 最多保留 30 天数据，超出自动裁剪
+- [ ] fetch_busuanzi.py 正确追加当前时间戳快照到 history.json
+- [ ] fetch-busuanzi.yml cron 改为每 2 小时运行
+- [ ] fetch-busuanzi.yml 提交时包含 history.json
+- [ ] javascript-obfuscator 安装成功
+- [ ] scripts/obfuscate-js.js 在 hexo generate 时对 webinfo-stats.js 和 stats-renderer.js 执行混淆
+- [ ] hexo server 时不执行混淆，便于调试
+- [ ] 混淆后的 JS 文件功能正常
+- [ ] hexo clean && hexo generate 构建成功无报错
+- [ ] 网站信息板块 PV/UV 与 Stats 页面总 PV/UV 数值一致
+- [ ] 分类排行和文章排行数据正常展示

@@ -1,8 +1,6 @@
 if theme.structured_data
   if page.layout === 'post'
     -
-      // https://developers.google.com/search/docs/appearance/structured-data/article
-
       const title = page.title
       const url = page.permalink
       const imageVal = page.cover_type === 'img' ? page.cover : theme.avatar.img
@@ -30,11 +28,112 @@ if theme.structured_data
 
       jsonLdScript = JSON.stringify(jsonLd, null, 2)
     -
+    script(type="application/ld+json").
+      !{jsonLdScript}
+
+    -
+      const breadcrumbItems = [{
+        "@type": "ListItem",
+        "position": 1,
+        "name": config.title,
+        "item": full_url_for('/')
+      }]
+
+      let breadcrumbPos = 2
+      if (page.categories && page.categories.data && page.categories.data.length > 0) {
+        page.categories.data.forEach(cat => {
+          breadcrumbItems.push({
+            "@type": "ListItem",
+            "position": breadcrumbPos,
+            "name": cat.name,
+            "item": full_url_for(cat.path)
+          })
+          breadcrumbPos++
+        })
+      }
+
+      breadcrumbItems.push({
+        "@type": "ListItem",
+        "position": breadcrumbPos,
+        "name": title,
+        "item": url
+      })
+
+      const breadcrumbLd = {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": breadcrumbItems
+      }
+
+      breadcrumbScript = JSON.stringify(breadcrumbLd, null, 2)
+    -
+    script(type="application/ld+json").
+      !{breadcrumbScript}
+
+    if page.faq
+      -
+        const faqContent = page.content || ''
+        const faqItems = []
+
+        let searchContent = faqContent
+        const faqSectionMatch = faqContent.match(/<h[12][^>]*>\s*FAQ\s*<\/h[12]>/i)
+        if (faqSectionMatch) {
+          searchContent = faqContent.substring(faqSectionMatch.index + faqSectionMatch[0].length)
+        }
+
+        const headerRegex = /<h[3-6][^>]*>\s*(?:Q[:：]\s*|Question[:：]\s*)(.*?)\s*<\/h[3-6]>([\s\S]*?)(?=<h[3-6][^>]*>|$)/gi
+        let headerMatch
+        while ((headerMatch = headerRegex.exec(searchContent)) !== null) {
+          const question = headerMatch[1].replace(/<[^>]*>/g, '').trim()
+          const answerHtml = headerMatch[2]
+          const answer = answerHtml.replace(/<[^>]*>/g, '').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'").trim()
+          if (question && answer) {
+            faqItems.push({
+              "@type": "Question",
+              "name": question,
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": answer
+              }
+            })
+          }
+        }
+
+        if (faqItems.length === 0) {
+          const boldRegex = /<strong>\s*(?:Q[:：]\s*|Question[:：]\s*)(.*?)\s*<\/strong>([\s\S]*?)(?=<strong>\s*(?:Q[:：]|Question[:：])\s*<\/strong>|$)/gi
+          let boldMatch
+          while ((boldMatch = boldRegex.exec(searchContent)) !== null) {
+            const question = boldMatch[1].replace(/<[^>]*>/g, '').trim()
+            const answerHtml = boldMatch[2]
+            const answer = answerHtml.replace(/<[^>]*>/g, '').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'").trim()
+            if (question && answer) {
+              faqItems.push({
+                "@type": "Question",
+                "name": question,
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": answer
+                }
+              })
+            }
+          }
+        }
+
+        if (faqItems.length > 0) {
+          const faqLd = {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": faqItems
+          }
+          faqScript = JSON.stringify(faqLd, null, 2)
+        }
+      -
+      if faqScript
+        script(type="application/ld+json").
+          !{faqScript}
 
   else if is_home() && (!page.current || page.current === 1)
     -
-      // https://developers.google.com/search/docs/appearance/site-names#website
-
       const baseUrl = config.url;
       const currentPath = url_for('/');
       const isRootOrSubdomain = currentPath.split('/').filter(Boolean).length === 0;
@@ -62,6 +161,37 @@ if theme.structured_data
         jsonLdScript = JSON.stringify(jsonLd, null, 2)
       }
     -
+    if jsonLdScript
+      script(type="application/ld+json").
+        !{jsonLdScript}
 
-  script(type="application/ld+json").
-    !{jsonLdScript}
+    -
+      const orgSameAs = []
+      if (theme.social) {
+        Object.values(theme.social).forEach(v => {
+          const link = v.split('||')[0].trim()
+          if (link && !link.startsWith('/') && !link.startsWith('mailto:')) {
+            orgSameAs.push(link)
+          }
+        })
+      }
+
+      const orgLd = {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": config.title,
+        "url": full_url_for('/')
+      }
+
+      if (theme.avatar && theme.avatar.img) {
+        orgLd.logo = full_url_for(theme.avatar.img)
+      }
+
+      if (orgSameAs.length > 0) {
+        orgLd.sameAs = orgSameAs
+      }
+
+      orgScript = JSON.stringify(orgLd, null, 2)
+    -
+    script(type="application/ld+json").
+      !{orgScript}
