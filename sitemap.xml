@@ -11,7 +11,25 @@
   </url>
   
   <url>
+    <loc>https://blogs.yzy15.dpdns.org/stats/history.json</loc>
+    
+    <lastmod>2026-05-30</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://blogs.yzy15.dpdns.org/stats/offset.json</loc>
+    
+    <lastmod>2026-05-30</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/stats/views.json</loc>
     
     <lastmod>2026-05-30</lastmod>
     
@@ -38,7 +56,7 @@
   </url>
   
   <url>
-    <loc>https://blogs.yzy15.dpdns.org/stats/views.json</loc>
+    <loc>https://blogs.yzy15.dpdns.org/WordPress/%E5%85%AC%E5%91%8A/</loc>
     
     <lastmod>2026-05-30</lastmod>
     
@@ -48,15 +66,6 @@
   
   <url>
     <loc>https://blogs.yzy15.dpdns.org/blog-launched/</loc>
-    
-    <lastmod>2026-05-30</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blogs.yzy15.dpdns.org/tencent-kaiwu-rant/</loc>
     
     <lastmod>2026-05-30</lastmod>
     
@@ -83,7 +92,16 @@
   </url>
   
   <url>
-    <loc>https://blogs.yzy15.dpdns.org/WordPress/%E6%95%B0%E5%AD%97%E9%B8%BF%E6%B2%9F%E7%9A%84%E6%BC%94%E5%8F%98%EF%BC%9A%E4%BA%92%E8%81%94%E7%BD%91%E6%99%AE%E5%8F%8A%E5%AF%B9%E5%85%A8%E7%90%83%E7%A4%BE%E4%BC%9A%E7%BB%8F%E6%B5%8E%E4%B8%8D%E5%B9%B3-2/</loc>
+    <loc>https://blogs.yzy15.dpdns.org/WordPress/100/</loc>
+    
+    <lastmod>2026-05-30</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tencent-kaiwu-rant/</loc>
     
     <lastmod>2026-05-30</lastmod>
     
@@ -101,16 +119,7 @@
   </url>
   
   <url>
-    <loc>https://blogs.yzy15.dpdns.org/WordPress/%E5%85%AC%E5%91%8A/</loc>
-    
-    <lastmod>2026-05-30</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blogs.yzy15.dpdns.org/WordPress/100/</loc>
+    <loc>https://blogs.yzy15.dpdns.org/WordPress/%E6%95%B0%E5%AD%97%E9%B8%BF%E6%B2%9F%E7%9A%84%E6%BC%94%E5%8F%98%EF%BC%9A%E4%BA%92%E8%81%94%E7%BD%91%E6%99%AE%E5%8F%8A%E5%AF%B9%E5%85%A8%E7%90%83%E7%A4%BE%E4%BC%9A%E7%BB%8F%E6%B5%8E%E4%B8%8D%E5%B9%B3-2/</loc>
     
     <lastmod>2026-05-30</lastmod>
     
@@ -128,7 +137,7 @@
   </url>
   
   <url>
-    <loc>https://blogs.yzy15.dpdns.org/WordPress/hello-world/</loc>
+    <loc>https://blogs.yzy15.dpdns.org/WordPress/113/</loc>
     
     <lastmod>2026-05-30</lastmod>
     
@@ -146,7 +155,7 @@
   </url>
   
   <url>
-    <loc>https://blogs.yzy15.dpdns.org/WordPress/113/</loc>
+    <loc>https://blogs.yzy15.dpdns.org/WordPress/hello-world/</loc>
     
     <lastmod>2026-05-30</lastmod>
     
@@ -164,7 +173,7 @@
   </url>
   
   <url>
-    <loc>https://blogs.yzy15.dpdns.org/about/</loc>
+    <loc>https://blogs.yzy15.dpdns.org/homepage/</loc>
     
     <lastmod>2026-05-30</lastmod>
     
@@ -173,7 +182,7 @@
   </url>
   
   <url>
-    <loc>https://blogs.yzy15.dpdns.org/homepage/</loc>
+    <loc>https://blogs.yzy15.dpdns.org/about/</loc>
     
     <lastmod>2026-05-30</lastmod>
     
@@ -205,83 +214,6 @@
   </url>
   
   <url>
-    <loc>https://blogs.yzy15.dpdns.org/tags/%E5%90%90%E6%A7%BD/</loc>
-    <lastmod>2026-05-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blogs.yzy15.dpdns.org/tags/%E8%85%BE%E8%AE%AF/</loc>
-    <lastmod>2026-05-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blogs.yzy15.dpdns.org/tags/%E8%BD%AF%E4%BB%B6%E8%AF%84%E8%AE%BA/</loc>
-    <lastmod>2026-05-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blogs.yzy15.dpdns.org/tags/%E7%A1%AC%E4%BB%B6%E9%97%A8%E6%A7%9B/</loc>
-    <lastmod>2026-05-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blogs.yzy15.dpdns.org/tags/%E6%8A%80%E6%9C%AF%E9%9A%8F%E7%AC%94/</loc>
-    <lastmod>2026-05-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blogs.yzy15.dpdns.org/tags/%E8%85%BE%E8%AE%AF%E5%BC%80%E6%82%9F/</loc>
-    <lastmod>2026-05-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blogs.yzy15.dpdns.org/tags/AI%E8%AE%AD%E7%BB%83/</loc>
-    <lastmod>2026-05-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blogs.yzy15.dpdns.org/tags/GPU/</loc>
-    <lastmod>2026-05-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blogs.yzy15.dpdns.org/tags/%E5%B5%8C%E5%A5%97%E8%99%9A%E6%8B%9F%E5%8C%96/</loc>
-    <lastmod>2026-05-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blogs.yzy15.dpdns.org/tags/WSL2/</loc>
-    <lastmod>2026-05-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blogs.yzy15.dpdns.org/tags/Docker/</loc>
-    <lastmod>2026-05-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://blogs.yzy15.dpdns.org/tags/dailyprompt/</loc>
     <lastmod>2026-05-30</lastmod>
     <changefreq>weekly</changefreq>
@@ -297,34 +229,6 @@
   
   <url>
     <loc>https://blogs.yzy15.dpdns.org/tags/dailyprompt-1930/</loc>
-    <lastmod>2026-05-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blogs.yzy15.dpdns.org/tags/%E7%A4%BE%E4%BC%9A%E7%BB%8F%E6%B5%8E%E4%B8%8D%E5%B9%B3%E7%AD%89/</loc>
-    <lastmod>2026-05-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blogs.yzy15.dpdns.org/tags/%E5%85%A8%E7%90%83%E5%BD%B1%E5%93%8D/</loc>
-    <lastmod>2026-05-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blogs.yzy15.dpdns.org/tags/%E6%95%B0%E5%AD%97%E9%B8%BF%E6%B2%9F/</loc>
-    <lastmod>2026-05-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blogs.yzy15.dpdns.org/tags/%E4%BA%92%E8%81%94%E7%BD%91%E6%99%AE%E5%8F%8A/</loc>
     <lastmod>2026-05-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -415,7 +319,119 @@
   </url>
   
   <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E5%90%90%E6%A7%BD/</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E8%85%BE%E8%AE%AF/</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E8%BD%AF%E4%BB%B6%E8%AF%84%E8%AE%BA/</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E7%A1%AC%E4%BB%B6%E9%97%A8%E6%A7%9B/</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E6%8A%80%E6%9C%AF%E9%9A%8F%E7%AC%94/</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E8%85%BE%E8%AE%AF%E5%BC%80%E6%82%9F/</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/AI%E8%AE%AD%E7%BB%83/</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/GPU/</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E5%B5%8C%E5%A5%97%E8%99%9A%E6%8B%9F%E5%8C%96/</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/WSL2/</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/Docker/</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E7%A4%BE%E4%BC%9A%E7%BB%8F%E6%B5%8E%E4%B8%8D%E5%B9%B3%E7%AD%89/</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E5%85%A8%E7%90%83%E5%BD%B1%E5%93%8D/</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E6%95%B0%E5%AD%97%E9%B8%BF%E6%B2%9F/</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E4%BA%92%E8%81%94%E7%BD%91%E6%99%AE%E5%8F%8A/</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://blogs.yzy15.dpdns.org/tags/dailyprompt-2130/</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/dailyprompt-1883/</loc>
     <lastmod>2026-05-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -470,31 +486,17 @@
     <priority>0.2</priority>
   </url>
   
-  <url>
-    <loc>https://blogs.yzy15.dpdns.org/tags/dailyprompt-1883/</loc>
-    <lastmod>2026-05-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
 
   
   <url>
-    <loc>https://blogs.yzy15.dpdns.org/categories/%E7%94%9F%E6%B4%BB/</loc>
-    <lastmod>2026-05-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blogs.yzy15.dpdns.org/categories/%E6%8A%80%E6%9C%AF%E9%9A%8F%E7%AC%94/</loc>
-    <lastmod>2026-05-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://blogs.yzy15.dpdns.org/categories/WordPress/</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/categories/%E7%94%9F%E6%B4%BB/</loc>
     <lastmod>2026-05-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -509,6 +511,13 @@
   
   <url>
     <loc>https://blogs.yzy15.dpdns.org/categories/WordPress/%E6%9C%AA%E5%88%86%E7%B1%BB/</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/categories/%E6%8A%80%E6%9C%AF%E9%9A%8F%E7%AC%94/</loc>
     <lastmod>2026-05-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
