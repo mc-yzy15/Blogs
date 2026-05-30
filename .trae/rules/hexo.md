@@ -88,3 +88,99 @@
 - 长文章自动分块翻译（每块 ≤ 4500 字符）
 - Front Matter 中的 `title` 和 `description` 也会翻译
 - 翻译后的文章 Front Matter 会添加 `lang: <语言代码>` 字段
+
+## SEO 与结构化数据
+
+### JSON-LD 结构化数据
+
+项目使用 Butterfly 主题内置的 `structured_data.pug` 模板生成 JSON-LD 结构化数据，位于 `themes/butterfly/layout/includes/head/structured_data.pug`。
+
+#### 支持的 Schema 类型
+
+| Schema 类型 | 适用页面 | 说明 |
+|-------------|---------|------|
+| `BlogPosting` | 文章页 | 包含 headline、url、image、datePublished、dateModified、author |
+| `WebSite` | 首页 | 包含 name、alternateName、url |
+| `Organization` | 首页 | 包含 name、url、logo、sameAs（从主题 social 配置提取） |
+| `BreadcrumbList` | 文章页 | 面包屑导航：首页 > 分类链 > 文章标题 |
+| `FAQPage` | 文章页（条件） | 仅当文章 Front Matter 包含 `faq: true` 时生成 |
+
+#### FAQ Schema 使用方式
+
+在文章 Front Matter 中添加 `faq: true` 即可启用 FAQPage Schema：
+
+```yaml
+---
+title: 文章标题
+faq: true
+---
+```
+
+FAQ 内容提取规则：
+1. 优先查找 `## FAQ` 区域内的问答内容
+2. 匹配 `### Q: 问题` 或 `### Question: 问题` 格式（h3-h6 均支持）
+3. 回退匹配 `**Q:** 问题` 或 `**Question:** 问题` 格式
+4. 仅当提取到有效 FAQ 项时才输出 FAQPage Schema
+
+#### 配置
+
+在 `_config.butterfly.yml` 中启用：
+
+```yaml
+structured_data:
+  enable: true
+  alternate_name:
+    - Yzy15博客
+    - "Yzy15's Blog"
+```
+
+### robots.txt
+
+`source/robots.txt` 已配置 AI 搜索爬虫允许规则：
+- GPTBot、ClaudeBot、PerplexityBot 均为 `Allow: /`
+- 通用爬虫 `Allow: /`，但 `Disallow: /js/` 和 `Disallow: /css/`
+
+### llms.txt
+
+`source/llms.txt` 遵循 llmstxt.org 规范，帮助 LLM 理解网站内容。该文件由 GPT-4o 自动化工作流自动更新。
+
+## AI 自动化工作流
+
+### 架构概述
+
+项目使用 GPT-4o API 自动更新博客相关文件，通过 GitHub Actions 实现。
+
+### 关键文件
+
+| 文件 | 作用 |
+|------|------|
+| `tools/ai_auto_update.py` | Python 脚本，封装 GPT-4o API 调用逻辑 |
+| `.github/workflows/ai-auto-update.yml` | GitHub Action 自动更新工作流 |
+| `source/llms.txt` | 自动生成的 LLM 发现文件 |
+
+### 自动更新功能
+
+1. **更新 llms.txt** — 扫描文章列表，调用 GPT-4o 生成符合 llmstxt.org 规范的文件
+2. **补充缺失描述** — 为缺少 `description` 的文章自动生成描述（≤160 字符）
+3. **检测 FAQ 文章** — 分析文章内容，为含 FAQ 内容的文章自动添加 `faq: true` 标记
+
+### GitHub Secrets 配置
+
+| Secret 名称 | 说明 |
+|-------------|------|
+| `OPENAI_API_KEY` | GPT-4o API 密钥 |
+| `OPENAI_BASE_URL` | API 基础 URL（默认：https://ai.yzy15.dpdns.org/v1） |
+
+### 工作流触发条件
+
+- 推送到 master 且 `source/_posts/**/*.md` 有变更
+- 每日 3:00 UTC 定时执行
+- 手动触发（`workflow_dispatch`）
+- 防循环：`if: github.actor != 'github-actions[bot]'`
+
+### 注意事项
+
+- API 调用支持指数退避重试（最多 3 次）
+- 仅处理 `source/_posts/` 根目录下的 `.md` 文件，跳过翻译子目录
+- 提交信息包含 `[skip ci]` 标记，避免触发其他工作流
+- Front Matter 更新会保留原有字段格式和顺序
