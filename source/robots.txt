@@ -1,9 +1,11 @@
 User-agent: *
 Allow: /
-
-Sitemap: https://blogs.yzy15.dpdns.org/sitemap.xml
+Disallow: /js/
+Disallow: /css/
 
 Crawl-delay: 1
+
+Sitemap: https://blogs.yzy15.dpdns.org/sitemap.xml
 
 User-agent: Googlebot
 Allow: /
@@ -14,6 +16,11 @@ Allow: /
 User-agent: Baiduspider
 Allow: /
 
-User-agent: *
-Disallow: /js/
-Disallow: /css/
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
