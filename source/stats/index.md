@@ -55,9 +55,18 @@ type: stats
 [data-theme="dark"] .cat-bar-track,[data-theme="dark"] .post-rank-num.normal{background:#2d3748}
 [data-theme="dark"] .post-rank-item:hover{background:#2d3748}
 [data-theme="dark"] .stats-updated{background:#1e2430;border-color:#2d3748;color:#9ca3af}
+.chart-toggle-row{display:flex;gap:8px;margin-bottom:20px}
+.chart-toggle-btn{padding:8px 18px;border-radius:20px;border:1px solid var(--card-border,#eee);background:transparent;color:var(--text-secondary,#888);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s ease}
+.chart-toggle-btn:hover{border-color:#49b1f5;color:#49b1f5}
+.chart-toggle-btn.active{background:linear-gradient(135deg,#49b1f5,#7ec8f8);color:#fff;border-color:transparent;box-shadow:0 4px 12px rgba(73,177,245,.3)}
+.chart-container{position:relative;height:320px;width:100%}
+[data-theme="dark"] .chart-toggle-btn{border-color:#2d3748;color:#9ca3af}
+[data-theme="dark"] .chart-toggle-btn:hover{border-color:#49b1f5;color:#49b1f5}
 </style>
 
 <div class="stats-dashboard">
+  <span id="busuanzi_value_site_pv" style="display:none"></span>
+  <span id="busuanzi_value_site_uv" style="display:none"></span>
   <div class="stats-cards">
     <div class="stat-card pv">
       <div class="stat-card-header">
@@ -91,6 +100,21 @@ type: stats
 
   <div class="stats-section">
     <div class="stats-section-header">
+      <i class="fas fa-chart-line"></i>
+      <span class="stats-section-title">流量趋势</span>
+    </div>
+    <div class="chart-toggle-row">
+      <button class="chart-toggle-btn" data-range="24h">今日</button>
+      <button class="chart-toggle-btn" data-range="7d">近7天</button>
+      <button class="chart-toggle-btn active" data-range="30d">近30天</button>
+    </div>
+    <div class="chart-container">
+      <canvas id="traffic-chart"></canvas>
+    </div>
+  </div>
+
+  <div class="stats-section">
+    <div class="stats-section-header">
       <i class="fas fa-chart-bar"></i>
       <span class="stats-section-title">分类浏览量排行</span>
     </div>
@@ -110,8 +134,9 @@ type: stats
       <i class="fas fa-clock"></i>
       <span>数据更新于：<span id="stat-updated-time">--</span></span>
     </div>
-    <div class="stats-source">数据来源于 Umami 统计，每日自动同步</div>
+    <div class="stats-source">数据来源于 Busuanzi 实时统计</div>
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
 <script src="/js/stats-renderer.js"></script>
