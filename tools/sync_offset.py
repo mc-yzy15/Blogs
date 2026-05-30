@@ -113,12 +113,15 @@ if multiplier:
         mul = float(multiplier)
         for p in views['posts']:
             rp = p['pv']
-            op = offset['posts'].get(p['slug'], 0)
-            offset['posts'][p['slug']] = int(rp * (mul - 1) + op * mul)
+            target_pv = int(rp * mul)
+            offset['posts'][p['slug']] = max(0, target_pv - rp)
         real_uv = views['total']['uv']
-        off_uv = offset.get('total_uv', 0)
-        offset['total_uv'] = int(real_uv * (mul - 1) + off_uv * mul)
+        target_uv = int(real_uv * mul)
+        offset['total_uv'] = max(0, target_uv - real_uv)
         recalculate()
+        print(f'Multiplier set: {mul}x')
+        print(f'  Total real PV: {views["total"]["pv"]} -> target: {views["total"]["pv"] * mul}')
+        print(f'  Total real UV: {views["total"]["uv"]} -> target: {views["total"]["uv"] * mul}')
     except ValueError:
         pass
 elif target:
