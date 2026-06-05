@@ -18,13 +18,24 @@
     requestAnimationFrame(step);
   }
 
+  function sortByPvWithOffset(items, offsetObj, getPv, getKey) {
+    return items.slice().sort(function (a, b) {
+      var pvA = getPv(a) + (offsetObj[getKey(a)] || 0);
+      var pvB = getPv(b) + (offsetObj[getKey(b)] || 0);
+      return pvB - pvA;
+    });
+  }
+
   function renderCategories(views, offset) {
     var container = document.getElementById('cat-bar-chart');
     if (!container) return;
     var catOff = offset.categories || {};
-    var entries = Object.entries(views.categories).sort(function (a, b) {
-      return (b[1].pv + (catOff[b[0]] || 0)) - (a[1].pv + (catOff[a[0]] || 0));
-    });
+    var entries = sortByPvWithOffset(
+      Object.entries(views.categories),
+      catOff,
+      function (entry) { return entry[1].pv; },
+      function (entry) { return entry[0]; }
+    );
     var maxPv = entries.length ? entries[0][1].pv + (catOff[entries[0][0]] || 0) : 1;
     var html = '';
     entries.forEach(function (entry, i) {
@@ -47,9 +58,12 @@
     var container = document.getElementById('post-rank-list');
     if (!container) return;
     var postOff = offset.posts || {};
-    var sorted = views.posts.slice().sort(function (a, b) {
-      return (b.pv + (postOff[b.slug] || 0)) - (a.pv + (postOff[a.slug] || 0));
-    });
+    var sorted = sortByPvWithOffset(
+      views.posts,
+      postOff,
+      function (post) { return post.pv; },
+      function (post) { return post.slug; }
+    );
     var html = '';
     sorted.forEach(function (post, i) {
       var pv = post.pv + (postOff[post.slug] || 0);
