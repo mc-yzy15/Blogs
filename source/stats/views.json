@@ -1,17 +1,17 @@
 {
   "total": {
-    "pv": 1982,
-    "uv": 1966
+    "pv": 1995,
+    "uv": 1979
   },
   "categories": {
     "技术随笔": {
       "pv": 0
     },
     "生活": {
-      "pv": 143
+      "pv": 144
     },
     "WordPress": {
-      "pv": 1110
+      "pv": 1113
     }
   },
   "tags": {
@@ -46,7 +46,7 @@
       "pv": 0
     },
     "公告": {
-      "pv": 143
+      "pv": 144
     }
   },
   "posts": [
@@ -72,7 +72,7 @@
     {
       "slug": "blog-launched",
       "title": "博客搭建完成，欢迎来访！",
-      "pv": 143,
+      "pv": 144,
       "category": "生活",
       "tags": [
         "公告"
@@ -82,7 +82,7 @@
     {
       "slug": "%e5%81%a5%e5%ba%b7%e9%a5%ae%e9%a3%9f%ef%bc%9a%e9%80%82%e9%87%8f%e4%ba%ab%e5%8f%97%e7%be%8e%e5%91%b3%e9%a3%9f%e8%82%89",
       "title": "健康饮食：适量享受美味食肉",
-      "pv": 137,
+      "pv": 138,
       "category": "WordPress",
       "tags": [],
       "date": "2024-12-01"
@@ -90,7 +90,7 @@
     {
       "slug": "%e6%82%a8%e5%8f%aa%e6%83%b3%e5%b9%b2%e4%b8%80%e5%a4%a9%e7%9a%84%e5%b7%a5%e4%bd%9c%e6%98%af%e4%bb%80%e4%b9%88%ef%bc%9f",
       "title": "您只想干一天的工作是什么？",
-      "pv": 137,
+      "pv": 138,
       "category": "WordPress",
       "tags": [],
       "date": "2025-05-06"
@@ -106,7 +106,7 @@
     {
       "slug": "113",
       "title": "",
-      "pv": 139,
+      "pv": 140,
       "category": "WordPress",
       "tags": [],
       "date": "2026-03-20"
@@ -114,7 +114,7 @@
     {
       "slug": "%e6%95%b0%e5%ad%97%e9%b8%bf%e6%b2%9f%e7%9a%84%e6%bc%94%e5%8f%98%ef%bc%9a%e4%ba%92%e8%81%94%e7%bd%91%e6%99%ae%e5%8f%8a%e5%af%b9%e5%85%a8%e7%90%83%e7%a4%be%e4%bc%9a%e7%bb%8f%e6%b5%8e%e4%b8%8d%e5%b9%b3",
       "title": "数字鸿沟的演变：互联网普及对全球社会经济不平等的影响分析（第一版）",
-      "pv": 139,
+      "pv": 140,
       "category": "WordPress",
       "tags": [],
       "date": "2024-12-20"
@@ -122,7 +122,7 @@
     {
       "slug": "hello-world",
       "title": "世界，您好！",
-      "pv": 141,
+      "pv": 142,
       "category": "WordPress",
       "tags": [],
       "date": "2024-11-16"
@@ -130,7 +130,7 @@
     {
       "slug": "100",
       "title": "每日提示词-您迷信吗？",
-      "pv": 143,
+      "pv": 0,
       "category": "WordPress",
       "tags": [],
       "date": "2025-03-12"
@@ -138,7 +138,7 @@
     {
       "slug": "109",
       "title": "海滩或大山？ 您更喜欢哪个？ 为什么？",
-      "pv": 141,
+      "pv": 142,
       "category": "WordPress",
       "tags": [],
       "date": "2025-11-22"
@@ -146,7 +146,7 @@
     {
       "slug": "%e5%85%ac%e5%91%8a",
       "title": "公告",
-      "pv": 0,
+      "pv": 139,
       "category": "WordPress",
       "tags": [],
       "date": "2025-06-08"
@@ -154,7 +154,7 @@
     {
       "slug": "%e6%95%b0%e5%ad%97%e9%b8%bf%e6%b2%9f%e7%9a%84%e6%bc%94%e5%8f%98%ef%bc%9a%e4%ba%92%e8%81%94%e7%bd%91%e6%99%ae%e5%8f%8a%e5%af%b9%e5%85%a8%e7%90%83%e7%a4%be%e4%bc%9a%e7%bb%8f%e6%b5%8e%e4%b8%8d%e5%b9%b3-2",
       "title": "数字鸿沟的演变：互联网普及对全球社会经济不平等的影响分析",
-      "pv": 133,
+      "pv": 134,
       "category": "WordPress",
       "tags": [],
       "date": "2024-12-21"
