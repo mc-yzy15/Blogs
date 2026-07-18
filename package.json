@@ -31,6 +31,6 @@
     "moment-timezone": "^0.6.1"
   },
   "devDependencies": {
-    "javascript-obfuscator": "^5.4.3"
+    "javascript-obfuscator": "^5.5.0"
   }
 }
