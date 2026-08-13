@@ -1036,7 +1036,7 @@ Open_Graph_meta:
   enable: true
   option:
     twitter_card: summary_large_image
-    twitter_site: @mc_yzy15
+    twitter_site: '@mc_yzy15'
     twitter_image: https://blogs.yzy15.dpdns.org/img/favicon.ico
 
 # Structured Data
