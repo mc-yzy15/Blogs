@@ -1,77 +1,77 @@
 {
   "total": {
-    "pv": 8476,
-    "uv": 8454
+    "pv": 8490,
+    "uv": 8468
   },
   "categories": {
     "技术随笔": {
-      "pv": 631
+      "pv": 632
     },
     "生活": {
-      "pv": 643
+      "pv": 644
     },
     "WordPress": {
-      "pv": 6330
+      "pv": 6340
     },
     "技术评测": {
-      "pv": 10
+      "pv": 11
     }
   },
   "tags": {
     "腾讯": {
-      "pv": 631
+      "pv": 632
     },
     "软件评论": {
-      "pv": 631
+      "pv": 632
     },
     "硬件门槛": {
-      "pv": 631
+      "pv": 632
     },
     "技术随笔": {
-      "pv": 631
+      "pv": 632
     },
     "腾讯开悟": {
-      "pv": 631
+      "pv": 632
     },
     "AI训练": {
-      "pv": 631
+      "pv": 632
     },
     "GPU": {
-      "pv": 631
+      "pv": 632
     },
     "嵌套虚拟化": {
-      "pv": 631
+      "pv": 632
     },
     "WSL2": {
-      "pv": 631
+      "pv": 632
     },
     "Docker": {
-      "pv": 631
+      "pv": 632
     },
     "公告": {
-      "pv": 643
+      "pv": 644
     },
     "大语言模型": {
-      "pv": 10
+      "pv": 11
     },
     "腾讯混元": {
-      "pv": 10
+      "pv": 11
     },
     "DeepSeek": {
-      "pv": 10
+      "pv": 11
     },
     "模型评测": {
-      "pv": 10
+      "pv": 11
     },
     "API": {
-      "pv": 10
+      "pv": 11
     }
   },
   "posts": [
     {
       "slug": "tencent-kaiwu-rant",
       "title": "腾讯开悟深度测评：一场硬件与软件的\"套娃\"噩梦，普通开发者的绝望指南",
-      "pv": 631,
+      "pv": 632,
       "category": "技术随笔",
       "tags": [
         "腾讯",
@@ -90,7 +90,7 @@
     {
       "slug": "blog-launched",
       "title": "博客搭建完成，欢迎来访！",
-      "pv": 643,
+      "pv": 644,
       "category": "生活",
       "tags": [
         "公告"
@@ -100,7 +100,7 @@
     {
       "slug": "%e5%81%a5%e5%ba%b7%e9%a5%ae%e9%a3%9f%ef%bc%9a%e9%80%82%e9%87%8f%e4%ba%ab%e5%8f%97%e7%be%8e%e5%91%b3%e9%a3%9f%e8%82%89",
       "title": "健康饮食：适量享受美味食肉",
-      "pv": 628,
+      "pv": 629,
       "category": "WordPress",
       "tags": [],
       "date": "2024-12-01"
@@ -108,7 +108,7 @@
     {
       "slug": "%e6%82%a8%e5%8f%aa%e6%83%b3%e5%b9%b2%e4%b8%80%e5%a4%a9%e7%9a%84%e5%b7%a5%e4%bd%9c%e6%98%af%e4%bb%80%e4%b9%88%ef%bc%9f",
       "title": "您只想干一天的工作是什么？",
-      "pv": 633,
+      "pv": 634,
       "category": "WordPress",
       "tags": [],
       "date": "2025-05-06"
@@ -116,7 +116,7 @@
     {
       "slug": "greasy-fork%ef%bc%9a%e5%9b%bd%e5%86%85%e8%ae%bf%e9%97%ae%e9%97%ae%e9%a2%98%e5%8f%8a%e8%a7%a3%e5%86%b3%e6%96%b9%e6%a1%88",
       "title": "Greasy Fork：国内访问问题及解决方案",
-      "pv": 632,
+      "pv": 633,
       "category": "WordPress",
       "tags": [],
       "date": "2025-02-09"
@@ -124,7 +124,7 @@
     {
       "slug": "113",
       "title": "",
-      "pv": 633,
+      "pv": 634,
       "category": "WordPress",
       "tags": [],
       "date": "2026-03-20"
@@ -132,7 +132,7 @@
     {
       "slug": "%e6%95%b0%e5%ad%97%e9%b8%bf%e6%b2%9f%e7%9a%84%e6%bc%94%e5%8f%98%ef%bc%9a%e4%ba%92%e8%81%94%e7%bd%91%e6%99%ae%e5%8f%8a%e5%af%b9%e5%85%a8%e7%90%83%e7%a4%be%e4%bc%9a%e7%bb%8f%e6%b5%8e%e4%b8%8d%e5%b9%b3",
       "title": "数字鸿沟的演变：互联网普及对全球社会经济不平等的影响分析（第一版）",
-      "pv": 630,
+      "pv": 631,
       "category": "WordPress",
       "tags": [],
       "date": "2024-12-20"
@@ -140,7 +140,7 @@
     {
       "slug": "hello-world",
       "title": "世界，您好！",
-      "pv": 638,
+      "pv": 639,
       "category": "WordPress",
       "tags": [],
       "date": "2024-11-16"
@@ -148,7 +148,7 @@
     {
       "slug": "100",
       "title": "每日提示词-您迷信吗？",
-      "pv": 637,
+      "pv": 638,
       "category": "WordPress",
       "tags": [],
       "date": "2025-03-12"
@@ -156,7 +156,7 @@
     {
       "slug": "109",
       "title": "海滩或大山？ 您更喜欢哪个？ 为什么？",
-      "pv": 640,
+      "pv": 641,
       "category": "WordPress",
       "tags": [],
       "date": "2025-11-22"
@@ -164,7 +164,7 @@
     {
       "slug": "%e5%85%ac%e5%91%8a",
       "title": "公告",
-      "pv": 634,
+      "pv": 635,
       "category": "WordPress",
       "tags": [],
       "date": "2025-06-08"
@@ -172,7 +172,7 @@
     {
       "slug": "%e6%95%b0%e5%ad%97%e9%b8%bf%e6%b2%9f%e7%9a%84%e6%bc%94%e5%8f%98%ef%bc%9a%e4%ba%92%e8%81%94%e7%bd%91%e6%99%ae%e5%8f%8a%e5%af%b9%e5%85%a8%e7%90%83%e7%a4%be%e4%bc%9a%e7%bb%8f%e6%b5%8e%e4%b8%8d%e5%b9%b3-2",
       "title": "数字鸿沟的演变：互联网普及对全球社会经济不平等的影响分析",
-      "pv": 625,
+      "pv": 626,
       "category": "WordPress",
       "tags": [],
       "date": "2024-12-21"
@@ -228,7 +228,7 @@
     {
       "slug": "tencent-hunyuan-hy3-review",
       "title": "腾讯混元 HY3 评测：便宜不是护城河，DeepSeek V4 Flash 已经划出了斩杀线",
-      "pv": 10,
+      "pv": 11,
       "category": "技术评测",
       "tags": [
         "大语言模型",
