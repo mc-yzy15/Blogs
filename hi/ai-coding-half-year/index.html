@@ -1,0 +1,237 @@
+<!DOCTYPE html><html lang="[&quot;zh-CN&quot;,&quot;en&quot;,&quot;zh-TW&quot;,&quot;ja&quot;,&quot;ko&quot;,&quot;fr&quot;,&quot;de&quot;,&quot;es&quot;,&quot;ru&quot;,&quot;pt&quot;,&quot;ar&quot;,&quot;hi&quot;,&quot;it&quot;,&quot;th&quot;,&quot;vi&quot;,&quot;id&quot;,&quot;tr&quot;,&quot;uk&quot;,&quot;pl&quot;,&quot;nl&quot;]" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>AI 帮我写了半年代码，为什么我反而更累了？ | Yzy15's Blog - 技术分享与生活记录</title><meta name="author" content="mc-yzy15"><meta name="copyright" content="mc-yzy15"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="半年时间，我把 AI 编程工具从「偶尔玩一下」用成了「默认工作流」，代码产出确实变多了。但一个奇怪的现象出现了——我并没有变得更轻松，反而更累了。这篇聊聊现象背后的原因，以及我如何重新划定人与 AI 的分工边界。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI 帮我写了半年代码，为什么我反而更累了？">
+<meta property="og:url" content="https://blogs.yzy15.dpdns.org/hi/ai-coding-half-year/">
+<meta property="og:site_name" content="Yzy15&#39;s Blog - 技术分享与生活记录">
+<meta property="og:description" content="半年时间，我把 AI 编程工具从「偶尔玩一下」用成了「默认工作流」，代码产出确实变多了。但一个奇怪的现象出现了——我并没有变得更轻松，反而更累了。这篇聊聊现象背后的原因，以及我如何重新划定人与 AI 的分工边界。">
+<meta property="og:locale">
+<meta property="og:image" content="https://blogs.yzy15.dpdns.org/img/butterfly-icon.png">
+<meta property="article:published_time" content="2026-09-04T13:00:00.000Z">
+<meta property="article:modified_time" content="2026-09-05T17:57:48.559Z">
+<meta property="article:author" content="mc-yzy15">
+<meta property="article:tag" content="AI编程">
+<meta property="article:tag" content="人工智能">
+<meta property="article:tag" content="开发效率">
+<meta property="article:tag" content="技术随笔">
+<meta property="article:tag" content="编程工具">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://blogs.yzy15.dpdns.org/img/favicon.ico">
+<meta name="twitter:site" content="@mc_yzy15"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "AI 帮我写了半年代码，为什么我反而更累了？",
+  "url": "https://blogs.yzy15.dpdns.org/ai-coding-half-year/",
+  "image": "https://blogs.yzy15.dpdns.org/img/butterfly-icon.png",
+  "datePublished": "2026-09-04T13:00:00.000Z",
+  "dateModified": "2026-09-05T17:57:48.559Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "mc-yzy15",
+      "url": "https://yzy15.dpdns.org"
+    }
+  ]
+}
+</script><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Yzy15's Blog - 技术分享与生活记录",
+      "item": "https://blogs.yzy15.dpdns.org/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "技术随笔",
+      "item": "https://blogs.yzy15.dpdns.org/categories/%E6%8A%80%E6%9C%AF%E9%9A%8F%E7%AC%94/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "AI 帮我写了半年代码，为什么我反而更累了？",
+      "item": "https://blogs.yzy15.dpdns.org/ai-coding-half-year/"
+    }
+  ]
+}
+</script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://blogs.yzy15.dpdns.org/hi/ai-coding-half-year/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.9/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-HK1JGTYX4N"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-HK1JGTYX4N')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-HK1JGTYX4N', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'AI 帮我写了半年代码，为什么我反而更累了？',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 8.1.1"><link rel="alternate" href="/atom.xml" title="Yzy15's Blog - 技术分享与生活记录" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">29</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">89</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/homepage/"><i class="fa-fw fas fa-globe"></i><span> Homepage</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/stats/"><i class="fa-fw fas fa-chart-bar"></i><span> Stats</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Yzy15's Blog - 技术分享与生活记录</span></a><a class="nav-page-title" href="/"><span class="site-name">AI 帮我写了半年代码，为什么我反而更累了？</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/homepage/"><i class="fa-fw fas fa-globe"></i><span> Homepage</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/stats/"><i class="fa-fw fas fa-chart-bar"></i><span> Stats</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">AI 帮我写了半年代码，为什么我反而更累了？</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-09-04T13:00:00.000Z" title="发表于 २०२६-०९-०४ २१:००:००">२०२६-०९-०४</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-09-05T17:57:48.559Z" title="更新于 २०२६-०९-०६ ०१:५७:४८">२०२६-०९-०६</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF%E9%9A%8F%E7%AC%94/">技术随笔</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="AI-帮我写了半年代码，为什么我反而更累了？"><a href="#AI-帮我写了半年代码，为什么我反而更累了？" class="headerlink" title="AI 帮我写了半年代码，为什么我反而更累了？"></a>AI 帮我写了半年代码，为什么我反而更累了？</h1><blockquote>
+<p>这是个真实的困惑。过去半年，我把 AI 编程从「偶尔玩一下」用成了「默认工作流」，代码产出肉眼可见地变多了，但我并没有更轻松——<strong>反而更累了。</strong> 这篇文章是我的自我复盘，也许对同样困惑的你有点参考价值。</p>
+</blockquote>
+<h2 id="先说一个反常识的现象"><a href="#先说一个反常识的现象" class="headerlink" title="先说一个反常识的现象"></a>先说一个反常识的现象</h2><p>按道理说，AI 帮我写代码，我应该省下大量时间才对。但半年下来我观察到的真实情况是：</p>
+<ul>
+<li>写代码的时间确实变少了，但<strong>改代码的时间变多了</strong>；</li>
+<li>动手敲键盘的时间变少了，但<strong>盯着屏幕判断的时间变多了</strong>；</li>
+<li>纯编码的工作变少了，但**「说服 AI 理解我到底想要什么」的工作变多了**。</li>
+</ul>
+<p>于是出现了很讽刺的一幕：我名义上在用 AI 提效，实际上把省下来的时间又全部花在了「和 AI 协作」上。产出是上去了，但人也快被掏空了。</p>
+<h2 id="AI-到底帮我省了什么"><a href="#AI-到底帮我省了什么" class="headerlink" title="AI 到底帮我省了什么"></a>AI 到底帮我省了什么</h2><p>先别急着批判，这半年 AI 实打实帮我的地方也很清楚：</p>
+<ol>
+<li><strong>样板代码和重复劳动</strong>：写脚本、写测试、搭脚手架、批量改文件，这类「有明确模板、不需要太多判断」的任务，AI 完成得又快又好，我基本不用自己动手了。</li>
+<li><strong>跨语言和跨框架的翻译</strong>：把一段 Python 翻译成 TypeScript、把一个老项目的写法迁移到新框架，AI 的初稿质量相当高，省掉了我大量查文档的时间。</li>
+<li><strong>即时答疑</strong>：以前遇到一个 API 不会用，要翻文档、搜论坛、试错半天；现在直接问 AI，虽然偶尔会得到幻觉答案，但作为起点已经快太多了。</li>
+<li><strong>无聊但必要的活</strong>：写提交信息、写注释、生成 changelog、格式化代码——这些「不费脑子但费时间」的事，现在全丢给 AI 了。</li>
+</ol>
+<p>如果只看这些，AI 编程工具的提效是实打实的。问题出在另一面。</p>
+<h2 id="AI-让我更累的三件事"><a href="#AI-让我更累的三件事" class="headerlink" title="AI 让我更累的三件事"></a>AI 让我更累的三件事</h2><h3 id="1-审查成本被悄悄转嫁给了我"><a href="#1-审查成本被悄悄转嫁给了我" class="headerlink" title="1. 审查成本被悄悄转嫁给了我"></a>1. 审查成本被悄悄转嫁给了我</h3><p>这是最大的原因。以前代码是我自己写的，写的时候脑子就在代码里，写完天然清楚每一行在干嘛。现在代码是 AI 写的，<strong>我必须从头到尾读一遍、理解一遍、验证一遍，才知道它写的东西能不能用。</strong></p>
+<p>更麻烦的是，AI 的错误往往是「看起来很对」。语法对、风格对、逻辑链条完整，但某个边界条件没处理、某个变量名用错了对象、某个隐含假设不成立——这些错误藏在「看起来很专业的代码」里，审查难度比审查自己的代码还高。</p>
+<p>于是「写代码的时间」变成了「审查代码的时间」，总量并没有减少。<strong>AI 没有消除认知负担，只是把它从「创造」挪到了「验证」。</strong></p>
+<h3 id="2-上下文管理成了一种新技能"><a href="#2-上下文管理成了一种新技能" class="headerlink" title="2. 上下文管理成了一种新技能"></a>2. 上下文管理成了一种新技能</h3><p>AI 没有记忆（或者记忆很贵）。每次让它干活，我都得像第一次介绍一样把项目背景、文件结构、约束条件重新讲一遍。项目越大、越复杂，这段「上下文前戏」就越长、越容易出岔子。</p>
+<p>我试过各种缓解手段：写详细的文档、维护 CLAUDE.md 之类的项目说明、把常用指令存成模板。有效，但也意味着<strong>我又多了一堆要维护的东西</strong>——而这些维护工作，本质上是我以前不需要做的。</p>
+<p>最累的时刻是：AI 因为缺失某段关键上下文，写出一个「局部合理、全局错误」的方案，然后我得花比亲自动手更长的时间来纠正它。</p>
+<h3 id="3-「试试看」的成本太低，导致决策质量下降"><a href="#3-「试试看」的成本太低，导致决策质量下降" class="headerlink" title="3. 「试试看」的成本太低，导致决策质量下降"></a>3. 「试试看」的成本太低，导致决策质量下降</h3><p>以前我改一个模块，会先想清楚再动手，因为改错的成本高。现在呢？AI 改一下只要几秒钟，于是我的行为模式变成了：<strong>不想了，先让 AI 试一版，看看效果再说。</strong></p>
+<p>听起来高效，实际是陷阱。当「试错」的成本趋近于零时，人会倾向于不做深度思考就行动。结果就是：改了不满意，再改；改出 bug，修；修出新问题，再改。<strong>代码库被来回折腾的次数变多了，而我以为的「快速迭代」，其实大部分是低质量的反复横跳。</strong></p>
+<h2 id="那怎么办：我重新划定的分工边界"><a href="#那怎么办：我重新划定的分工边界" class="headerlink" title="那怎么办：我重新划定的分工边界"></a>那怎么办：我重新划定的分工边界</h2><p>发现问题之后，我试了各种调整，现在觉得有效的几条，分享给你：</p>
+<h3 id="1-难的任务，先自己想清楚，再让-AI-执行"><a href="#1-难的任务，先自己想清楚，再让-AI-执行" class="headerlink" title="1. 难的任务，先自己想清楚，再让 AI 执行"></a>1. 难的任务，先自己想清楚，再让 AI 执行</h3><p><strong>「想」和「写」要分开。</strong> 架构怎么设计、模块怎么拆、边界条件有哪些，这些判断我先自己做；AI 负责把已经想清楚的方案变成代码。让 AI 从零设计一个复杂模块，看似省事，实际上是把思考的责任外包了出去——而它思考的深度，还撑不起复杂系统的设计。</p>
+<h3 id="2-建立「AI-产出必须过审」的流水线"><a href="#2-建立「AI-产出必须过审」的流水线" class="headerlink" title="2. 建立「AI 产出必须过审」的流水线"></a>2. 建立「AI 产出必须过审」的流水线</h3><p>现在我的代码流程变成：AI 写 → 我审 → 有问题的让 AI 修 → 我再审。听起来和以前差不多，但有个关键区别：<strong>审查不是「看一遍」，而是「带着问题清单看」。</strong> 我会明确检查边界条件、错误处理、安全问题和上下文一致性，而不是整体扫一眼觉得「差不多」。</p>
+<h3 id="3-把项目说明文档当作「和-AI-协作的接口」来维护"><a href="#3-把项目说明文档当作「和-AI-协作的接口」来维护" class="headerlink" title="3. 把项目说明文档当作「和 AI 协作的接口」来维护"></a>3. 把项目说明文档当作「和 AI 协作的接口」来维护</h3><p>既然 AI 需要上下文，那就把上下文沉淀成文档。项目结构、技术选型、代码规范、常见坑，写清楚放在仓库里。这不仅对 AI 有用——<strong>对我自己、对未来的接手者同样有用。</strong> 一开始觉得是额外负担，时间长了发现是复利投资。</p>
+<h3 id="4-给「想清楚」留出不被打断的时间"><a href="#4-给「想清楚」留出不被打断的时间" class="headerlink" title="4. 给「想清楚」留出不被打断的时间"></a>4. 给「想清楚」留出不被打断的时间</h3><p>我给自己定了个规矩：<strong>每天有一段「无 AI 时间」，用来做设计、理思路、写计划。</strong> 这段时间不开编程助手，逼自己先想明白。等想清楚了，再开 AI 当执行工具。这个习惯把「AI 驱动的盲目试错」重新拉回了「目标驱动的执行」。</p>
+<h2 id="所以，AI-到底值不值得用？"><a href="#所以，AI-到底值不值得用？" class="headerlink" title="所以，AI 到底值不值得用？"></a>所以，AI 到底值不值得用？</h2><p>值得，而且我觉得是不可逆的趋势。但前提是要接受一个现实：<strong>AI 编程工具不是「替你工作」，而是「换了一种工作方式」。</strong> 它把人的角色从「写代码的人」变成了「定义问题、审查结果、对最终质量负责的人」。</p>
+<p>后者并不比前者轻松——<strong>甚至更累，因为责任更重了。</strong> 但两者的价值密度完全不同：前者是可替代的，后者不可替代。</p>
+<p>我现在的态度是：<strong>把 AI 当最强实习生用，而不是当「另一个我」用。</strong> 实习生帮你写初稿、做调研、跑腿，但方案把关、方向判断、质量兜底永远是自己的事。这样用，AI 才是杠杆，而不是另一个吞噬注意力的黑洞。</p>
+<h2 id="结尾：累是正常的，但要累得值"><a href="#结尾：累是正常的，但要累得值" class="headerlink" title="结尾：累是正常的，但要累得值"></a>结尾：累是正常的，但要累得值</h2><p>如果你也用 AI 写代码，并且觉得「怎么比以前还累」——恭喜你，你不是一个人。这种累本质上是你正在承担更多「判断和审查」的责任，是一种成长的阵痛，而不是倒退。</p>
+<p>真正的危险不是「累」，而是**「累得没有方向」**：让 AI 带着你在代码库里横冲直撞，改了一堆代码却说不清为什么改。只要你在累的同时，对系统、对代码、对产品的理解在加深，那这份累就是值得的。</p>
+<p>半年后再来回看，希望到时候的我能说一句：<strong>AI 确实让我的产出变多了，而我也终于学会了不被它牵着走。</strong></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a target="_blank" rel="noopener" href="https://yzy15.dpdns.org">mc-yzy15</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://blogs.yzy15.dpdns.org/ai-coding-half-year/">https://blogs.yzy15.dpdns.org/ai-coding-half-year/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。<strong>禁止商用</strong>。转载请注明来源 <a href="https://blogs.yzy15.dpdns.org" target="_blank">Yzy15's Blog - 技术分享与生活记录</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/AI%E7%BC%96%E7%A8%8B/">AI编程</a><a class="post-meta__tags" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a><a class="post-meta__tags" href="/tags/%E5%BC%80%E5%8F%91%E6%95%88%E7%8E%87/">开发效率</a><a class="post-meta__tags" href="/tags/%E6%8A%80%E6%9C%AF%E9%9A%8F%E7%AC%94/">技术随笔</a><a class="post-meta__tags" href="/tags/%E7%BC%96%E7%A8%8B%E5%B7%A5%E5%85%B7/">编程工具</a></div><div class="post-share"><div class="social-share" data-image="/img/butterfly-icon.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>感谢您的支持，您的赞赏是我持续创作的动力！</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://img.cdn1.vip/i/69ed1d29274a9_1777147177.webp" target="_blank"><img class="post-qr-code-img" src="https://img.cdn1.vip/i/69ed1d29274a9_1777147177.webp" alt="微信赞赏"/ loading='lazy'></a><div class="post-qr-code-desc">微信赞赏</div></li></ul></div></div><div class="rec-card ad-slot ad-placement"><div style="text-align:center;padding:20px 10px;border:2px dashed #ff6b6b;border-radius:8px;margin:0 auto;background:linear-gradient(135deg,#fff5f5,#ffe0e0);"><div style="font-size:18px;font-weight:bold;color:#ff6b6b;">☁️ 南影云 - 高性价比云服务器</div><div style="font-size:13px;color:#555;margin-top:8px;">上万台服务器 | T+级DDoS防护 | 无限防CC</div><div style="font-size:13px;color:#555;margin-top:4px;">🎁 通过下方链接注册享专属优惠</div><div style="margin-top:10px;"><a href="https://idc.ofoca.net/aff/PJQGAEKY" target="_blank" rel="noopener" style="display:inline-block;padding:8px 24px;background:#ff6b6b;color:#fff;border-radius:20px;text-decoration:none;font-size:14px;font-weight:bold;">立即注册领优惠</a></div><div style="font-size:11px;color:#999;margin-top:6px;">注册后联系博主可再领额外折扣</div></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/llm-api-price-war-2026/" title="2026 大模型 API 价格战复盘：价格屠夫轮流坐，用户真的赢了吗？"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">2026 大模型 API 价格战复盘：价格屠夫轮流坐，用户真的赢了吗？</div></div><div class="info-2"><div class="info-item-1">2026 大模型 API 价格战复盘：价格屠夫轮流坐，用户真的赢了吗？ 这篇是行业观察，不是投资建议，也不是采购指南。数据来自公开的官宣消息、定价页面和我的个人账单，观点是我的主观判断。大模型市场半年一小变、一年一大变，任何「复盘」都有保质期，请以你看到这篇文章当天的官方信息为准。  这一年，价格到底降了多少先讲个我自己的真实体感：去年我做 AI API 网关时，成本核算表要做得非常细，因为模型调用是真金白银的大头。到了今年，我已经很久没有认真算过单次调用的成本了——不是变有钱了，是价格低到已经不值得算了。 回顾过去一年，价格走势基本可以分成几个阶段：  旗舰降价：头部模型陆续宣布降价，把「每百万 token」的价格拉下一个台阶，主打「旗舰也能便宜用」。 Flash &#x2F; Lite 档普及：各家推出主打性价比的轻量档位，价格直接打到地板，定位变成「可以无脑铺量」的基础设施。 彻底白菜化：部分厂商把轻量档价格压到接近免费的程度，官宣文案一个比一个狠，给用户的直观感受是「大模型 API 已经不要钱了」。  用一句话概括：一年前，调用大模型是「要算着花」的钱；一年后，调用轻量模...</div></div></div></a><a class="pagination-related" href="/indie-hacker-midyear-2026/" title="独立开发者的 2026 上半年：钱没多赚，工具倒是越买越多"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">独立开发者的 2026 上半年：钱没多赚，工具倒是越买越多</div></div><div class="info-2"><div class="info-item-1">独立开发者的 2026 上半年：钱没多赚，工具倒是越买越多 半年一更的例行盘点。不是凡尔赛，也不是卖惨，就是真实记一笔账：这半年我做了什么、赚了多少、花了多少、以及哪些事让我觉得自己在往前走。  先交代一下「我是谁」一个没有团队、没有融资、全靠下班后和周末时间做产品的独立开发者。目前手里的东西不多，但都还在跑：  瀛光 API：AI 接口网关&#x2F;中转，也是目前唯一有稳定收入的项目； 塔科夫社区服：游戏服务器，不赚钱甚至倒贴，纯为爱发电； 这个博客：内容资产，正在慢慢积累； 以及一堆「做了一半」「刚立项」「正在难产」的小项目。  收入端：诚实的账本很多人对独立开发的想象是「被动收入躺赚」，我半年跑下来的真实感受是：稳定的小钱有，爆炸的大钱没有。 几个可以说的数字（模糊化处理，别指望我晒银行流水）：  AI API 这块的收入：比去年下半年涨了不少，但远没到「财务自由」。特点是利润薄、量大——本质上是在做「一分一分攒」的生意。 其他项目：广告分成、赞赏、友链置换之类，加起来可以忽略不计，但蚊子腿也是肉。 博客：零直接收入，但已经开始带来一些间接价值——有人通过博客找到我合作、...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/ai-coding-half-year/" title="AI 帮我写了半年代码，为什么我反而更累了？"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> २०२६-०९-०४</div><div class="info-item-2">AI 帮我写了半年代码，为什么我反而更累了？</div></div><div class="info-2"><div class="info-item-1">AI 帮我写了半年代码，为什么我反而更累了？ 这是个真实的困惑。过去半年，我把 AI 编程从「偶尔玩一下」用成了「默认工作流」，代码产出肉眼可见地变多了，但我并没有更轻松——反而更累了。 这篇文章是我的自我复盘，也许对同样困惑的你有点参考价值。  先说一个反常识的现象按道理说，AI 帮我写代码，我应该省下大量时间才对。但半年下来我观察到的真实情况是：  写代码的时间确实变少了，但改代码的时间变多了； 动手敲键盘的时间变少了，但盯着屏幕判断的时间变多了； 纯编码的工作变少了，但**「说服 AI 理解我到底想要什么」的工作变多了**。  于是出现了很讽刺的一幕：我名义上在用 AI 提效，实际上把省下来的时间又全部花在了「和 AI 协作」上。产出是上去了，但人也快被掏空了。 AI 到底帮我省了什么先别急着批判，这半年 AI 实打实帮我的地方也很清楚：  样板代码和重复劳动：写脚本、写测试、搭脚手架、批量改文件，这类「有明确模板、不需要太多判断」的任务，AI 完成得又快又好，我基本不用自己动手了。 跨语言和跨框架的翻译：把一段 Python 翻译成 TypeScript、把一个老项目的写...</div></div></div></a><a class="pagination-related" href="/deepseek-v4-flash-review/" title="DeepSeek V4 Flash 正式版上手两周：便宜大碗之外，还差什么？"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> २०२६-०८-३१</div><div class="info-item-2">DeepSeek V4 Flash 正式版上手两周：便宜大碗之外，还差什么？</div></div><div class="info-2"><div class="info-item-1">DeepSeek V4 Flash 正式版上手两周：便宜大碗之外，还差什么？ 上一篇《腾讯混元 HY3 评测》里我写过一句话：DeepSeek V4 Flash 正式版把「又便宜又够用」的基线抬高到了一个新的斩杀线。写完那篇之后，我决定不再当键盘侠——把 DeepSeek V4 Flash 正式版接进我真实的生产工作流里，实打实用了两周。这篇就是这两周的流水账和心得。 边界声明： 文中能力判断来自我个人工作流（API 中转网关 + 代码辅助 + 文档生成 + 结构化数据），不是跑分报告；价格与规格请以 DeepSeek 官方文档为准，模型迭代很快，任何评测都有保质期。  先说结论两周用下来，我的结论可以浓缩成三句话：  它配得上「Flash」这个名字——不是智商意义上的闪，是「随手一调就能用」的闪。日常 80% 的任务，它给的第一版结果就能直接进下一步流程，这在我的使用经验里是罕见的。 便宜是真的便宜，而且便宜到可以改变使用习惯。 以前我用大模型会有一种「这次调用贵不贵」的下意识算计；用它之后，我把很多原本不值得调模型的琐碎任务也丢了进去，因为它便宜到不需要犹豫。 但它不是万能的...</div></div></div></a><a class="pagination-related" href="/llm-api-gateway-year-one/" title="自建 LLM API 网关一年复盘：鉴权、限流、渠道与账单，我踩过的坑"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> २०२६-०९-०१</div><div class="info-item-2">自建 LLM API 网关一年复盘：鉴权、限流、渠道与账单，我踩过的坑</div></div><div class="info-2"><div class="info-item-1">自建 LLM API 网关一年复盘：鉴权、限流、渠道与账单，我踩过的坑 去年我把自己搭的 AI API 网关正式对外开放（就是博客里的「瀛光 API」），到现在刚好一年出头。这一年里，被 DDoS 问候过、被上游渠道限流过、被账单教过做人、也被自己写出来的安全漏洞吓出一身冷汗。这篇不是架构圣经，是一个小团队&#x2F;个人开发者视角的实战复盘，把那些「书上不会写、踩了才知道」的坑尽量讲清楚。  为什么要自己搭网关，而不是直接卖上游的 key先说动机。早期我做 AI 相关的小工具，直接在代码里调各家官方 API，各自维护 key、各自算账。很快发现三个痛点：  多供应商切换太痛。 官方 API 的格式、鉴权、限流策略各不相同，每次换渠道都要改代码。 账单和用量完全黑盒。 用户用了多少、花了我多少钱、谁在薅羊毛，统统不清楚。 key 泄露的代价太高。 官方 key 一旦泄露，要么被刷爆，要么只能整把作废重来。  所以我才决定在中间加一层「网关」：对外统一接口格式（OpenAI 兼容），对内做渠道路由、鉴权、配额和计量。 用户在网关拿一把独立的 key，我可以在中间做限流、做熔断、做账...</div></div></div></a><a class="pagination-related" href="/llm-api-price-war-2026/" title="2026 大模型 API 价格战复盘：价格屠夫轮流坐，用户真的赢了吗？"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> २०२६-०९-०५</div><div class="info-item-2">2026 大模型 API 价格战复盘：价格屠夫轮流坐，用户真的赢了吗？</div></div><div class="info-2"><div class="info-item-1">2026 大模型 API 价格战复盘：价格屠夫轮流坐，用户真的赢了吗？ 这篇是行业观察，不是投资建议，也不是采购指南。数据来自公开的官宣消息、定价页面和我的个人账单，观点是我的主观判断。大模型市场半年一小变、一年一大变，任何「复盘」都有保质期，请以你看到这篇文章当天的官方信息为准。  这一年，价格到底降了多少先讲个我自己的真实体感：去年我做 AI API 网关时，成本核算表要做得非常细，因为模型调用是真金白银的大头。到了今年，我已经很久没有认真算过单次调用的成本了——不是变有钱了，是价格低到已经不值得算了。 回顾过去一年，价格走势基本可以分成几个阶段：  旗舰降价：头部模型陆续宣布降价，把「每百万 token」的价格拉下一个台阶，主打「旗舰也能便宜用」。 Flash &#x2F; Lite 档普及：各家推出主打性价比的轻量档位，价格直接打到地板，定位变成「可以无脑铺量」的基础设施。 彻底白菜化：部分厂商把轻量档价格压到接近免费的程度，官宣文案一个比一个狠，给用户的直观感受是「大模型 API 已经不要钱了」。  用一句话概括：一年前，调用大模型是「要算着花」的钱；一年后，调用轻量模...</div></div></div></a><a class="pagination-related" href="/tencent-hunyuan-hy3-review/" title="腾讯混元 HY3 评测：便宜不是护城河，DeepSeek V4 Flash 已经划出了斩杀线"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> २०२६-०८-१३</div><div class="info-item-2">腾讯混元 HY3 评测：便宜不是护城河，DeepSeek V4 Flash 已经划出了斩杀线</div></div><div class="info-2"><div class="info-item-1">腾讯混元 HY3 评测：便宜不是护城河，DeepSeek V4 Flash 已经划出了斩杀线 **先说明评测边界。**这不是一篇拿着几套题库跑分、再把小数点后两位贴成“科学结论”的文章。本文的事实部分来自公开产品资料与定价信息；能力判断来自我自己的实际调用和工作流体验，因此它是一篇有明确主观立场的技术评测，而不是基准测试报告。没有编造分数，也不假装每一次输出都能代表全部用户。  先说结论：腾讯混元 HY3 的问题不是贵，也不是不能用；问题是它既没有拿出足以弥补能力短板的价格优势，也没有在日常生产任务里给出足够稳定、足够省心的结果。 而 DeepSeek V4 Flash 正式版把这个问题照得尤其明显。一个模型如果要在性能上追不上对手，至少应该在成本、延迟、生态或稳定性上形成不可替代的优势。HY3 给人的实际感受却是另一种局面：价格看起来不高，但低得不够狠；输出看起来能完成任务，但需要反复追问和人工收拾残局的比例又偏高。最后它卡在了一个最尴尬的位置——省下的钱不足以覆盖多花的时间。 先把名字和边界讲清楚这里的“HY3”指腾讯混元体系中对外提供的 HY3 &#x2F; Hunyuan...</div></div></div></a><a class="pagination-related" href="/blog-37-languages/" title="给博客配了 37 种语言之后：多语言 SEO 的真实代价"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> २०२६-०९-०५</div><div class="info-item-2">给博客配了 37 种语言之后：多语言 SEO 的真实代价</div></div><div class="info-2"><div class="info-item-1">给博客配了 37 种语言之后：多语言 SEO 的真实代价 如果你在这个博客的 URL 后面加一个语言前缀，会发现大部分文章都有几十种语言的版本。是的，这个站把每篇新文章自动翻译成 37 种语言。当初做这件事时我觉得自己酷毙了；跑了半年之后，我想诚实地聊聊它到底带来了什么——好的、坏的、和「早知道」的。  当初为什么想做这件事起因很简单：博客的主要读者是中文用户，但我的文章偶尔会被分享到海外社区，于是萌生了「让更多人能读懂」的想法。加上 GitHub Actions 反正闲着也是闲着，就设计了一套流程：  新文章推到仓库； 工作流检测到 source/_posts/ 下的新增&#x2F;变更； 调用翻译接口把中文原文翻译成目标语言； 写入 source/_posts/&lt;语言代码&gt;/ 子目录； 自动提交、触发部署，几分钟后线上就有新语言版本。  技术上的成就感是真实的：内容流水线自动化这件事，本身就很有趣。 而且一想到这个博客可能被几十种语言的读者阅读，那种「国际化」的感觉确实很爽。 跑起来之后，真实情况是这样的翻译质量：比想象中好，但离「能用」还有距离先说个公道话：现在...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">mc-yzy15</div><div class="author-info-description">Yzy15的个人博客 | 技术教程 · 编程经验 · 学习笔记</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">29</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">89</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/mc-yzy15"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://yzy15.dpdns.org" target="_blank" title="个人主页"><i class="fas fa-home" style="color: #ff6600;"></i></a><a class="social-icon" href="https://github.com/mc-yzy15" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:yingmoliuguang@yeah.net" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a><a class="social-icon" href="https://space.bilibili.com/1338637552" target="_blank" title="Bilibili"><i class="fab fa-bilibili" style="color: #00a1d6;"></i></a><a class="social-icon" href="https://t.me/ShuangXiang_Dddddavidd_bot" target="_blank" title="Telegram"><i class="fab fa-telegram" style="color: #0088cc;"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="RSS"><i class="fas fa-rss" style="color: #ff6600;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到我的博客！这里记录着我的技术分享和生活点滴~<br>📢 <a href="/link/">广告位招租</a> | 💼 商业合作见<a href="/link/">友链页</a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#AI-%E5%B8%AE%E6%88%91%E5%86%99%E4%BA%86%E5%8D%8A%E5%B9%B4%E4%BB%A3%E7%A0%81%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E6%88%91%E5%8F%8D%E8%80%8C%E6%9B%B4%E7%B4%AF%E4%BA%86%EF%BC%9F"><span class="toc-number">1.</span> <span class="toc-text">AI 帮我写了半年代码，为什么我反而更累了？</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%88%E8%AF%B4%E4%B8%80%E4%B8%AA%E5%8F%8D%E5%B8%B8%E8%AF%86%E7%9A%84%E7%8E%B0%E8%B1%A1"><span class="toc-number">1.1.</span> <span class="toc-text">先说一个反常识的现象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AI-%E5%88%B0%E5%BA%95%E5%B8%AE%E6%88%91%E7%9C%81%E4%BA%86%E4%BB%80%E4%B9%88"><span class="toc-number">1.2.</span> <span class="toc-text">AI 到底帮我省了什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AI-%E8%AE%A9%E6%88%91%E6%9B%B4%E7%B4%AF%E7%9A%84%E4%B8%89%E4%BB%B6%E4%BA%8B"><span class="toc-number">1.3.</span> <span class="toc-text">AI 让我更累的三件事</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%AE%A1%E6%9F%A5%E6%88%90%E6%9C%AC%E8%A2%AB%E6%82%84%E6%82%84%E8%BD%AC%E5%AB%81%E7%BB%99%E4%BA%86%E6%88%91"><span class="toc-number">1.3.1.</span> <span class="toc-text">1. 审查成本被悄悄转嫁给了我</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%B8%8A%E4%B8%8B%E6%96%87%E7%AE%A1%E7%90%86%E6%88%90%E4%BA%86%E4%B8%80%E7%A7%8D%E6%96%B0%E6%8A%80%E8%83%BD"><span class="toc-number">1.3.2.</span> <span class="toc-text">2. 上下文管理成了一种新技能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E3%80%8C%E8%AF%95%E8%AF%95%E7%9C%8B%E3%80%8D%E7%9A%84%E6%88%90%E6%9C%AC%E5%A4%AA%E4%BD%8E%EF%BC%8C%E5%AF%BC%E8%87%B4%E5%86%B3%E7%AD%96%E8%B4%A8%E9%87%8F%E4%B8%8B%E9%99%8D"><span class="toc-number">1.3.3.</span> <span class="toc-text">3. 「试试看」的成本太低，导致决策质量下降</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%82%A3%E6%80%8E%E4%B9%88%E5%8A%9E%EF%BC%9A%E6%88%91%E9%87%8D%E6%96%B0%E5%88%92%E5%AE%9A%E7%9A%84%E5%88%86%E5%B7%A5%E8%BE%B9%E7%95%8C"><span class="toc-number">1.4.</span> <span class="toc-text">那怎么办：我重新划定的分工边界</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E9%9A%BE%E7%9A%84%E4%BB%BB%E5%8A%A1%EF%BC%8C%E5%85%88%E8%87%AA%E5%B7%B1%E6%83%B3%E6%B8%85%E6%A5%9A%EF%BC%8C%E5%86%8D%E8%AE%A9-AI-%E6%89%A7%E8%A1%8C"><span class="toc-number">1.4.1.</span> <span class="toc-text">1. 难的任务，先自己想清楚，再让 AI 执行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%BB%BA%E7%AB%8B%E3%80%8CAI-%E4%BA%A7%E5%87%BA%E5%BF%85%E9%A1%BB%E8%BF%87%E5%AE%A1%E3%80%8D%E7%9A%84%E6%B5%81%E6%B0%B4%E7%BA%BF"><span class="toc-number">1.4.2.</span> <span class="toc-text">2. 建立「AI 产出必须过审」的流水线</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%8A%8A%E9%A1%B9%E7%9B%AE%E8%AF%B4%E6%98%8E%E6%96%87%E6%A1%A3%E5%BD%93%E4%BD%9C%E3%80%8C%E5%92%8C-AI-%E5%8D%8F%E4%BD%9C%E7%9A%84%E6%8E%A5%E5%8F%A3%E3%80%8D%E6%9D%A5%E7%BB%B4%E6%8A%A4"><span class="toc-number">1.4.3.</span> <span class="toc-text">3. 把项目说明文档当作「和 AI 协作的接口」来维护</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E7%BB%99%E3%80%8C%E6%83%B3%E6%B8%85%E6%A5%9A%E3%80%8D%E7%95%99%E5%87%BA%E4%B8%8D%E8%A2%AB%E6%89%93%E6%96%AD%E7%9A%84%E6%97%B6%E9%97%B4"><span class="toc-number">1.4.4.</span> <span class="toc-text">4. 给「想清楚」留出不被打断的时间</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%80%E4%BB%A5%EF%BC%8CAI-%E5%88%B0%E5%BA%95%E5%80%BC%E4%B8%8D%E5%80%BC%E5%BE%97%E7%94%A8%EF%BC%9F"><span class="toc-number">1.5.</span> <span class="toc-text">所以，AI 到底值不值得用？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E5%B0%BE%EF%BC%9A%E7%B4%AF%E6%98%AF%E6%AD%A3%E5%B8%B8%E7%9A%84%EF%BC%8C%E4%BD%86%E8%A6%81%E7%B4%AF%E5%BE%97%E5%80%BC"><span class="toc-number">1.6.</span> <span class="toc-text">结尾：累是正常的，但要累得值</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/why-selfhost-blog-2026/" title="2026 年了，为什么我还坚持自己搭博客？">2026 年了，为什么我还坚持自己搭博客？</a><time datetime="2026-09-06T01:00:00.000Z" title="发表于 2026-09-06 09:00:00">2026-09-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/blog-37-languages/" title="给博客配了 37 种语言之后：多语言 SEO 的真实代价">给博客配了 37 种语言之后：多语言 SEO 的真实代价</a><time datetime="2026-09-05T13:00:00.000Z" title="发表于 2026-09-05 21:00:00">2026-09-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/llm-api-price-war-2026/" title="2026 大模型 API 价格战复盘：价格屠夫轮流坐，用户真的赢了吗？">2026 大模型 API 价格战复盘：价格屠夫轮流坐，用户真的赢了吗？</a><time datetime="2026-09-05T01:00:00.000Z" title="发表于 2026-09-05 09:00:00">2026-09-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/ai-coding-half-year/" title="AI 帮我写了半年代码，为什么我反而更累了？">AI 帮我写了半年代码，为什么我反而更累了？</a><time datetime="2026-09-04T13:00:00.000Z" title="发表于 2026-09-04 21:00:00">2026-09-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/indie-hacker-midyear-2026/" title="独立开发者的 2026 上半年：钱没多赚，工具倒是越买越多">独立开发者的 2026 上半年：钱没多赚，工具倒是越买越多</a><time datetime="2026-09-04T01:00:00.000Z" title="发表于 2026-09-04 09:00:00">2026-09-04</time></div></div></div></div><div class="card-widget rec-card"><div style="text-align:center;padding:18px 10px;border:2px dashed #49b1f5;border-radius:8px;margin:0 auto;background:linear-gradient(135deg,#f0f9ff,#e0f2fe);"><div style="font-size:16px;font-weight:bold;color:#49b1f5;">☁️ 南影云 - 高性价比云服务器</div><div style="font-size:12px;color:#555;margin-top:6px;">上万台服务器 | T+级DDoS防护 | 无限防CC</div><div style="font-size:12px;color:#555;margin-top:4px;">🎁 通过下方链接注册享专属优惠</div><div style="margin-top:8px;"><a href="https://idc.ofoca.net/aff/PJQGAEKY" target="_blank" rel="noopener" style="display:inline-block;padding:6px 20px;background:#49b1f5;color:#fff;border-radius:16px;text-decoration:none;font-size:13px;font-weight:bold;">立即注册领优惠</a></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By mc-yzy15</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.1</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><script src="/js/tw_cn.js?v=5.5.4"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.9/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><div class="js-pjax"></div><script src="/js/webinfo-stats.js"></script><div class="ad-banner sponsor" style="text-align:center;padding:12px 10px;margin:10px auto;max-width:728px;background:linear-gradient(135deg,#fff5f5,#ffe0e0);border:1px solid<script src="/js/content-loader.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

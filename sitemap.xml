@@ -2,18 +2,18 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://blogs.yzy15.dpdns.org/link/</loc>
+    <loc>https://blogs.yzy15.dpdns.org/stats/history.json</loc>
     
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://blogs.yzy15.dpdns.org/stats/history.json</loc>
+    <loc>https://blogs.yzy15.dpdns.org/link/</loc>
     
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -22,16 +22,7 @@
   <url>
     <loc>https://blogs.yzy15.dpdns.org/stats/</loc>
     
-    <lastmod>2026-08-13</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blogs.yzy15.dpdns.org/stats/views.json</loc>
-    
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -40,7 +31,16 @@
   <url>
     <loc>https://blogs.yzy15.dpdns.org/stats/offset.json</loc>
     
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/stats/views.json</loc>
+    
+    <lastmod>2026-09-05</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -49,7 +49,25 @@
   <url>
     <loc>https://blogs.yzy15.dpdns.org/tags/</loc>
     
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/ai-coding-half-year/</loc>
+    
+    <lastmod>2026-09-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/blog-37-languages/</loc>
+    
+    <lastmod>2026-09-05</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -58,16 +76,70 @@
   <url>
     <loc>https://blogs.yzy15.dpdns.org/blog-launched/</loc>
     
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://blogs.yzy15.dpdns.org/tencent-hunyuan-hy3-review/</loc>
+    <loc>https://blogs.yzy15.dpdns.org/deepseek-v4-flash-review/</loc>
     
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/eft-server-ops/</loc>
+    
+    <lastmod>2026-09-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/hexo-blog-deploy-guide/</loc>
+    
+    <lastmod>2026-09-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/indie-hacker-midyear-2026/</loc>
+    
+    <lastmod>2026-09-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/llm-api-gateway-year-one/</loc>
+    
+    <lastmod>2026-09-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/llm-api-price-war-2026/</loc>
+    
+    <lastmod>2026-09-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/project-security-checklist/</loc>
+    
+    <lastmod>2026-09-05</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -76,7 +148,16 @@
   <url>
     <loc>https://blogs.yzy15.dpdns.org/tencent-kaiwu-rant/</loc>
     
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/why-selfhost-blog-2026/</loc>
+    
+    <lastmod>2026-09-05</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -85,7 +166,7 @@
   <url>
     <loc>https://blogs.yzy15.dpdns.org/WordPress/%E5%81%A5%E5%BA%B7%E9%A5%AE%E9%A3%9F%EF%BC%9A%E9%80%82%E9%87%8F%E4%BA%AB%E5%8F%97%E7%BE%8E%E5%91%B3%E9%A3%9F%E8%82%89/</loc>
     
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -94,25 +175,16 @@
   <url>
     <loc>https://blogs.yzy15.dpdns.org/WordPress/%E5%85%AC%E5%91%8A/</loc>
     
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://blogs.yzy15.dpdns.org/WordPress/%E6%82%A8%E5%8F%AA%E6%83%B3%E5%B9%B2%E4%B8%80%E5%A4%A9%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F/</loc>
+    <loc>https://blogs.yzy15.dpdns.org/tencent-hunyuan-hy3-review/</loc>
     
-    <lastmod>2026-08-13</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blogs.yzy15.dpdns.org/WordPress/%E6%95%B0%E5%AD%97%E9%B8%BF%E6%B2%9F%E7%9A%84%E6%BC%94%E5%8F%98%EF%BC%9A%E4%BA%92%E8%81%94%E7%BD%91%E6%99%AE%E5%8F%8A%E5%AF%B9%E5%85%A8%E7%90%83%E7%A4%BE%E4%BC%9A%E7%BB%8F%E6%B5%8E%E4%B8%8D%E5%B9%B3-2/</loc>
-    
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -121,16 +193,7 @@
   <url>
     <loc>https://blogs.yzy15.dpdns.org/WordPress/100/</loc>
     
-    <lastmod>2026-08-13</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blogs.yzy15.dpdns.org/WordPress/113/</loc>
-    
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -139,79 +202,7 @@
   <url>
     <loc>https://blogs.yzy15.dpdns.org/WordPress/%E6%95%B0%E5%AD%97%E9%B8%BF%E6%B2%9F%E7%9A%84%E6%BC%94%E5%8F%98%EF%BC%9A%E4%BA%92%E8%81%94%E7%BD%91%E6%99%AE%E5%8F%8A%E5%AF%B9%E5%85%A8%E7%90%83%E7%A4%BE%E4%BC%9A%E7%BB%8F%E6%B5%8E%E4%B8%8D%E5%B9%B3/</loc>
     
-    <lastmod>2026-08-13</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blogs.yzy15.dpdns.org/WordPress/109/</loc>
-    
-    <lastmod>2026-08-13</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blogs.yzy15.dpdns.org/WordPress/greasy-fork%EF%BC%9A%E5%9B%BD%E5%86%85%E8%AE%BF%E9%97%AE%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</loc>
-    
-    <lastmod>2026-08-13</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blogs.yzy15.dpdns.org/WordPress/greasy-fork%EF%BC%9A%E5%9B%BD%E5%86%85%E8%AE%BF%E9%97%AE%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</loc>
-    
-    <lastmod>2026-08-13</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blogs.yzy15.dpdns.org/WordPress/hello-world/</loc>
-    
-    <lastmod>2026-08-13</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blogs.yzy15.dpdns.org/WordPress/%E5%81%A5%E5%BA%B7%E9%A5%AE%E9%A3%9F%EF%BC%9A%E9%80%82%E9%87%8F%E4%BA%AB%E5%8F%97%E7%BE%8E%E5%91%B3%E9%A3%9F%E8%82%89/</loc>
-    
-    <lastmod>2026-08-13</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blogs.yzy15.dpdns.org/WordPress/%E5%85%AC%E5%91%8A/</loc>
-    
-    <lastmod>2026-08-13</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blogs.yzy15.dpdns.org/WordPress/%E6%82%A8%E5%8F%AA%E6%83%B3%E5%B9%B2%E4%B8%80%E5%A4%A9%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F/</loc>
-    
-    <lastmod>2026-08-13</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://blogs.yzy15.dpdns.org/WordPress/%E6%95%B0%E5%AD%97%E9%B8%BF%E6%B2%9F%E7%9A%84%E6%BC%94%E5%8F%98%EF%BC%9A%E4%BA%92%E8%81%94%E7%BD%91%E6%99%AE%E5%8F%8A%E5%AF%B9%E5%85%A8%E7%90%83%E7%A4%BE%E4%BC%9A%E7%BB%8F%E6%B5%8E%E4%B8%8D%E5%B9%B3/</loc>
-    
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -220,25 +211,106 @@
   <url>
     <loc>https://blogs.yzy15.dpdns.org/WordPress/%E6%95%B0%E5%AD%97%E9%B8%BF%E6%B2%9F%E7%9A%84%E6%BC%94%E5%8F%98%EF%BC%9A%E4%BA%92%E8%81%94%E7%BD%91%E6%99%AE%E5%8F%8A%E5%AF%B9%E5%85%A8%E7%90%83%E7%A4%BE%E4%BC%9A%E7%BB%8F%E6%B5%8E%E4%B8%8D%E5%B9%B3-2/</loc>
     
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://blogs.yzy15.dpdns.org/categories/</loc>
+    <loc>https://blogs.yzy15.dpdns.org/WordPress/109/</loc>
     
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://blogs.yzy15.dpdns.org/homepage/</loc>
+    <loc>https://blogs.yzy15.dpdns.org/WordPress/113/</loc>
     
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/WordPress/greasy-fork%EF%BC%9A%E5%9B%BD%E5%86%85%E8%AE%BF%E9%97%AE%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</loc>
+    
+    <lastmod>2026-09-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/WordPress/greasy-fork%EF%BC%9A%E5%9B%BD%E5%86%85%E8%AE%BF%E9%97%AE%E9%97%AE%E9%A2%98%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</loc>
+    
+    <lastmod>2026-09-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/WordPress/%E5%81%A5%E5%BA%B7%E9%A5%AE%E9%A3%9F%EF%BC%9A%E9%80%82%E9%87%8F%E4%BA%AB%E5%8F%97%E7%BE%8E%E5%91%B3%E9%A3%9F%E8%82%89/</loc>
+    
+    <lastmod>2026-09-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/WordPress/%E5%85%AC%E5%91%8A/</loc>
+    
+    <lastmod>2026-09-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/WordPress/hello-world/</loc>
+    
+    <lastmod>2026-09-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/WordPress/%E6%82%A8%E5%8F%AA%E6%83%B3%E5%B9%B2%E4%B8%80%E5%A4%A9%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F/</loc>
+    
+    <lastmod>2026-09-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/WordPress/%E6%95%B0%E5%AD%97%E9%B8%BF%E6%B2%9F%E7%9A%84%E6%BC%94%E5%8F%98%EF%BC%9A%E4%BA%92%E8%81%94%E7%BD%91%E6%99%AE%E5%8F%8A%E5%AF%B9%E5%85%A8%E7%90%83%E7%A4%BE%E4%BC%9A%E7%BB%8F%E6%B5%8E%E4%B8%8D%E5%B9%B3-2/</loc>
+    
+    <lastmod>2026-09-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/WordPress/%E6%95%B0%E5%AD%97%E9%B8%BF%E6%B2%9F%E7%9A%84%E6%BC%94%E5%8F%98%EF%BC%9A%E4%BA%92%E8%81%94%E7%BD%91%E6%99%AE%E5%8F%8A%E5%AF%B9%E5%85%A8%E7%90%83%E7%A4%BE%E4%BC%9A%E7%BB%8F%E6%B5%8E%E4%B8%8D%E5%B9%B3/</loc>
+    
+    <lastmod>2026-09-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/WordPress/%E6%82%A8%E5%8F%AA%E6%83%B3%E5%B9%B2%E4%B8%80%E5%A4%A9%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F/</loc>
+    
+    <lastmod>2026-09-05</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -247,7 +319,25 @@
   <url>
     <loc>https://blogs.yzy15.dpdns.org/about/</loc>
     
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/homepage/</loc>
+    
+    <lastmod>2026-09-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/categories/</loc>
+    
+    <lastmod>2026-09-05</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -256,337 +346,631 @@
 
   <url>
     <loc>https://blogs.yzy15.dpdns.org/</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
 
   
   <url>
-    <loc>https://blogs.yzy15.dpdns.org/tags/%E5%8D%9A%E5%AE%A2/</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blogs.yzy15.dpdns.org/tags/%E5%85%AC%E5%91%8A/</loc>
-    <lastmod>2026-08-13</lastmod>
+    <loc>https://blogs.yzy15.dpdns.org/tags/AI%E7%BC%96%E7%A8%8B/</loc>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blogs.yzy15.dpdns.org/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://blogs.yzy15.dpdns.org/tags/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blogs.yzy15.dpdns.org/tags/%E8%85%BE%E8%AE%AF%E6%B7%B7%E5%85%83/</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blogs.yzy15.dpdns.org/tags/DeepSeek/</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blogs.yzy15.dpdns.org/tags/%E6%A8%A1%E5%9E%8B%E8%AF%84%E6%B5%8B/</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blogs.yzy15.dpdns.org/tags/API/</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blogs.yzy15.dpdns.org/tags/%E5%90%90%E6%A7%BD/</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blogs.yzy15.dpdns.org/tags/%E8%85%BE%E8%AE%AF/</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blogs.yzy15.dpdns.org/tags/%E8%BD%AF%E4%BB%B6%E8%AF%84%E8%AE%BA/</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blogs.yzy15.dpdns.org/tags/%E7%A1%AC%E4%BB%B6%E9%97%A8%E6%A7%9B/</loc>
-    <lastmod>2026-08-13</lastmod>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E5%BC%80%E5%8F%91%E6%95%88%E7%8E%87/</loc>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blogs.yzy15.dpdns.org/tags/%E6%8A%80%E6%9C%AF%E9%9A%8F%E7%AC%94/</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E7%BC%96%E7%A8%8B%E5%B7%A5%E5%85%B7/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E5%8D%9A%E5%AE%A2/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/SEO/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E5%A4%9A%E8%AF%AD%E8%A8%80/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E6%9C%BA%E5%99%A8%E7%BF%BB%E8%AF%91/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/GitHub-Actions/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E5%85%AC%E5%91%8A/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/DeepSeek/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E6%A8%A1%E5%9E%8B%E8%AF%84%E6%B5%8B/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/API/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E9%80%83%E7%A6%BB%E5%A1%94%E7%A7%91%E5%A4%AB/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E6%B8%B8%E6%88%8F/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%BF%90%E7%BB%B4/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E7%A4%BE%E5%8C%BA/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E6%B8%B8%E6%88%8F%E6%9C%8D%E5%8A%A1%E5%99%A8/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/Hexo/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/Butterfly/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/GitHub-Pages/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/CI/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E5%9F%9F%E5%90%8D/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E6%95%99%E7%A8%8B/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E7%8B%AC%E7%AB%8B%E5%BC%80%E5%8F%91%E8%80%85/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E5%B9%B4%E4%B8%AD%E6%80%BB%E7%BB%93/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E4%B8%AA%E4%BA%BA%E9%A1%B9%E7%9B%AE/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E6%94%B6%E6%94%AF%E5%A4%8D%E7%9B%98/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E7%94%9F%E6%B4%BB/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/API%E7%BD%91%E5%85%B3/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/LLM/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E9%99%90%E6%B5%81/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E9%89%B4%E6%9D%83/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/API%E4%BB%B7%E6%A0%BC/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E8%A1%8C%E4%B8%9A%E8%A7%82%E5%AF%9F/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E5%95%86%E4%B8%9A%E5%88%86%E6%9E%90/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E5%AE%89%E5%85%A8/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/Web%E5%AE%89%E5%85%A8/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/CORS/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/CSP/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/SSRF/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E8%87%AA%E6%9F%A5%E6%B8%85%E5%8D%95/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E5%90%90%E6%A7%BD/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E8%85%BE%E8%AE%AF/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E8%BD%AF%E4%BB%B6%E8%AF%84%E8%AE%BA/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E7%A1%AC%E4%BB%B6%E9%97%A8%E6%A7%9B/</loc>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blogs.yzy15.dpdns.org/tags/%E8%85%BE%E8%AE%AF%E5%BC%80%E6%82%9F/</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blogs.yzy15.dpdns.org/tags/AI%E8%AE%AD%E7%BB%83/</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blogs.yzy15.dpdns.org/tags/GPU/</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blogs.yzy15.dpdns.org/tags/%E5%B5%8C%E5%A5%97%E8%99%9A%E6%8B%9F%E5%8C%96/</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blogs.yzy15.dpdns.org/tags/WSL2/</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blogs.yzy15.dpdns.org/tags/Docker/</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E7%8B%AC%E7%AB%8B%E5%8D%9A%E5%AE%A2/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E5%86%99%E4%BD%9C/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/</loc>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blogs.yzy15.dpdns.org/tags/dailyprompt/</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blogs.yzy15.dpdns.org/tags/dailyprompt-2139/</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://blogs.yzy15.dpdns.org/tags/dailyprompt-1930/</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blogs.yzy15.dpdns.org/tags/%E7%A4%BE%E4%BC%9A%E7%BB%8F%E6%B5%8E%E4%B8%8D%E5%B9%B3%E7%AD%89/</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blogs.yzy15.dpdns.org/tags/%E5%85%A8%E7%90%83%E5%BD%B1%E5%93%8D/</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blogs.yzy15.dpdns.org/tags/%E6%95%B0%E5%AD%97%E9%B8%BF%E6%B2%9F/</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blogs.yzy15.dpdns.org/tags/%E4%BA%92%E8%81%94%E7%BD%91%E6%99%AE%E5%8F%8A/</loc>
-    <lastmod>2026-08-13</lastmod>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E8%85%BE%E8%AE%AF%E6%B7%B7%E5%85%83/</loc>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blogs.yzy15.dpdns.org/tags/%E7%8E%B0%E4%BB%A3%E8%BF%B7%E4%BF%A1/</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blogs.yzy15.dpdns.org/tags/%E7%A7%91%E5%AD%A6%E4%B8%8E%E7%8E%84%E5%AD%A6/</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blogs.yzy15.dpdns.org/tags/%E7%A7%91%E6%8A%80%E4%BA%BA%E6%96%87/</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blogs.yzy15.dpdns.org/tags/dailyprompt-1875/</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blogs.yzy15.dpdns.org/tags/%E8%AE%A4%E7%9F%A5%E5%BF%83%E7%90%86%E5%AD%A6/</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blogs.yzy15.dpdns.org/tags/%E8%B5%9B%E5%8D%9A%E7%8E%84%E5%AD%A6/</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blogs.yzy15.dpdns.org/tags/NASA%E6%98%9F%E7%B3%BB%E5%9B%BE/</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blogs.yzy15.dpdns.org/tags/%E6%95%B0%E5%AD%97%E6%8A%A4%E8%BA%AB%E7%AC%A6/</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blogs.yzy15.dpdns.org/tags/%E6%96%87%E5%8C%96%E7%A4%BE%E4%BC%9A%E5%AD%A6/</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blogs.yzy15.dpdns.org/tags/%E6%A6%82%E7%8E%87%E8%AE%A4%E7%9F%A5%E9%99%B7%E9%98%B1/</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blogs.yzy15.dpdns.org/tags/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E7%9A%84%E6%B5%AA%E6%BC%AB/</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blogs.yzy15.dpdns.org/tags/%E4%BB%A3%E9%99%85%E6%96%87%E5%8C%96%E5%9B%BE%E9%89%B4/</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://blogs.yzy15.dpdns.org/tags/dailyprompt-1883/</loc>
-    <lastmod>2026-08-13</lastmod>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E7%A4%BE%E4%BC%9A%E7%BB%8F%E6%B5%8E%E4%B8%8D%E5%B9%B3%E7%AD%89/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E5%85%A8%E7%90%83%E5%BD%B1%E5%93%8D/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E6%95%B0%E5%AD%97%E9%B8%BF%E6%B2%9F/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/%E4%BA%92%E8%81%94%E7%BD%91%E6%99%AE%E5%8F%8A/</loc>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blogs.yzy15.dpdns.org/tags/dailyprompt-2130/</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/dailyprompt-1883/</loc>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blogs.yzy15.dpdns.org/tags/%E7%94%A8%E6%88%B7%E8%84%9A%E6%9C%AC/</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blogs.yzy15.dpdns.org/tags/%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blogs.yzy15.dpdns.org/tags/%E8%AE%BF%E9%97%AE%E9%97%AE%E9%A2%98/</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blogs.yzy15.dpdns.org/tags/Greasy-Fork/</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blogs.yzy15.dpdns.org/tags/Greasy-Fork%E5%9B%BD%E5%86%85%E8%AE%BF%E9%97%AE%E6%8C%87%E5%8D%97/</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blogs.yzy15.dpdns.org/tags/SNI-%E9%98%BB%E6%96%AD/</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blogs.yzy15.dpdns.org/tags/%E5%9B%BD%E5%86%85%E4%B8%93%E7%94%A8%E5%9F%9F%E5%90%8D/</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/tags/dailyprompt-1930/</loc>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
@@ -594,50 +978,57 @@
 
   
   <url>
+    <loc>https://blogs.yzy15.dpdns.org/categories/%E6%8A%80%E6%9C%AF%E9%9A%8F%E7%AC%94/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://blogs.yzy15.dpdns.org/categories/%E7%94%9F%E6%B4%BB/</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blogs.yzy15.dpdns.org/categories/%E6%8A%80%E6%9C%AF%E8%AF%84%E6%B5%8B/</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://blogs.yzy15.dpdns.org/categories/%E6%8A%80%E6%9C%AF%E9%9A%8F%E7%AC%94/</loc>
-    <lastmod>2026-08-13</lastmod>
+    <loc>https://blogs.yzy15.dpdns.org/categories/%E6%8A%80%E6%9C%AF%E6%95%99%E7%A8%8B/</loc>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blogs.yzy15.dpdns.org/categories/WordPress/</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://blogs.yzy15.dpdns.org/categories/WordPress/%E8%AE%BA%E6%96%87/</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blogs.yzy15.dpdns.org/categories/WordPress/%E6%9C%AA%E5%88%86%E7%B1%BB/</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://blogs.yzy15.dpdns.org/categories/WordPress/%E6%AF%8F%E6%97%A5%E6%8F%90%E7%A4%BA/</loc>
-    <lastmod>2026-08-13</lastmod>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blogs.yzy15.dpdns.org/categories/WordPress/%E8%AE%BA%E6%96%87/</loc>
+    <lastmod>2026-09-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
