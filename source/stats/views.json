@@ -1,183 +1,552 @@
 {
   "total": {
-    "pv": 11194,
-    "uv": 11135
+    "pv": 11218,
+    "uv": 11159
   },
   "categories": {
     "技术随笔": {
-      "pv": 822
+      "pv": 828
     },
     "生活": {
-      "pv": 830
+      "pv": 832
     },
     "WordPress": {
-      "pv": 8209
+      "pv": 8219
     },
     "技术评测": {
-      "pv": 198
+      "pv": 201
     },
     "技术教程": {
+      "pv": 4
+    },
+    "人工智能": {
+      "pv": 11
+    },
+    "开发者生态": {
+      "pv": 9
+    },
+    "数码硬件": {
+      "pv": 7
+    },
+    "互联网趋势": {
       "pv": 2
+    },
+    "半导体": {
+      "pv": 9
+    },
+    "云计算": {
+      "pv": 1
+    },
+    "卫星互联网": {
+      "pv": 2
+    },
+    "AI监管": {
+      "pv": 3
+    },
+    "自动驾驶": {
+      "pv": 3
+    },
+    "机器人": {
+      "pv": 2
+    },
+    "AI安全": {
+      "pv": 1
     }
   },
   "tags": {
     "腾讯": {
-      "pv": 817
+      "pv": 818
     },
     "软件评论": {
-      "pv": 817
+      "pv": 818
     },
     "硬件门槛": {
-      "pv": 817
+      "pv": 818
     },
     "技术随笔": {
-      "pv": 821
+      "pv": 828
     },
     "腾讯开悟": {
-      "pv": 817
+      "pv": 818
     },
     "AI训练": {
-      "pv": 817
+      "pv": 818
     },
     "GPU": {
-      "pv": 817
+      "pv": 818
     },
     "嵌套虚拟化": {
-      "pv": 817
+      "pv": 818
     },
     "WSL2": {
-      "pv": 817
+      "pv": 818
     },
     "Docker": {
-      "pv": 817
+      "pv": 818
     },
     "公告": {
-      "pv": 829
+      "pv": 830
     },
     "大语言模型": {
-      "pv": 198
+      "pv": 201
     },
     "腾讯混元": {
-      "pv": 196
+      "pv": 197
     },
     "DeepSeek": {
-      "pv": 196
+      "pv": 200
     },
     "模型评测": {
-      "pv": 197
+      "pv": 201
     },
     "API": {
-      "pv": 197
+      "pv": 199
     },
     "游戏": {
-      "pv": 1
+      "pv": 2
     },
     "服务器运维": {
-      "pv": 1
+      "pv": 2
     },
     "社区": {
-      "pv": 1
+      "pv": 2
     },
     "游戏服务器": {
-      "pv": 1
+      "pv": 2
     },
     "LLM": {
-      "pv": 1
+      "pv": 2
     },
     "限流": {
-      "pv": 1
+      "pv": 2
     },
     "鉴权": {
-      "pv": 2
+      "pv": 4
     },
     "架构设计": {
-      "pv": 1
-    },
-    "独立博客": {
-      "pv": 1
-    },
-    "写作": {
-      "pv": 1
-    },
-    "个人网站": {
-      "pv": 1
-    },
-    "API价格": {
-      "pv": 1
-    },
-    "行业观察": {
-      "pv": 1
-    },
-    "大模型": {
-      "pv": 1
-    },
-    "商业分析": {
-      "pv": 1
-    },
-    "人工智能": {
-      "pv": 3
-    },
-    "年中总结": {
-      "pv": 1
-    },
-    "个人项目": {
-      "pv": 1
-    },
-    "收支复盘": {
-      "pv": 1
-    },
-    "生活": {
-      "pv": 1
-    },
-    "开发效率": {
       "pv": 2
     },
+    "独立博客": {
+      "pv": 2
+    },
+    "写作": {
+      "pv": 2
+    },
+    "个人网站": {
+      "pv": 2
+    },
+    "API价格": {
+      "pv": 5
+    },
+    "行业观察": {
+      "pv": 9
+    },
+    "大模型": {
+      "pv": 2
+    },
+    "商业分析": {
+      "pv": 2
+    },
+    "人工智能": {
+      "pv": 6
+    },
+    "年中总结": {
+      "pv": 2
+    },
+    "个人项目": {
+      "pv": 2
+    },
+    "收支复盘": {
+      "pv": 2
+    },
+    "生活": {
+      "pv": 2
+    },
+    "开发效率": {
+      "pv": 4
+    },
     "编程工具": {
-      "pv": 1
+      "pv": 2
     },
     "Butterfly": {
-      "pv": 1
+      "pv": 2
     },
     "GitHub Pages": {
-      "pv": 1
+      "pv": 2
     },
     "CI": {
-      "pv": 1
+      "pv": 2
     },
     "博客搭建": {
-      "pv": 1
+      "pv": 2
     },
     "域名": {
-      "pv": 1
+      "pv": 2
     },
     "教程": {
-      "pv": 1
+      "pv": 2
     },
     "Web安全": {
-      "pv": 1
+      "pv": 2
     },
     "CORS": {
-      "pv": 1
+      "pv": 2
     },
     "CSP": {
-      "pv": 1
+      "pv": 2
     },
     "SSRF": {
-      "pv": 1
+      "pv": 2
     },
     "自查清单": {
-      "pv": 1
+      "pv": 2
     },
     "SEO": {
-      "pv": 1
+      "pv": 2
     },
     "多语言": {
-      "pv": 1
+      "pv": 2
     },
     "机器翻译": {
-      "pv": 1
+      "pv": 2
     },
     "GitHub Actions": {
+      "pv": 2
+    },
+    "基准测试": {
+      "pv": 1
+    },
+    "可灵": {
+      "pv": 1
+    },
+    "即梦": {
+      "pv": 1
+    },
+    "AI Agent": {
+      "pv": 3
+    },
+    "协议": {
+      "pv": 1
+    },
+    "开源生态": {
+      "pv": 1
+    },
+    "通义千问": {
+      "pv": 2
+    },
+    "Kimi": {
+      "pv": 1
+    },
+    "API经济": {
+      "pv": 1
+    },
+    "开发者生态": {
+      "pv": 2
+    },
+    "软件形态": {
+      "pv": 1
+    },
+    "NPU": {
+      "pv": 1
+    },
+    "英特尔": {
+      "pv": 1
+    },
+    "消费电子": {
+      "pv": 3
+    },
+    "AI编程": {
+      "pv": 3
+    },
+    "供应链安全": {
+      "pv": 1
+    },
+    "代码审计": {
+      "pv": 1
+    },
+    "Perplexity": {
+      "pv": 1
+    },
+    "搜索引擎": {
+      "pv": 1
+    },
+    "流量": {
+      "pv": 1
+    },
+    "骁龙": {
+      "pv": 2
+    },
+    "苹果": {
+      "pv": 1
+    },
+    "AI PC": {
+      "pv": 1
+    },
+    "隐私计算": {
+      "pv": 1
+    },
+    "开源模型": {
+      "pv": 2
+    },
+    "云计算": {
+      "pv": 2
+    },
+    "天玑9600": {
+      "pv": 1
+    },
+    "手机芯片": {
+      "pv": 1
+    },
+    "端侧AI": {
+      "pv": 1
+    },
+    "国产大模型": {
+      "pv": 1
+    },
+    "算力": {
+      "pv": 2
+    },
+    "价格战": {
+      "pv": 1
+    },
+    "Rubin": {
+      "pv": 1
+    },
+    "AI芯片": {
+      "pv": 2
+    },
+    "数据中心": {
+      "pv": 1
+    },
+    "低轨星座": {
+      "pv": 1
+    },
+    "商业航天": {
+      "pv": 1
+    },
+    "太空经济": {
+      "pv": 2
+    },
+    "A2A": {
+      "pv": 1
+    },
+    "MCP": {
+      "pv": 1
+    },
+    "协议标准": {
+      "pv": 1
+    },
+    "EU AI Act": {
+      "pv": 1
+    },
+    "数据合规": {
+      "pv": 2
+    },
+    "出海": {
+      "pv": 1
+    },
+    "程序员职业": {
+      "pv": 1
+    },
+    "职业发展": {
+      "pv": 1
+    },
+    "麒麟": {
+      "pv": 1
+    },
+    "昇腾": {
+      "pv": 2
+    },
+    "国产芯片": {
+      "pv": 1
+    },
+    "Apple Silicon": {
+      "pv": 1
+    },
+    "PC": {
+      "pv": 1
+    },
+    "手机系统": {
+      "pv": 1
+    },
+    "RTX60": {
+      "pv": 1
+    },
+    "显卡": {
+      "pv": 1
+    },
+    "折叠屏": {
+      "pv": 2
+    },
+    "iPhone": {
+      "pv": 2
+    },
+    "Sora": {
+      "pv": 1
+    },
+    "OpenAI": {
+      "pv": 2
+    },
+    "产品复盘": {
+      "pv": 1
+    },
+    "国产替代": {
+      "pv": 1
+    },
+    "商业化": {
+      "pv": 1
+    },
+    "自动驾驶": {
+      "pv": 2
+    },
+    "出行经济": {
+      "pv": 1
+    },
+    "融资": {
+      "pv": 1
+    },
+    "具身智能": {
+      "pv": 1
+    },
+    "AIGC商业化": {
+      "pv": 1
+    },
+    "短剧": {
+      "pv": 1
+    },
+    "广告行业": {
+      "pv": 1
+    },
+    "Google": {
+      "pv": 1
+    },
+    "Gemini": {
+      "pv": 1
+    },
+    "轻量模型": {
+      "pv": 1
+    },
+    "提示注入": {
+      "pv": 1
+    },
+    "Agent": {
+      "pv": 1
+    },
+    "网络安全": {
+      "pv": 1
+    },
+    "Codex": {
+      "pv": 2
+    },
+    "API计费": {
+      "pv": 1
+    },
+    "GPT-6": {
+      "pv": 1
+    },
+    "深度伪造": {
+      "pv": 1
+    },
+    "C2PA": {
+      "pv": 1
+    },
+    "AIGC治理": {
+      "pv": 1
+    },
+    "HBM": {
+      "pv": 2
+    },
+    "DRAM": {
+      "pv": 1
+    },
+    "涨价周期": {
+      "pv": 1
+    },
+    "MI450": {
+      "pv": 1
+    },
+    "NVIDIA": {
+      "pv": 1
+    },
+    "AI监管": {
+      "pv": 1
+    },
+    "出海合规": {
+      "pv": 1
+    },
+    "发布会": {
+      "pv": 1
+    },
+    "Waymo": {
+      "pv": 1
+    },
+    "Robotaxi": {
+      "pv": 2
+    },
+    "百度": {
+      "pv": 1
+    },
+    "Anthropic": {
+      "pv": 1
+    },
+    "Claude": {
+      "pv": 1
+    },
+    "Cybercab": {
+      "pv": 1
+    },
+    "先进封装": {
+      "pv": 1
+    },
+    "芯片制造": {
+      "pv": 1
+    },
+    "智能穿戴": {
+      "pv": 1
+    },
+    "选购指南": {
+      "pv": 1
+    },
+    "Claude Code": {
+      "pv": 1
+    },
+    "命令行工具": {
+      "pv": 1
+    },
+    "iPhone18": {
+      "pv": 1
+    },
+    "产品策略": {
+      "pv": 1
+    },
+    "AI算力": {
+      "pv": 1
+    },
+    "能源": {
+      "pv": 1
+    },
+    "核电": {
+      "pv": 1
+    },
+    "可回收火箭": {
+      "pv": 1
+    },
+    "火箭": {
+      "pv": 1
+    },
+    "Cursor": {
+      "pv": 1
+    },
+    "开发工具": {
+      "pv": 1
+    },
+    "人形机器人": {
+      "pv": 1
+    },
+    "VLA": {
+      "pv": 1
+    },
+    "行业趋势": {
       "pv": 1
     }
   },
@@ -185,7 +554,7 @@
     {
       "slug": "tencent-kaiwu-rant",
       "title": "腾讯开悟深度测评：一场硬件与软件的\"套娃\"噩梦，普通开发者的绝望指南",
-      "pv": 817,
+      "pv": 818,
       "category": "技术随笔",
       "tags": [
         "腾讯",
@@ -204,7 +573,7 @@
     {
       "slug": "blog-launched",
       "title": "博客搭建完成，欢迎来访！",
-      "pv": 829,
+      "pv": 830,
       "category": "生活",
       "tags": [
         "公告"
@@ -214,7 +583,7 @@
     {
       "slug": "%e5%81%a5%e5%ba%b7%e9%a5%ae%e9%a3%9f%ef%bc%9a%e9%80%82%e9%87%8f%e4%ba%ab%e5%8f%97%e7%be%8e%e5%91%b3%e9%a3%9f%e8%82%89",
       "title": "健康饮食：适量享受美味食肉",
-      "pv": 816,
+      "pv": 817,
       "category": "WordPress",
       "tags": [],
       "date": "2024-12-01"
@@ -222,7 +591,7 @@
     {
       "slug": "%e6%82%a8%e5%8f%aa%e6%83%b3%e5%b9%b2%e4%b8%80%e5%a4%a9%e7%9a%84%e5%b7%a5%e4%bd%9c%e6%98%af%e4%bb%80%e4%b9%88%ef%bc%9f",
       "title": "您只想干一天的工作是什么？",
-      "pv": 822,
+      "pv": 823,
       "category": "WordPress",
       "tags": [],
       "date": "2025-05-06"
@@ -230,7 +599,7 @@
     {
       "slug": "greasy-fork%ef%bc%9a%e5%9b%bd%e5%86%85%e8%ae%bf%e9%97%ae%e9%97%ae%e9%a2%98%e5%8f%8a%e8%a7%a3%e5%86%b3%e6%96%b9%e6%a1%88",
       "title": "Greasy Fork：国内访问问题及解决方案",
-      "pv": 821,
+      "pv": 822,
       "category": "WordPress",
       "tags": [],
       "date": "2025-02-09"
@@ -238,7 +607,7 @@
     {
       "slug": "113",
       "title": "",
-      "pv": 820,
+      "pv": 821,
       "category": "WordPress",
       "tags": [],
       "date": "2026-03-20"
@@ -246,7 +615,7 @@
     {
       "slug": "%e6%95%b0%e5%ad%97%e9%b8%bf%e6%b2%9f%e7%9a%84%e6%bc%94%e5%8f%98%ef%bc%9a%e4%ba%92%e8%81%94%e7%bd%91%e6%99%ae%e5%8f%8a%e5%af%b9%e5%85%a8%e7%90%83%e7%a4%be%e4%bc%9a%e7%bb%8f%e6%b5%8e%e4%b8%8d%e5%b9%b3",
       "title": "数字鸿沟的演变：互联网普及对全球社会经济不平等的影响分析（第一版）",
-      "pv": 818,
+      "pv": 819,
       "category": "WordPress",
       "tags": [],
       "date": "2024-12-20"
@@ -254,7 +623,7 @@
     {
       "slug": "hello-world",
       "title": "世界，您好！",
-      "pv": 825,
+      "pv": 826,
       "category": "WordPress",
       "tags": [],
       "date": "2024-11-16"
@@ -262,7 +631,7 @@
     {
       "slug": "100",
       "title": "每日提示词-您迷信吗？",
-      "pv": 824,
+      "pv": 825,
       "category": "WordPress",
       "tags": [],
       "date": "2025-03-12"
@@ -270,7 +639,7 @@
     {
       "slug": "109",
       "title": "海滩或大山？ 您更喜欢哪个？ 为什么？",
-      "pv": 828,
+      "pv": 829,
       "category": "WordPress",
       "tags": [],
       "date": "2025-11-22"
@@ -278,7 +647,7 @@
     {
       "slug": "%e5%85%ac%e5%91%8a",
       "title": "公告",
-      "pv": 822,
+      "pv": 823,
       "category": "WordPress",
       "tags": [],
       "date": "2025-06-08"
@@ -286,7 +655,7 @@
     {
       "slug": "%e6%95%b0%e5%ad%97%e9%b8%bf%e6%b2%9f%e7%9a%84%e6%bc%94%e5%8f%98%ef%bc%9a%e4%ba%92%e8%81%94%e7%bd%91%e6%99%ae%e5%8f%8a%e5%af%b9%e5%85%a8%e7%90%83%e7%a4%be%e4%bc%9a%e7%bb%8f%e6%b5%8e%e4%b8%8d%e5%b9%b3-2",
       "title": "数字鸿沟的演变：互联网普及对全球社会经济不平等的影响分析",
-      "pv": 813,
+      "pv": 814,
       "category": "WordPress",
       "tags": [],
       "date": "2024-12-21"
@@ -342,7 +711,7 @@
     {
       "slug": "tencent-hunyuan-hy3-review",
       "title": "腾讯混元 HY3 评测：便宜不是护城河，DeepSeek V4 Flash 已经划出了斩杀线",
-      "pv": 196,
+      "pv": 197,
       "category": "技术评测",
       "tags": [
         "大语言模型",
@@ -356,7 +725,7 @@
     {
       "slug": "eft-server-ops",
       "title": "逃离塔科夫社区服运维手记：从一台小水管到「百人服」",
-      "pv": 1,
+      "pv": 2,
       "category": "技术随笔",
       "tags": [
         "游戏",
@@ -369,7 +738,7 @@
     {
       "slug": "llm-api-gateway-year-one",
       "title": "自建 LLM API 网关一年复盘：鉴权、限流、渠道与账单，我踩过的坑",
-      "pv": 1,
+      "pv": 2,
       "category": "技术随笔",
       "tags": [
         "大语言模型",
@@ -384,7 +753,7 @@
     {
       "slug": "why-selfhost-blog-2026",
       "title": "2026 年了，为什么我还坚持自己搭博客？",
-      "pv": 1,
+      "pv": 2,
       "category": "技术随笔",
       "tags": [
         "独立博客",
@@ -397,7 +766,7 @@
     {
       "slug": "llm-api-price-war-2026",
       "title": "2026 大模型 API 价格战复盘：价格屠夫轮流坐，用户真的赢了吗？",
-      "pv": 1,
+      "pv": 2,
       "category": "技术评测",
       "tags": [
         "API价格",
@@ -411,7 +780,7 @@
     {
       "slug": "indie-hacker-midyear-2026",
       "title": "独立开发者的 2026 上半年：钱没多赚，工具倒是越买越多",
-      "pv": 1,
+      "pv": 2,
       "category": "生活",
       "tags": [
         "年中总结",
@@ -424,7 +793,7 @@
     {
       "slug": "ai-coding-half-year",
       "title": "AI 帮我写了半年代码，为什么我反而更累了？",
-      "pv": 1,
+      "pv": 2,
       "category": "技术随笔",
       "tags": [
         "人工智能",
@@ -437,7 +806,7 @@
     {
       "slug": "hexo-blog-deploy-guide",
       "title": "从 0 到 1 搭博客：域名、HTTPS、CI 自动部署，一次说清",
-      "pv": 1,
+      "pv": 2,
       "category": "技术教程",
       "tags": [
         "Butterfly",
@@ -452,7 +821,7 @@
     {
       "slug": "project-security-checklist",
       "title": "上线前必做：我的个人项目安全体检清单",
-      "pv": 1,
+      "pv": 2,
       "category": "技术教程",
       "tags": [
         "Web安全",
@@ -467,7 +836,7 @@
     {
       "slug": "blog-37-languages",
       "title": "给博客配了 37 种语言之后：多语言 SEO 的真实代价",
-      "pv": 1,
+      "pv": 2,
       "category": "技术随笔",
       "tags": [
         "SEO",
@@ -481,7 +850,7 @@
     {
       "slug": "deepseek-v4-flash-review",
       "title": "DeepSeek V4 Flash 正式版上手两周：便宜大碗之外，还差什么？",
-      "pv": 1,
+      "pv": 2,
       "category": "技术评测",
       "tags": [
         "大语言模型",
@@ -491,6 +860,608 @@
         "开发效率"
       ],
       "date": "2026-08-31"
+    },
+    {
+      "slug": "model-benchmark-saturation",
+      "title": "当\"屠榜\"成为日常：大模型评测基准正在集体失效",
+      "pv": 1,
+      "category": "人工智能",
+      "tags": [
+        "模型评测",
+        "基准测试",
+        "技术随笔"
+      ],
+      "date": "2026-09-06"
+    },
+    {
+      "slug": "ai-video-elimination-race",
+      "title": "AI 视频进入淘汰赛：可灵领跑、Sora 离场，下一位轮到谁",
+      "pv": 1,
+      "category": "人工智能",
+      "tags": [
+        "可灵",
+        "即梦",
+        "行业观察"
+      ],
+      "date": "2026-09-06"
+    },
+    {
+      "slug": "mcp-usb-c-moment",
+      "title": "MCP 的\"USB-C 时刻\"：一个协议如何统一 AI Agent 的工具生态",
+      "pv": 1,
+      "category": "开发者生态",
+      "tags": [
+        "AI Agent",
+        "协议",
+        "开源生态"
+      ],
+      "date": "2026-09-06"
+    },
+    {
+      "slug": "qwen-kimi-deepseek-vs-overseas",
+      "title": "国产旗舰横评：Qwen3 Max、Kimi K3、DeepSeek V4 离\"一线\"还有多远",
+      "pv": 1,
+      "category": "人工智能",
+      "tags": [
+        "通义千问",
+        "Kimi",
+        "DeepSeek",
+        "模型评测"
+      ],
+      "date": "2026-09-06"
+    },
+    {
+      "slug": "from-api-economy-to-agent-economy",
+      "title": "从\"API 经济\"到\"Agent 经济\"：开发者正在从写接口转向写技能",
+      "pv": 1,
+      "category": "开发者生态",
+      "tags": [
+        "API经济",
+        "开发者生态",
+        "软件形态"
+      ],
+      "date": "2026-09-06"
+    },
+    {
+      "slug": "ai-pc-tofu-npu-reality",
+      "title": "180 TOPS\"都花哪了？AI PC 算力过剩时代的灵魂拷问",
+      "pv": 1,
+      "category": "数码硬件",
+      "tags": [
+        "NPU",
+        "英特尔",
+        "消费电子"
+      ],
+      "date": "2026-09-06"
+    },
+    {
+      "slug": "ai-generated-code-supply-chain",
+      "title": "AI 生成代码的供应链安全：谁来为\"幻觉代码\"负责",
+      "pv": 1,
+      "category": "开发者生态",
+      "tags": [
+        "AI编程",
+        "供应链安全",
+        "代码审计"
+      ],
+      "date": "2026-09-06"
+    },
+    {
+      "slug": "ai-search-2026-evolution",
+      "title": "AI 搜索的 2026：当\"搜索\"从链接分发变成答案生成，流量逻辑被改写",
+      "pv": 1,
+      "category": "互联网趋势",
+      "tags": [
+        "Perplexity",
+        "搜索引擎",
+        "流量"
+      ],
+      "date": "2026-09-07"
+    },
+    {
+      "slug": "edge-ai-chip-quad-battle",
+      "title": "端侧 AI 芯片四方混战：骁龙、天玑、酷睿与苹果的算力暗战",
+      "pv": 1,
+      "category": "半导体",
+      "tags": [
+        "骁龙",
+        "苹果",
+        "AI PC"
+      ],
+      "date": "2026-09-06"
+    },
+    {
+      "slug": "local-first-ai-agent-wave",
+      "title": "本地优先浪潮：隐私敏感时代，AI Agent 开始\"回家",
+      "pv": 1,
+      "category": "开发者生态",
+      "tags": [
+        "AI Agent",
+        "隐私计算",
+        "开源模型"
+      ],
+      "date": "2026-09-06"
+    },
+    {
+      "slug": "llm-api-price-war-round3",
+      "title": "大模型 API 价格战打到第三年：便宜之外还剩下什么",
+      "pv": 1,
+      "category": "人工智能",
+      "tags": [
+        "API价格",
+        "云计算",
+        "开发者生态"
+      ],
+      "date": "2026-09-06"
+    },
+    {
+      "slug": "deepseek-v4-1-preview",
+      "title": "DeepSeek V4.1 前瞻：开源、低价与\"斩杀线\"还能复制吗",
+      "pv": 1,
+      "category": "人工智能",
+      "tags": [
+        "DeepSeek",
+        "开源模型",
+        "API价格"
+      ],
+      "date": "2026-09-06"
+    },
+    {
+      "slug": "dimensity-9600-mediatek-challenge",
+      "title": "天玑 9600 与联发科的\"艰难时刻\"：从性价比之王到高端玩家的跨越",
+      "pv": 1,
+      "category": "半导体",
+      "tags": [
+        "天玑9600",
+        "手机芯片",
+        "端侧AI"
+      ],
+      "date": "2026-09-06"
+    },
+    {
+      "slug": "china-llm-systemic-competition",
+      "title": "八周连发五款：国产大模型进入体系化竞争的下半场",
+      "pv": 1,
+      "category": "人工智能",
+      "tags": [
+        "国产大模型",
+        "DeepSeek",
+        "通义千问",
+        "行业观察"
+      ],
+      "date": "2026-09-06"
+    },
+    {
+      "slug": "gpu-cloud-price-war",
+      "title": "GPU 云价格战与算力过剩：AI 基础设施从\"卖方市场\"转向\"买方市场",
+      "pv": 1,
+      "category": "云计算",
+      "tags": [
+        "算力",
+        "云计算",
+        "价格战"
+      ],
+      "date": "2026-09-07"
+    },
+    {
+      "slug": "nvidia-rubin-before-launch",
+      "title": "NVIDIA Rubin 量产前夜：架构换代背后的客户账",
+      "pv": 1,
+      "category": "半导体",
+      "tags": [
+        "Rubin",
+        "AI芯片",
+        "数据中心"
+      ],
+      "date": "2026-09-06"
+    },
+    {
+      "slug": "satellite-internet-batch-launch",
+      "title": "低轨卫星互联网进入\"批量发射\"时代：太空基建竞赛的里程碑",
+      "pv": 1,
+      "category": "卫星互联网",
+      "tags": [
+        "低轨星座",
+        "商业航天",
+        "太空经济"
+      ],
+      "date": "2026-09-06"
+    },
+    {
+      "slug": "agent-protocols-12-landscape",
+      "title": "A2A、AG-UI 与\"十二协议\"全景：AI Agent 互联的战国时代",
+      "pv": 1,
+      "category": "开发者生态",
+      "tags": [
+        "A2A",
+        "MCP",
+        "协议标准"
+      ],
+      "date": "2026-09-06"
+    },
+    {
+      "slug": "global-ai-regulation-compare",
+      "title": "全球 AI 监管四大流派：欧盟、美国、中国与\"轻监管\"阵营的分野",
+      "pv": 1,
+      "category": "AI监管",
+      "tags": [
+        "EU AI Act",
+        "数据合规",
+        "出海"
+      ],
+      "date": "2026-09-06"
+    },
+    {
+      "slug": "ai-coding-jobs-reality",
+      "title": "AI 会淘汰初级程序员吗\"：一个不那么焦虑的回答",
+      "pv": 1,
+      "category": "开发者生态",
+      "tags": [
+        "程序员职业",
+        "职业发展",
+        "技术随笔"
+      ],
+      "date": "2026-09-06"
+    },
+    {
+      "slug": "huawei-kirin-ascend-dual-chip",
+      "title": "华为\"双芯同发\"：麒麟 2026 与昇腾 9100 的协同棋局",
+      "pv": 1,
+      "category": "半导体",
+      "tags": [
+        "麒麟",
+        "昇腾",
+        "国产芯片"
+      ],
+      "date": "2026-09-06"
+    },
+    {
+      "slug": "windows-on-arm-2026-analysis",
+      "title": "骁龙 X Elite Gen 3 对打 Apple Silicon：Windows on Arm 翻盘的真正条件",
+      "pv": 1,
+      "category": "数码硬件",
+      "tags": [
+        "骁龙",
+        "Apple Silicon",
+        "PC"
+      ],
+      "date": "2026-09-06"
+    },
+    {
+      "slug": "ai-phone-agent-os-trend",
+      "title": "手机厂商集体押注\"智能体化 OS\"：下一代入口之争已经开打",
+      "pv": 1,
+      "category": "数码硬件",
+      "tags": [
+        "手机系统",
+        "AI Agent",
+        "行业观察"
+      ],
+      "date": "2026-09-06"
+    },
+    {
+      "slug": "rtx60-rumor-discipline",
+      "title": "RTX 60 系爆料满天飞，为什么现在就得\"打七折\"看",
+      "pv": 1,
+      "category": "半导体",
+      "tags": [
+        "RTX60",
+        "显卡",
+        "消费电子"
+      ],
+      "date": "2026-09-06"
+    },
+    {
+      "slug": "apple-foldable-iphone-analysis",
+      "title": "折叠屏 iPhone：苹果为什么必须做，以及它面对的难题",
+      "pv": 1,
+      "category": "数码硬件",
+      "tags": [
+        "折叠屏",
+        "iPhone",
+        "行业观察"
+      ],
+      "date": "2026-09-06"
+    },
+    {
+      "slug": "sora-shutdown-postmortem",
+      "title": "Sora 关停复盘：OpenAI 为何亲手埋葬\"视频 GPT",
+      "pv": 1,
+      "category": "人工智能",
+      "tags": [
+        "Sora",
+        "OpenAI",
+        "产品复盘"
+      ],
+      "date": "2026-09-06"
+    },
+    {
+      "slug": "domestic-ai-chip-share-rising",
+      "title": "国产 AI 加速卡份额超四成：昇腾生态的起飞与隐忧",
+      "pv": 1,
+      "category": "半导体",
+      "tags": [
+        "昇腾",
+        "算力",
+        "国产替代"
+      ],
+      "date": "2026-09-06"
+    },
+    {
+      "slug": "robotaxi-profitability-turning-point",
+      "title": "Robotaxi 的商业化拐点：无人驾驶出租车到底什么时候能赚钱",
+      "pv": 1,
+      "category": "自动驾驶",
+      "tags": [
+        "商业化",
+        "自动驾驶",
+        "出行经济"
+      ],
+      "date": "2026-09-06"
+    },
+    {
+      "slug": "humanoid-robot-funding-reality",
+      "title": "人形机器人融资热下的冷静账：数百亿资金在赌什么",
+      "pv": 1,
+      "category": "机器人",
+      "tags": [
+        "融资",
+        "具身智能",
+        "行业观察"
+      ],
+      "date": "2026-09-06"
+    },
+    {
+      "slug": "ai-video-commercialization",
+      "title": "AI 视频的商业化元年：广告、短剧与影视工业的\"降本实验",
+      "pv": 1,
+      "category": "人工智能",
+      "tags": [
+        "AIGC商业化",
+        "短剧",
+        "广告行业"
+      ],
+      "date": "2026-09-07"
+    },
+    {
+      "slug": "gemini-3-8-flash-analysis",
+      "title": "Gemini 3.8 Flash：轻量模型的迭代竞赛，赢家不是跑分",
+      "pv": 1,
+      "category": "人工智能",
+      "tags": [
+        "Google",
+        "Gemini",
+        "轻量模型"
+      ],
+      "date": "2026-09-06"
+    },
+    {
+      "slug": "prompt-injection-ai-security",
+      "title": "提示注入与 Agent 安全：当 AI 会\"被骗\"时，应用如何自保",
+      "pv": 1,
+      "category": "AI安全",
+      "tags": [
+        "提示注入",
+        "Agent",
+        "网络安全"
+      ],
+      "date": "2026-09-07"
+    },
+    {
+      "slug": "openai-codex-trust-crisis",
+      "title": "OpenAI Codex 的\"计费信任危机\"：当 AI 编程开始偷偷烧钱",
+      "pv": 1,
+      "category": "开发者生态",
+      "tags": [
+        "Codex",
+        "API计费",
+        "AI编程"
+      ],
+      "date": "2026-09-06"
+    },
+    {
+      "slug": "gpt-6-astra-analysis",
+      "title": "GPT-6 Astra 发布：当 OpenAI 把\"智能上限\"写进名字",
+      "pv": 1,
+      "category": "人工智能",
+      "tags": [
+        "OpenAI",
+        "GPT-6",
+        "行业观察"
+      ],
+      "date": "2026-09-06"
+    },
+    {
+      "slug": "ai-content-labeling-deepfake-era",
+      "title": "AI 生成内容标识\"进入深水区：内容水印、溯源与深度伪造的攻防",
+      "pv": 1,
+      "category": "AI监管",
+      "tags": [
+        "深度伪造",
+        "C2PA",
+        "AIGC治理"
+      ],
+      "date": "2026-09-06"
+    },
+    {
+      "slug": "memory-storage-supercycle-2026",
+      "title": "存储的\"超级周期\"：HBM 与 AI 之外，内存厂商才是最大赢家？",
+      "pv": 1,
+      "category": "半导体",
+      "tags": [
+        "HBM",
+        "DRAM",
+        "涨价周期"
+      ],
+      "date": "2026-09-07"
+    },
+    {
+      "slug": "amd-mi450-power-war",
+      "title": "AMD MI450 逼宫：AI 芯片的竞争从\"拼算力\"转向\"拼功耗",
+      "pv": 1,
+      "category": "半导体",
+      "tags": [
+        "MI450",
+        "NVIDIA",
+        "AI芯片"
+      ],
+      "date": "2026-09-06"
+    },
+    {
+      "slug": "eu-ai-act-full-enforcement",
+      "title": "EU AI Act 全面落地：全球最严 AI 监管进入执行期，出海者准备好了吗",
+      "pv": 1,
+      "category": "AI监管",
+      "tags": [
+        "AI监管",
+        "出海合规",
+        "数据合规"
+      ],
+      "date": "2026-09-06"
+    },
+    {
+      "slug": "apple-2026-sept-event-preview",
+      "title": "苹果 2026 秋季发布会前瞻：折叠 iPhone、2nm 与新时代的首秀",
+      "pv": 1,
+      "category": "数码硬件",
+      "tags": [
+        "iPhone",
+        "折叠屏",
+        "发布会"
+      ],
+      "date": "2026-09-06"
+    },
+    {
+      "slug": "robotaxi-duel-baidu-waymo",
+      "title": "Robotaxi 双雄对决：萝卜快跑与 Waymo 的全球棋局",
+      "pv": 1,
+      "category": "自动驾驶",
+      "tags": [
+        "Waymo",
+        "Robotaxi",
+        "百度"
+      ],
+      "date": "2026-09-06"
+    },
+    {
+      "slug": "claude-fable-5-1-analysis",
+      "title": "Claude Fable 5.1：八项屠榜与最高 45% 降价的组合拳",
+      "pv": 1,
+      "category": "人工智能",
+      "tags": [
+        "Anthropic",
+        "Claude",
+        "API价格"
+      ],
+      "date": "2026-09-06"
+    },
+    {
+      "slug": "tesla-cybercab-public-service",
+      "title": "特斯拉 Cybercab 开放公众服务：方向盘消失的\"行业时刻",
+      "pv": 1,
+      "category": "自动驾驶",
+      "tags": [
+        "Cybercab",
+        "Robotaxi",
+        "自动驾驶"
+      ],
+      "date": "2026-09-06"
+    },
+    {
+      "slug": "advanced-packaging-hbm-main-battlefield",
+      "title": "先进封装与 HBM：后摩尔时代硬科技的主战场",
+      "pv": 1,
+      "category": "半导体",
+      "tags": [
+        "HBM",
+        "先进封装",
+        "芯片制造"
+      ],
+      "date": "2026-09-06"
+    },
+    {
+      "slug": "ai-glasses-2026-roundup",
+      "title": "AI 眼镜的 2026：新品井喷之后，到底该怎么选",
+      "pv": 1,
+      "category": "数码硬件",
+      "tags": [
+        "智能穿戴",
+        "消费电子",
+        "选购指南"
+      ],
+      "date": "2026-09-06"
+    },
+    {
+      "slug": "ai-cli-tool-wars",
+      "title": "AI CLI 大混战：Claude Code、Codex、Gemini CLI……终端为何成为兵家必争之地",
+      "pv": 1,
+      "category": "开发者生态",
+      "tags": [
+        "Claude Code",
+        "Codex",
+        "命令行工具"
+      ],
+      "date": "2026-09-06"
+    },
+    {
+      "slug": "apple-drops-standard-iphone18",
+      "title": "苹果要砍掉标准版 iPhone 18？产品矩阵重构背后的三个信号",
+      "pv": 1,
+      "category": "数码硬件",
+      "tags": [
+        "iPhone18",
+        "产品策略",
+        "行业观察"
+      ],
+      "date": "2026-09-06"
+    },
+    {
+      "slug": "datacenter-power-nuclear-resurgence",
+      "title": "AI 的\"电力瓶颈\"与核电回潮：算力狂飙背后的能源大考",
+      "pv": 1,
+      "category": "互联网趋势",
+      "tags": [
+        "AI算力",
+        "能源",
+        "核电"
+      ],
+      "date": "2026-09-06"
+    },
+    {
+      "slug": "china-commercial-space-2026",
+      "title": "中国商业航天 2026：可回收火箭与星座需求的双轮驱动",
+      "pv": 1,
+      "category": "卫星互联网",
+      "tags": [
+        "可回收火箭",
+        "火箭",
+        "太空经济"
+      ],
+      "date": "2026-09-06"
+    },
+    {
+      "slug": "claude-code-vs-cursor-2026",
+      "title": "Claude Code 与 Cursor 的 2026：终端强 Agent 与 AI 原生编辑器的路线之争",
+      "pv": 1,
+      "category": "开发者生态",
+      "tags": [
+        "Cursor",
+        "AI编程",
+        "开发工具"
+      ],
+      "date": "2026-09-06"
+    },
+    {
+      "slug": "embodied-ai-2026-trends",
+      "title": "具身智能 2026 六大趋势：从\"造人形\"转向\"抢落地",
+      "pv": 1,
+      "category": "机器人",
+      "tags": [
+        "人形机器人",
+        "VLA",
+        "行业趋势"
+      ],
+      "date": "2026-09-06"
     }
   ],
   "updated_at": "2026-09-05"
