@@ -15,3 +15,4 @@ stats-manager.ps1
 _write_bat.ps1
 _convert.ps1
 _stats-manager-utf8.bat
+.codebuddy/
