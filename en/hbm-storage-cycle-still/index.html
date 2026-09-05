@@ -1,0 +1,218 @@
+<!DOCTYPE html><html lang="[&quot;zh-CN&quot;,&quot;en&quot;,&quot;zh-TW&quot;,&quot;ja&quot;,&quot;ko&quot;,&quot;fr&quot;,&quot;de&quot;,&quot;es&quot;,&quot;ru&quot;,&quot;pt&quot;,&quot;ar&quot;,&quot;hi&quot;,&quot;it&quot;,&quot;th&quot;,&quot;vi&quot;,&quot;id&quot;,&quot;tr&quot;,&quot;uk&quot;,&quot;pl&quot;,&quot;nl&quot;]" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>HBM 与存储超级周期：涨价会持续多久 | Yzy15's Blog - 技术分享与生活记录</title><meta name="author" content="mc-yzy15"><meta name="copyright" content="mc-yzy15"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="HBM 供不应求把整个存储行业拖入&quot;超级周期&quot;，DRAM、NAND 价格连番上涨。这轮涨价的驱动力、持续时间与见顶信号是什么？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HBM 与存储超级周期：涨价会持续多久">
+<meta property="og:url" content="https://blogs.yzy15.dpdns.org/en/hbm-storage-cycle-still/">
+<meta property="og:site_name" content="Yzy15&#39;s Blog - 技术分享与生活记录">
+<meta property="og:description" content="HBM 供不应求把整个存储行业拖入&quot;超级周期&quot;，DRAM、NAND 价格连番上涨。这轮涨价的驱动力、持续时间与见顶信号是什么？">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://blogs.yzy15.dpdns.org/img/butterfly-icon.png">
+<meta property="article:published_time" content="2026-09-06T13:30:00.000Z">
+<meta property="article:modified_time" content="2026-09-05T19:31:53.649Z">
+<meta property="article:author" content="mc-yzy15">
+<meta property="article:tag" content="HBM">
+<meta property="article:tag" content="半导体周期">
+<meta property="article:tag" content="存储芯片">
+<meta property="article:tag" content="涨价">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://blogs.yzy15.dpdns.org/img/favicon.ico">
+<meta name="twitter:site" content="@mc_yzy15"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "HBM 与存储超级周期：涨价会持续多久",
+  "url": "https://blogs.yzy15.dpdns.org/hbm-storage-cycle-still/",
+  "image": "https://blogs.yzy15.dpdns.org/img/butterfly-icon.png",
+  "datePublished": "2026-09-06T13:30:00.000Z",
+  "dateModified": "2026-09-05T19:31:53.649Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "mc-yzy15",
+      "url": "https://yzy15.dpdns.org"
+    }
+  ]
+}
+</script><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Yzy15's Blog - 技术分享与生活记录",
+      "item": "https://blogs.yzy15.dpdns.org/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "人工智能",
+      "item": "https://blogs.yzy15.dpdns.org/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "HBM 与存储超级周期：涨价会持续多久",
+      "item": "https://blogs.yzy15.dpdns.org/hbm-storage-cycle-still/"
+    }
+  ]
+}
+</script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://blogs.yzy15.dpdns.org/en/hbm-storage-cycle-still/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.9/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-HK1JGTYX4N"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-HK1JGTYX4N')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-HK1JGTYX4N', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'HBM 与存储超级周期：涨价会持续多久',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 8.1.1"><link rel="alternate" href="/atom.xml" title="Yzy15's Blog - 技术分享与生活记录" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">221</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">472</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">21</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/homepage/"><i class="fa-fw fas fa-globe"></i><span> Homepage</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/stats/"><i class="fa-fw fas fa-chart-bar"></i><span> Stats</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Yzy15's Blog - 技术分享与生活记录</span></a><a class="nav-page-title" href="/"><span class="site-name">HBM 与存储超级周期：涨价会持续多久</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  Back to Home</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/homepage/"><i class="fa-fw fas fa-globe"></i><span> Homepage</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/stats/"><i class="fa-fw fas fa-chart-bar"></i><span> Stats</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">HBM 与存储超级周期：涨价会持续多久</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2026-09-06T13:30:00.000Z" title="Created 2026-09-06 21:30:00">2026-09-06</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2026-09-05T19:31:53.649Z" title="Updated 2026-09-06 03:31:53">2026-09-06</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="HBM-与存储超级周期：涨价会持续多久"><a href="#HBM-与存储超级周期：涨价会持续多久" class="headerlink" title="HBM 与存储超级周期：涨价会持续多久"></a>HBM 与存储超级周期：涨价会持续多久</h1><p>2026 年，存储芯片行业正经历一轮被称作”超级周期”的涨价行情。源头只有一个：<strong>AI 服务器对 HBM（高带宽内存）近乎贪婪的需求</strong>，把整个存储行业的产能、价格与投资节奏全部改写。</p>
+<h2 id="涨价是怎么传导的"><a href="#涨价是怎么传导的" class="headerlink" title="涨价是怎么传导的"></a>涨价是怎么传导的</h2><p>HBM 的制造要占用最先进的 DRAM 产能，而 AI 芯片对 HBM 的需求吃掉了存储大厂新增的先进产能。结果就是：HBM 越紧张，普通 DRAM 的产能就越被挤占；再加上手机、PC 需求回暖与厂商的减产自律，<strong>从 HBM 到 DRAM 再到 NAND 的价格被层层推高</strong>。这轮涨价不是单一产品的事件，而是整个存储产业链的重新定价。</p>
+<h2 id="这轮周期与以往有何不同"><a href="#这轮周期与以往有何不同" class="headerlink" title="这轮周期与以往有何不同"></a>这轮周期与以往有何不同</h2><p>历史上存储是典型的强周期行业：暴涨暴跌、厂商扩产、然后过剩崩盘。但这次有几个新变量：</p>
+<ol>
+<li><strong>AI 需求是结构性而非库存性的</strong>：此前的周期由消费电子库存驱动，这轮由数据中心算力扩张驱动，需求曲线更陡、更持久；</li>
+<li><strong>供给端高度集中且克制</strong>：三大原厂经历上一轮亏损后扩产谨慎，更倾向于把产能导向利润更高的 HBM；</li>
+<li><strong>HBM 产能爬坡慢</strong>：先进封装与良率是硬约束，短期供给弹性极低。</li>
+</ol>
+<h2 id="涨价会持续多久"><a href="#涨价会持续多久" class="headerlink" title="涨价会持续多久"></a>涨价会持续多久</h2><p>判断拐点要看三个信号：</p>
+<ol>
+<li><strong>AI 资本开支</strong>：云厂商与算力巨头的 capex 一旦见顶回落，HBM 需求增速就会放缓——这是最根本的变量；</li>
+<li><strong>新增产能投放</strong>：2026-2027 年各大厂的新工厂与 HBM 扩产陆续落地，供给曲线会逐步抬升；</li>
+<li><strong>价格容忍度</strong>：当存储成本涨到终端厂商受不了、开始削减配置或寻找替代方案时，涨价就会遇到阻力。</li>
+</ol>
+<p>多数分析认为，<strong>超级周期的高景气至少会延续到新产能集中释放之前</strong>，但”周期”之所以叫周期，是因为它终将均值回归——区别只是这轮景气能撑多久、回落是硬着陆还是软着陆。</p>
+<h2 id="对产业链各方的含义"><a href="#对产业链各方的含义" class="headerlink" title="对产业链各方的含义"></a>对产业链各方的含义</h2><p>对原厂，这是利润与现金流的历史级丰收，但也考验其是否重蹈”景气时疯狂扩产、低谷时产能过剩”的覆辙；对下游（手机、PC、服务器），成本压力将传导到终端价格；对投资者与采购方，与其猜测顶在哪，不如盯紧 AI capex 与产能投放两个先行指标。<strong>存储超级周期提醒我们：AI 的尽头不只有芯片，还有每一颗喂给芯片的内存。</strong></p>
+<blockquote>
+<p>**说明：**本文为半导体行业周期分析，价格走势以市场实际数据为准。</p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a target="_blank" rel="noopener" href="https://yzy15.dpdns.org">mc-yzy15</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="https://blogs.yzy15.dpdns.org/hbm-storage-cycle-still/">https://blogs.yzy15.dpdns.org/hbm-storage-cycle-still/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles on this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless otherwise stated. <strong>No commercial use</strong>. Please attribute the source: <a href="https://blogs.yzy15.dpdns.org">Yzy15's Blog - 技术分享与生活记录</a>.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/HBM/">HBM</a><a class="post-meta__tags" href="/tags/%E5%AD%98%E5%82%A8%E8%8A%AF%E7%89%87/">存储芯片</a><a class="post-meta__tags" href="/tags/%E6%B6%A8%E4%BB%B7/">涨价</a><a class="post-meta__tags" href="/tags/%E5%8D%8A%E5%AF%BC%E4%BD%93%E5%91%A8%E6%9C%9F/">半导体周期</a></div><div class="post-share"><div class="social-share" data-image="/img/butterfly-icon.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>感谢您的支持，您的赞赏是我持续创作的动力！</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://img.cdn1.vip/i/69ed1d29274a9_1777147177.webp" target="_blank"><img class="post-qr-code-img" src="https://img.cdn1.vip/i/69ed1d29274a9_1777147177.webp" alt="微信赞赏"/ loading='lazy'></a><div class="post-qr-code-desc">微信赞赏</div></li></ul></div></div><div class="rec-card ad-slot ad-placement"><div style="text-align:center;padding:20px 10px;border:2px dashed #ff6b6b;border-radius:8px;margin:0 auto;background:linear-gradient(135deg,#fff5f5,#ffe0e0);"><div style="font-size:18px;font-weight:bold;color:#ff6b6b;">☁️ 南影云 - 高性价比云服务器</div><div style="font-size:13px;color:#555;margin-top:8px;">上万台服务器 | T+级DDoS防护 | 无限防CC</div><div style="font-size:13px;color:#555;margin-top:4px;">🎁 通过下方链接注册享专属优惠</div><div style="margin-top:10px;"><a href="https://idc.ofoca.net/aff/PJQGAEKY" target="_blank" rel="noopener" style="display:inline-block;padding:8px 24px;background:#ff6b6b;color:#fff;border-radius:20px;text-decoration:none;font-size:14px;font-weight:bold;">立即注册领优惠</a></div><div style="font-size:11px;color:#999;margin-top:6px;">注册后联系博主可再领额外折扣</div></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/robotaxi-unit-economics/" title="Robotaxi 单车经济模型拆解"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">Previous</div><div class="info-item-2">Robotaxi 单车经济模型拆解</div></div><div class="info-2"><div class="info-item-1">Robotaxi 单车经济模型拆解Robotaxi 行业讲了很多年故事，但所有故事最终都要落到一个朴素的账本上：一辆无人驾驶出租车，一天跑多少钱、花多少钱，能不能赚回来？ 拆解单车经济模型，才能看清这个行业离”赚钱”还有多远。 收入端：一辆 Robotaxi 一天能赚多少Robotaxi 的收入取决于三件事：  运营时长：无人驾驶最大的优势是可以 24 小时运营——不需要司机休息，理论上运营时长是传统网约车的两倍左右； 客单价与满载率：客单价由市场定价决定，满载率（每小时的接单量）取决于供需匹配效率与区域订单密度； 定价策略：早期为了抢市场通常低于网约车，后期需要逐步回归市场化定价——收入的天花板取决于”无人化省下的成本”能否转化为利润而非补贴。  成本端：最大的变量是折旧Robotaxi 的成本结构与传统网约车有本质差异：  车辆成本与折旧：Robotaxi 的整车成本（含传感器与计算平台）远高于普通车，尽管无方向盘、双座化在压低成本，但高昂的初始投入意味着折旧是成本大头——车辆利用率越高，单车折旧摊得越薄； 运营维护成本：充电、清洁、维修、远程监控团队——去掉司机后，这些”车...</div></div></div></a><a class="pagination-related" href="/deepfake-election-defense/" title="深度伪造与信息战：2026 的治理考题"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">Next</div><div class="info-item-2">深度伪造与信息战：2026 的治理考题</div></div><div class="info-2"><div class="info-item-1">深度伪造与信息战：2026 的治理考题“有图有真相”的时代已经终结。2026 年，随着 AI 生成视频与语音的质量逼近真实，深度伪造（Deepfake）不再只是娱乐与恶搞的工具，而是信息战与舆论操纵的武器：伪造的政要讲话、虚假的突发事件视频、批量生成的谣言内容，正在以空前的规模与速度冲击公共信息环境。 深度伪造的威胁为什么在升级与早期的粗糙换脸不同，新一代深度伪造的威胁性大幅提升：  质量门槛的消失：生成工具让任何人（而不只是技术高手）都能制作以假乱真的内容——攻击成本趋近于零； 时效性的武器化：在突发事件的”黄金一小时”，一条伪造视频足以在事实澄清前完成舆论引导——谎言跑得比辟谣快； 规模化的量产：AI 可以批量生成变体内容（同一谣言换不同面孔、语言、平台发布），让传统的”删帖封号”式应对应接不暇。  治理的三条战线对抗深度伪造的信息战，需要在三条战线上同时发力：  检测技术：AI 生成内容的检测（鉴别伪造视频、识别水印与生成痕迹）在持续进步，但这是”猫鼠游戏”——检测永远滞后于生成，需要与生成技术赛跑； 法律与标识：强制 AI 内容标识、将恶意深度伪造入罪、要求平台对高风险内...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/hbm-storage-cycle-still/" title="HBM 与存储超级周期：涨价会持续多久"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-06</div><div class="info-item-2">HBM 与存储超级周期：涨价会持续多久</div></div><div class="info-2"><div class="info-item-1">HBM 与存储超级周期：涨价会持续多久2026 年，存储芯片行业正经历一轮被称作”超级周期”的涨价行情。源头只有一个：AI 服务器对 HBM（高带宽内存）近乎贪婪的需求，把整个存储行业的产能、价格与投资节奏全部改写。 涨价是怎么传导的HBM 的制造要占用最先进的 DRAM 产能，而 AI 芯片对 HBM 的需求吃掉了存储大厂新增的先进产能。结果就是：HBM 越紧张，普通 DRAM 的产能就越被挤占；再加上手机、PC 需求回暖与厂商的减产自律，从 HBM 到 DRAM 再到 NAND 的价格被层层推高。这轮涨价不是单一产品的事件，而是整个存储产业链的重新定价。 这轮周期与以往有何不同历史上存储是典型的强周期行业：暴涨暴跌、厂商扩产、然后过剩崩盘。但这次有几个新变量：  AI 需求是结构性而非库存性的：此前的周期由消费电子库存驱动，这轮由数据中心算力扩张驱动，需求曲线更陡、更持久； 供给端高度集中且克制：三大原厂经历上一轮亏损后扩产谨慎，更倾向于把产能导向利润更高的 HBM； HBM 产能爬坡慢：先进封装与良率是硬约束，短期供给弹性极低。  涨价会持续多久判断拐点要看三个信号：  A...</div></div></div></a><a class="pagination-related" href="/memory-storage-supercycle-2026/" title="存储的&quot;超级周期&quot;：HBM 与 AI 之外，内存厂商才是最大赢家？"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-07</div><div class="info-item-2">存储的&quot;超级周期&quot;：HBM 与 AI 之外，内存厂商才是最大赢家？</div></div><div class="info-2"><div class="info-item-1">存储的”超级周期”：HBM 与 AI 之外，内存厂商才是最大赢家？当所有人都在盯着 AI 芯片的算力数字时，半导体行业里最”闷声发大财”的板块，可能是听起来最不性感的存储。2026 年，DRAM（内存）与 NAND（闪存）价格进入新一轮显著上行周期，存储厂商的财报一片飘红，”存储超级周期”成为行业最热的关键词之一。一个反直觉的真相逐渐清晰：在 AI 时代，卖”记忆”的厂商，赚得可能比卖”算力”的还稳。 AI 如何重塑存储的供需逻辑过去存储是典型的”周期股”行业——产能扩张与收缩的周期循环，价格随之大起大落。但 AI 的出现，从根上改写了它的供需结构：  需求端：AI 是”吃存储的怪兽”。 大模型训练要海量数据吞吐、推理要超大内存带宽、用户数据的沉淀无穷无尽——AI 的每个环节都在消耗存储。更关键的是，AI 服务器对存储的配置要求远超传统服务器，单台 AI 服务器的 DRAM 用量是普通服务器的数倍； 供给端：产能被”战略克制”。 经历过前几轮价格崩盘后，存储巨头们在扩产上极度谨慎，把更多先进产能投向利润更高的 HBM 等高附加值产品，普通 DRAM&#x2F;NAND 的供给因此...</div></div></div></a><a class="pagination-related" href="/advanced-packaging-hbm-main-battlefield/" title="先进封装与 HBM：后摩尔时代硬科技的主战场"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-06</div><div class="info-item-2">先进封装与 HBM：后摩尔时代硬科技的主战场</div></div><div class="info-2"><div class="info-item-1">先进封装与 HBM：后摩尔时代硬科技的主战场这几年半导体圈流传一句话：”摩尔定律没死，只是换了个地方继续。”制程微缩的速度确实在放缓——往 2nm 以下每走一步，物理和成本的双重阻力都陡增。但芯片的性能还在涨，因为接力棒交到了另外两件事手上：先进封装和 HBM（高带宽存储）。在 2026 年，这两者几乎已经取代制程竞赛，成为半导体产业最激烈的正面战场。 为什么封装突然成了主角传统思路里，封装就是把做好的芯片”包起来、接上线”，是产业链里最没技术含量的一环。但 AI 时代彻底改写了剧本： 大模型训练和推理需要海量数据在”计算单元”和”存储”之间高速搬运。当单颗芯片的算力涨到一定程度，”算得动但喂不饱”就成了瓶颈——数据搬运速度跟不上计算速度。于是，把多颗芯片封装在一起、让它们之间用极短路径高速通信的 2.5D&#x2F;3D 先进封装技术（台积电的 CoWoS 是代表），成了突破瓶颈的关键。台积电 CoWoS 产能这几年被英伟达、AMD 抢到排队，就是这个逻辑。 HBM：存储界的”新石油”HBM 是把多层 DRAM 像盖楼一样垂直堆叠、再与 GPU 封装在一起的”高带宽存储”，它是...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">mc-yzy15</div><div class="author-info-description">Yzy15的个人博客 | 技术教程 · 编程经验 · 学习笔记</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">221</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">472</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">21</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/mc-yzy15"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://yzy15.dpdns.org" target="_blank" title="个人主页"><i class="fas fa-home" style="color: #ff6600;"></i></a><a class="social-icon" href="https://github.com/mc-yzy15" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:yingmoliuguang@yeah.net" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a><a class="social-icon" href="https://space.bilibili.com/1338637552" target="_blank" title="Bilibili"><i class="fab fa-bilibili" style="color: #00a1d6;"></i></a><a class="social-icon" href="https://t.me/ShuangXiang_Dddddavidd_bot" target="_blank" title="Telegram"><i class="fab fa-telegram" style="color: #0088cc;"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="RSS"><i class="fas fa-rss" style="color: #ff6600;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到我的博客！这里记录着我的技术分享和生活点滴~<br>📢 <a href="/link/">广告位招租</a> | 💼 商业合作见<a href="/link/">友链页</a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#HBM-%E4%B8%8E%E5%AD%98%E5%82%A8%E8%B6%85%E7%BA%A7%E5%91%A8%E6%9C%9F%EF%BC%9A%E6%B6%A8%E4%BB%B7%E4%BC%9A%E6%8C%81%E7%BB%AD%E5%A4%9A%E4%B9%85"><span class="toc-number">1.</span> <span class="toc-text">HBM 与存储超级周期：涨价会持续多久</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B6%A8%E4%BB%B7%E6%98%AF%E6%80%8E%E4%B9%88%E4%BC%A0%E5%AF%BC%E7%9A%84"><span class="toc-number">1.1.</span> <span class="toc-text">涨价是怎么传导的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%99%E8%BD%AE%E5%91%A8%E6%9C%9F%E4%B8%8E%E4%BB%A5%E5%BE%80%E6%9C%89%E4%BD%95%E4%B8%8D%E5%90%8C"><span class="toc-number">1.2.</span> <span class="toc-text">这轮周期与以往有何不同</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B6%A8%E4%BB%B7%E4%BC%9A%E6%8C%81%E7%BB%AD%E5%A4%9A%E4%B9%85"><span class="toc-number">1.3.</span> <span class="toc-text">涨价会持续多久</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9%E4%BA%A7%E4%B8%9A%E9%93%BE%E5%90%84%E6%96%B9%E7%9A%84%E5%90%AB%E4%B9%89"><span class="toc-number">1.4.</span> <span class="toc-text">对产业链各方的含义</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/ai-search-2026-evolution/" title="AI 搜索的 2026：当&quot;搜索&quot;从链接分发变成答案生成，流量逻辑被改写">AI 搜索的 2026：当&quot;搜索&quot;从链接分发变成答案生成，流量逻辑被改写</a><time datetime="2026-09-07T02:20:00.000Z" title="发表于 2026-09-07 10:20:00">2026-09-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/ai-video-commercialization/" title="AI 视频的商业化元年：广告、短剧与影视工业的&quot;降本实验&quot;">AI 视频的商业化元年：广告、短剧与影视工业的&quot;降本实验&quot;</a><time datetime="2026-09-07T02:00:00.000Z" title="发表于 2026-09-07 10:00:00">2026-09-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/prompt-injection-ai-security/" title="提示注入与 Agent 安全：当 AI 会&quot;被骗&quot;时，应用如何自保">提示注入与 Agent 安全：当 AI 会&quot;被骗&quot;时，应用如何自保</a><time datetime="2026-09-07T01:40:00.000Z" title="发表于 2026-09-07 09:40:00">2026-09-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/memory-storage-supercycle-2026/" title="存储的&quot;超级周期&quot;：HBM 与 AI 之外，内存厂商才是最大赢家？">存储的&quot;超级周期&quot;：HBM 与 AI 之外，内存厂商才是最大赢家？</a><time datetime="2026-09-07T01:20:00.000Z" title="发表于 2026-09-07 09:20:00">2026-09-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/gpu-cloud-price-war/" title="GPU 云价格战与算力过剩：AI 基础设施从&quot;卖方市场&quot;转向&quot;买方市场&quot;">GPU 云价格战与算力过剩：AI 基础设施从&quot;卖方市场&quot;转向&quot;买方市场&quot;</a><time datetime="2026-09-07T01:00:00.000Z" title="发表于 2026-09-07 09:00:00">2026-09-07</time></div></div></div></div><div class="card-widget rec-card"><div style="text-align:center;padding:18px 10px;border:2px dashed #49b1f5;border-radius:8px;margin:0 auto;background:linear-gradient(135deg,#f0f9ff,#e0f2fe);"><div style="font-size:16px;font-weight:bold;color:#49b1f5;">☁️ 南影云 - 高性价比云服务器</div><div style="font-size:12px;color:#555;margin-top:6px;">上万台服务器 | T+级DDoS防护 | 无限防CC</div><div style="font-size:12px;color:#555;margin-top:4px;">🎁 通过下方链接注册享专属优惠</div><div style="margin-top:8px;"><a href="https://idc.ofoca.net/aff/PJQGAEKY" target="_blank" rel="noopener" style="display:inline-block;padding:6px 20px;background:#49b1f5;color:#fff;border-radius:16px;text-decoration:none;font-size:13px;font-weight:bold;">立即注册领优惠</a></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By mc-yzy15</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.1</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Reading Mode"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="Toggle Between Traditional and Simplified Chinese">繁</button><button id="darkmode" type="button" title="Toggle Between Light and Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle Between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Settings"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back to Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><script src="/js/tw_cn.js?v=5.5.4"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.9/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><div class="js-pjax"></div><script src="/js/webinfo-stats.js"></script><div class="ad-banner sponsor" style="text-align:center;padding:12px 10px;margin:10px auto;max-width:728px;background:linear-gradient(135deg,#fff5f5,#ffe0e0);border:1px solid<script src="/js/content-loader.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

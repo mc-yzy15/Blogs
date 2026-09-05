@@ -1,0 +1,223 @@
+<!DOCTYPE html><html lang="[&quot;zh-CN&quot;,&quot;en&quot;,&quot;zh-TW&quot;,&quot;ja&quot;,&quot;ko&quot;,&quot;fr&quot;,&quot;de&quot;,&quot;es&quot;,&quot;ru&quot;,&quot;pt&quot;,&quot;ar&quot;,&quot;hi&quot;,&quot;it&quot;,&quot;th&quot;,&quot;vi&quot;,&quot;id&quot;,&quot;tr&quot;,&quot;uk&quot;,&quot;pl&quot;,&quot;nl&quot;]" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>测试先行：让 AI Agent 少写 Bug 的工作流设计 | Yzy15's Blog - 技术分享与生活记录</title><meta name="author" content="mc-yzy15"><meta name="copyright" content="mc-yzy15"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="AI 生成的代码漏洞率高，根本原因之一是&quot;没有反馈闭环&quot;。把&quot;先写测试再写实现&quot;嵌入 Agent 工作流，用测试当裁判，可以让 AI 在犯错的第一时间自我修正——本文给出具体设计。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="测试先行：让 AI Agent 少写 Bug 的工作流设计">
+<meta property="og:url" content="https://blogs.yzy15.dpdns.org/ja/testing-first-agent-workflow/">
+<meta property="og:site_name" content="Yzy15&#39;s Blog - 技术分享与生活记录">
+<meta property="og:description" content="AI 生成的代码漏洞率高，根本原因之一是&quot;没有反馈闭环&quot;。把&quot;先写测试再写实现&quot;嵌入 Agent 工作流，用测试当裁判，可以让 AI 在犯错的第一时间自我修正——本文给出具体设计。">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://blogs.yzy15.dpdns.org/img/butterfly-icon.png">
+<meta property="article:published_time" content="2026-09-06T01:40:00.000Z">
+<meta property="article:modified_time" content="2026-09-05T19:31:53.654Z">
+<meta property="article:author" content="mc-yzy15">
+<meta property="article:tag" content="AI编程">
+<meta property="article:tag" content="Agent工作流">
+<meta property="article:tag" content="工程实践">
+<meta property="article:tag" content="测试">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://blogs.yzy15.dpdns.org/img/favicon.ico">
+<meta name="twitter:site" content="@mc_yzy15"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "测试先行：让 AI Agent 少写 Bug 的工作流设计",
+  "url": "https://blogs.yzy15.dpdns.org/testing-first-agent-workflow/",
+  "image": "https://blogs.yzy15.dpdns.org/img/butterfly-icon.png",
+  "datePublished": "2026-09-06T01:40:00.000Z",
+  "dateModified": "2026-09-05T19:31:53.654Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "mc-yzy15",
+      "url": "https://yzy15.dpdns.org"
+    }
+  ]
+}
+</script><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Yzy15's Blog - 技术分享与生活记录",
+      "item": "https://blogs.yzy15.dpdns.org/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "开发者生态",
+      "item": "https://blogs.yzy15.dpdns.org/categories/%E5%BC%80%E5%8F%91%E8%80%85%E7%94%9F%E6%80%81/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "测试先行：让 AI Agent 少写 Bug 的工作流设计",
+      "item": "https://blogs.yzy15.dpdns.org/testing-first-agent-workflow/"
+    }
+  ]
+}
+</script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://blogs.yzy15.dpdns.org/ja/testing-first-agent-workflow/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.9/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-HK1JGTYX4N"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-HK1JGTYX4N')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-HK1JGTYX4N', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '测试先行：让 AI Agent 少写 Bug 的工作流设计',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 8.1.1"><link rel="alternate" href="/atom.xml" title="Yzy15's Blog - 技术分享与生活记录" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">221</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">472</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">21</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/homepage/"><i class="fa-fw fas fa-globe"></i><span> Homepage</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/stats/"><i class="fa-fw fas fa-chart-bar"></i><span> Stats</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Yzy15's Blog - 技术分享与生活记录</span></a><a class="nav-page-title" href="/"><span class="site-name">测试先行：让 AI Agent 少写 Bug 的工作流设计</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  ホームに戻る</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/homepage/"><i class="fa-fw fas fa-globe"></i><span> Homepage</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/stats/"><i class="fa-fw fas fa-chart-bar"></i><span> Stats</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">测试先行：让 AI Agent 少写 Bug 的工作流设计</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">作成日</span><time class="post-meta-date-created" datetime="2026-09-06T01:40:00.000Z" title="作成日 2026-09-06 09:40:00">2026-09-06</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新日</span><time class="post-meta-date-updated" datetime="2026-09-05T19:31:53.654Z" title="更新日 2026-09-06 03:31:53">2026-09-06</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%BC%80%E5%8F%91%E8%80%85%E7%94%9F%E6%80%81/">开发者生态</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">閲覧数:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="测试先行：让-AI-Agent-少写-Bug-的工作流设计"><a href="#测试先行：让-AI-Agent-少写-Bug-的工作流设计" class="headerlink" title="测试先行：让 AI Agent 少写 Bug 的工作流设计"></a>测试先行：让 AI Agent 少写 Bug 的工作流设计</h1><p>面对 AI 生成代码 40%-62% 的漏洞率，业界有个朴素但有效的答案：<strong>让测试当裁判。</strong> 人类程序员用 TDD 减少 Bug 已经几十年，这套逻辑对 AI 同样成立——而且因为 AI 没有”自尊心”，它比人类更适合”先写测试再写实现”的流程。</p>
+<h2 id="为什么-AI-写代码需要”测试先行”"><a href="#为什么-AI-写代码需要”测试先行”" class="headerlink" title="为什么 AI 写代码需要”测试先行”"></a>为什么 AI 写代码需要”测试先行”</h2><p>AI 生成代码最大的问题是缺乏反馈：它写出一个函数，自己并不知道对不对，只能”看起来对”就交差。而测试先行恰恰弥补了这个缺陷：</p>
+<ol>
+<li><strong>明确验收标准</strong>：测试定义了”什么叫做完”，AI 不再靠猜；</li>
+<li><strong>形成纠错闭环</strong>：AI 写完实现后跑测试，红了就自己修，直到全绿——把”事后人工发现 Bug”变成”过程中自动纠错”；</li>
+<li><strong>约束过度发挥</strong>：没有测试时 AI 容易”自由发挥”，加一堆没人要的抽象；测试先行把它框在需求边界内。</li>
+</ol>
+<h2 id="落地：把-TDD-写进-Agent-的提示与流程"><a href="#落地：把-TDD-写进-Agent-的提示与流程" class="headerlink" title="落地：把 TDD 写进 Agent 的提示与流程"></a>落地：把 TDD 写进 Agent 的提示与流程</h2><p>要让 AI Agent 真正”测试先行”，需要的是流程设计而非一句提示：</p>
+<ol>
+<li><strong>流程顺序写死</strong>：给 Agent 的指令明确规定”第一步写测试，第二步写最小实现，第三步跑测试直到通过”——不要给它跳过测试的自由；</li>
+<li><strong>提供测试基座</strong>：把项目的测试框架、命名规范、mock 方式作为上下文喂给 Agent，否则它写的测试自己都跑不起来；</li>
+<li><strong>失败即迭代</strong>：允许 Agent 在测试失败时查看报错、修改代码、重新运行——给它”试错-修正”的空间，而不是一次生成就交付；</li>
+<li><strong>人类验收测试而非代码</strong>：开发者审查的重点从”读 AI 写的实现”转向”审 AI 写的测试是否覆盖了关键场景”——测试质量比实现质量更容易判断。</li>
+</ol>
+<h2 id="边界与陷阱"><a href="#边界与陷阱" class="headerlink" title="边界与陷阱"></a>边界与陷阱</h2><p>测试先行不是银弹，有三个陷阱要避开：</p>
+<ol>
+<li><strong>AI 自证自洽</strong>：AI 写的测试可能”为了通过而通过”，只测自己实现的行为而没测真实需求——关键测试最好由人类定义；</li>
+<li><strong>过度测试</strong>：AI 可能生成大量低价值测试充数，要设定测试的覆盖率与有效性门槛；</li>
+<li><strong>不适合探索性任务</strong>：对于”需求本身不清楚”的原型探索，强推测试先行会拖慢节奏——TDD 适合确定性任务，不适合发散探索。</li>
+</ol>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>AI 编程的质量问题，本质是”生成与验证脱节”的问题。<strong>测试先行是把验证环节前置到生成流程里的关键设计</strong>——它不能让 AI 永不犯错，但能让 AI 的错误在变成生产事故之前，先变成一次失败的测试。这已经赢过了绝大多数裸奔的 AI 代码。</p>
+<blockquote>
+<p>**说明：**本文为 AI 编程工作流的工程实践建议，具体流程请结合团队技术栈调整。</p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>著者: </span><span class="post-copyright-info"><a target="_blank" rel="noopener" href="https://yzy15.dpdns.org">mc-yzy15</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>リンク: </span><span class="post-copyright-info"><a href="https://blogs.yzy15.dpdns.org/testing-first-agent-workflow/">https://blogs.yzy15.dpdns.org/testing-first-agent-workflow/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>著作権表示: </span><span class="post-copyright-info">このブログのすべての記事は、<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> ライセンスの下で提供されています。<strong>商用利用禁止</strong>。転載時には出典を明記してください: <a href="https://blogs.yzy15.dpdns.org">Yzy15's Blog - 技术分享与生活记录</a>。</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/">工程实践</a><a class="post-meta__tags" href="/tags/AI%E7%BC%96%E7%A8%8B/">AI编程</a><a class="post-meta__tags" href="/tags/%E6%B5%8B%E8%AF%95/">测试</a><a class="post-meta__tags" href="/tags/Agent%E5%B7%A5%E4%BD%9C%E6%B5%81/">Agent工作流</a></div><div class="post-share"><div class="social-share" data-image="/img/butterfly-icon.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>感谢您的支持，您的赞赏是我持续创作的动力！</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://img.cdn1.vip/i/69ed1d29274a9_1777147177.webp" target="_blank"><img class="post-qr-code-img" src="https://img.cdn1.vip/i/69ed1d29274a9_1777147177.webp" alt="微信赞赏"/ loading='lazy'></a><div class="post-qr-code-desc">微信赞赏</div></li></ul></div></div><div class="rec-card ad-slot ad-placement"><div style="text-align:center;padding:20px 10px;border:2px dashed #ff6b6b;border-radius:8px;margin:0 auto;background:linear-gradient(135deg,#fff5f5,#ffe0e0);"><div style="font-size:18px;font-weight:bold;color:#ff6b6b;">☁️ 南影云 - 高性价比云服务器</div><div style="font-size:13px;color:#555;margin-top:8px;">上万台服务器 | T+级DDoS防护 | 无限防CC</div><div style="font-size:13px;color:#555;margin-top:4px;">🎁 通过下方链接注册享专属优惠</div><div style="margin-top:10px;"><a href="https://idc.ofoca.net/aff/PJQGAEKY" target="_blank" rel="noopener" style="display:inline-block;padding:8px 24px;background:#ff6b6b;color:#fff;border-radius:20px;text-decoration:none;font-size:14px;font-weight:bold;">立即注册领优惠</a></div><div style="font-size:11px;color:#999;margin-top:6px;">注册后联系博主可再领额外折扣</div></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/china-llm-systemic-competition/" title="八周连发五款：国产大模型进入体系化竞争的下半场"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">前へ</div><div class="info-item-2">八周连发五款：国产大模型进入体系化竞争的下半场</div></div><div class="info-2"><div class="info-item-1">八周连发五款：国产大模型进入体系化竞争的下半场2026 年的国产大模型行业，节奏快到让人眼花：有行业统计显示，短短八周内，国内头部玩家连发了五款重量级模型产品——从通用旗舰到垂直开源、从超长上下文到多模态，几乎每个技术方向上都有重磅选手落位。相比前两年”一年憋一个大新闻”的节奏，这轮密度堪称前所未有。 从”单点突破”到”体系化”前两年的国产大模型叙事，核心词是”追赶”：某一家在某项基准上追平海外、某个开源模型一夜刷屏。但 2026 年的这轮发布潮，明显换了一套打法——不再是单点秀肌肉，而是体系化铺位：  底座上，通用旗舰与轻量版本齐头并进，覆盖”最强”与”最省”两个极端； 开源上，头部厂商把开源模型作为生态入口持续放量，用社区反馈反哺闭源迭代； 应用上，Agent、编程、多模态等方向各自形成工具链，不再只是一堆裸 API； 算力上，模型与国产芯片的适配协作明显加深，从”能用”走向”好用”。  单看任何一款产品，都很难说已经全面超越海外旗舰；但把这一整条链放在一起看，国产阵营第一次具备了”全栈自洽”的雏形。 密集发布背后是成本结构的变化八周五款这种频率，对任何团队的工程与推理成本都...</div></div></div></a><a class="pagination-related" href="/gemini-3-8-flash-analysis/" title="Gemini 3.8 Flash：轻量模型的迭代竞赛，赢家不是跑分"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">次へ</div><div class="info-item-2">Gemini 3.8 Flash：轻量模型的迭代竞赛，赢家不是跑分</div></div><div class="info-2"><div class="info-item-1">Gemini 3.8 Flash：轻量模型的迭代竞赛，赢家不是跑分Google 在 2026 年 9 月初推出了 Gemini 3.8 Flash。按官方的说法，这是个”轻量版”模型，但性能曲线却直逼上一代旗舰（发布会现场甚至拿它与 Opus 5 对标）。竞争对手的嘲讽也来得很快——“险胜 DeepSeek”的标签被贴到它头上，暗指这种”轻量级对标旗舰”的营销话术越来越像军备竞赛里的擦边球。 Flash 才是真正的主战场把注意力从旗舰发布会上挪开，2026 年大模型竞争最白热化的地带，其实是 Flash 这类”高性能轻量模型”。原因很朴素：绝大多数真实业务不需要最聪明的模型，需要的是”够聪明、足够快、足够便宜”的模型。旗舰负责树立品牌和价格锚点，Flash 负责抢下开发者每天真实调用的那部分流量。 Google 的 Flash 系历来是”延迟敏感型”任务的常客——客服、分类、抽取、实时辅助。这一代 3.8 Flash 把能力天花板往上抬之后，原本需要动用旗舰的任务也会开始下放，这对开发者的成本账是实打实的利好。 “险胜”之争说明什么同行嘲讽它”险胜 DeepSeek”，与其说是抹...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>関連記事</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/testing-first-agent-workflow/" title="测试先行：让 AI Agent 少写 Bug 的工作流设计"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-06</div><div class="info-item-2">测试先行：让 AI Agent 少写 Bug 的工作流设计</div></div><div class="info-2"><div class="info-item-1">测试先行：让 AI Agent 少写 Bug 的工作流设计面对 AI 生成代码 40%-62% 的漏洞率，业界有个朴素但有效的答案：让测试当裁判。 人类程序员用 TDD 减少 Bug 已经几十年，这套逻辑对 AI 同样成立——而且因为 AI 没有”自尊心”，它比人类更适合”先写测试再写实现”的流程。 为什么 AI 写代码需要”测试先行”AI 生成代码最大的问题是缺乏反馈：它写出一个函数，自己并不知道对不对，只能”看起来对”就交差。而测试先行恰恰弥补了这个缺陷：  明确验收标准：测试定义了”什么叫做完”，AI 不再靠猜； 形成纠错闭环：AI 写完实现后跑测试，红了就自己修，直到全绿——把”事后人工发现 Bug”变成”过程中自动纠错”； 约束过度发挥：没有测试时 AI 容易”自由发挥”，加一堆没人要的抽象；测试先行把它框在需求边界内。  落地：把 TDD 写进 Agent 的提示与流程要让 AI Agent 真正”测试先行”，需要的是流程设计而非一句提示：  流程顺序写死：给 Agent 的指令明确规定”第一步写测试，第二步写最小实现，第三步跑测试直到通过”——不要给它跳过测试的自由...</div></div></div></a><a class="pagination-related" href="/gpt6-codex-integration/" title="GPT-6 Astra 进入 Codex：AI 编程的&quot;旗舰大脑&quot;时代"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-03</div><div class="info-item-2">GPT-6 Astra 进入 Codex：AI 编程的&quot;旗舰大脑&quot;时代</div></div><div class="info-2"><div class="info-item-1">GPT-6 Astra 进入 Codex：AI 编程的”旗舰大脑”时代GPT-6 Astra 发布的消息里，程序员最该关注的可能不是跑分，而是它”登陆 Work 与 Codex”的安排。这意味着 OpenAI 最强大的模型将直接接入编程 Agent 与工作场景——AI 编程的竞争，正式从”工具之争”升级为”旗舰大脑之争”。 Codex 接上旗舰大脑意味着什么过去的编程 Agent 大多跑在”够用但非最强”的模型上——因为旗舰太贵、太慢，不划算。但 GPT-6 Astra 的能力组合（软件工程 + 计算机操作 + 长程推理）恰恰是为编程 Agent 量身定制的：  更强的长程规划：真实工程任务是”规划-执行-验证-修复”的循环，需要模型在几十步之后还记得最初的目标——这正是旗舰模型的强项； 跨工具操作能力：当 Agent 不只是改代码，还能操作终端、浏览器、IDE 时，它能覆盖的工程环节大幅扩展； 任务完成度的质变：从”生成代码片段”到”把整个任务办完”，差的不只是模型大小，而是目标追踪与自我纠错能力。  竞争格局被重新洗牌GPT-6 进 Codex，对 AI 编程市场的影响是结构...</div></div></div></a><a class="pagination-related" href="/ai-code-vulnerability-rates/" title="40-62% 漏洞率：AI 生成代码的安全债怎么还"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-06</div><div class="info-item-2">40-62% 漏洞率：AI 生成代码的安全债怎么还</div></div><div class="info-2"><div class="info-item-1">40-62% 漏洞率：AI 生成代码的安全债怎么还随着”全球仓库中超过一半代码由 AI 生成”，一组数据变得格外扎眼：多份独立研究显示，AI 生成代码的漏洞率在 40%-62% 之间，是 AI 编程生态最大的信任问题。高速生成与高危漏洞并存，安全债正在以前所未有的速度累积。 AI 代码为什么漏洞率这么高AI 生成代码的高漏洞率，根源不是”模型笨”，而是生成机制的结构性缺陷：  训练数据的”历史漏洞”：模型从海量开源代码学习，而这些代码本身就带着历史遗留的漏洞模式——AI 是在”高质量地复制坏习惯”； 缺乏全局上下文：AI 补全的是局部，但安全往往取决于全局——对输入校验、权限模型、依赖版本的全局认知，正是模型最弱的环节； “看起来对”的陷阱：AI 生成的代码语法正确、风格规范，非常具有迷惑性——它们让审查者降低警惕，这正是最危险的地方。  漏洞集中在哪几类根据安全团队的实际观察，AI 代码的高危漏洞集中在几类可预测的模式：  注入类：SQL、命令、模板注入——直接拼接不可信输入； 认证与授权缺失：端点没有鉴权、越权访问、硬编码凭证； 不安全的反序列化与依赖：引入了带已知漏洞的库；...</div></div></div></a><a class="pagination-related" href="/microsoft-mai-code-model/" title="微软的 MAI 代码模型：Copilot 也要换&quot;自研大脑&quot;"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-05</div><div class="info-item-2">微软的 MAI 代码模型：Copilot 也要换&quot;自研大脑&quot;</div></div><div class="info-2"><div class="info-item-1">微软的 MAI 代码模型：Copilot 也要换”自研大脑”微软近期推出自研代码生成模型 MAI-Code-1-Flash——这是其 MAI 系列模型首次亮出”代码专用”的牌，宣传口径是”根据自然语言直接生成应用和网站源码”。对 Copilot 生态而言，这标志着微软正在把 AI 编程的”大脑”从外部供应商手里收回来。 平台巨头为什么要自研模型过去两年，微软的 Copilot 走的是”借力打力”路线：模型能力来自外部伙伴，微软负责渠道与集成。这套打法让 Copilot 快速铺进了全球开发者的 IDE，但也埋下两个隐患：一是能力天花板受制于人，二是利润大头被模型层拿走。 自研 MAI 系列的出现，本质是微软想同时解决这两个问题：  供应链安全：AI 编程已经成为 IDE 的核心体验，把模型能力握在自己手里，才能避免被上游”卡脖子”； 利润再分配：从”卖座”到”卖座也卖引擎”，模型层的价值正在从伙伴手里转移到微软自己的报表上； 数据闭环：自研模型可以直接消费 GitHub 与 VS Code 生态的独有数据，这是外部模型拿不到的差异化燃料。  对开发者的真实影响对普通开发者，MAI-...</div></div></div></a><a class="pagination-related" href="/agent-memory-design/" title="Agent 记忆设计入门：缓存、档案与遗忘"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-06</div><div class="info-item-2">Agent 记忆设计入门：缓存、档案与遗忘</div></div><div class="info-2"><div class="info-item-1">Agent 记忆设计入门：缓存、档案与遗忘GPT-6 时代，模型上下文窗口已经可以塞下几十万 token——但 Agent 依然需要专门的记忆系统。因为”塞得下”不等于”记得住”，更不等于”能在正确的时候想起正确的事”。当 Agent 开始跑跨越多轮、持续数周的真实任务，记忆架构成为决定成败的隐藏变量。 三层记忆架构参考人类记忆的分层，Agent 记忆通常设计为三层：  工作记忆（短期）：当前任务进行中的上下文——就是模型上下文窗口本身。设计要点是”够用即可”，塞太多无关内容反而会干扰推理； 情景记忆（中期）：跨会话的关键信息——之前处理过什么、用户偏好、进行到哪一步。通常存结构化记录或向量库，任务恢复时按需召回； 语义记忆（长期）：沉淀下来的领域知识、项目规范、历史决策——类似团队的 Wiki，为所有任务提供稳定的背景知识。  比”存”更重要的是”取”大多数记忆系统做不好，不是因为存不下，而是因为取不对：  相关性优先：召回记忆时，只取与当前任务真正相关的片段——把十万条记忆全塞进上下文，等于没有记忆； 时效性权重：三个月前的决定可能已经过期，召回时要考虑时间衰减； 来源可信度...</div></div></div></a><a class="pagination-related" href="/agent-cost-control/" title="Agent 账单失控：token 成本治理三板斧"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-06</div><div class="info-item-2">Agent 账单失控：token 成本治理三板斧</div></div><div class="info-2"><div class="info-item-1">Agent 账单失控：token 成本治理三板斧聊天机器人的 token 账单是可预测的，Agent 的不是——一个”看起来简单”的任务可能包含几十次模型调用、几万 token 的上下文往返。许多团队在 Agent 上线第一周就被账单教育了：Agent 的成本问题，必须在架构阶段就治理，而不是等账单来了再救火。 为什么 Agent 这么烧钱Agent 的成本结构与传统对话完全不同：  调用次数爆炸：一次任务 &#x3D; 规划 + N 次工具调用 + N 次结果反思，每次都是一次完整的模型往返； 上下文膨胀：工具返回结果、历史步骤、项目背景都在往上下文里塞，输入 token 是最大的成本黑洞； 失败重试成本：Agent 出错重试不是免费重来——每次重试都重新烧一遍钱。  三板斧之一：压缩（输入瘦身） 工具结果裁剪：工具返回 5000 token 的数据，只把相关的 500 token 喂给模型——别让”全量返回”白白烧钱； 历史摘要化：长任务不需要完整保留每轮对话，跑几步就压缩一次历史，只留决策要点； 上下文预算：给每类任务设上下文上限，超过就强制精简或切换更便宜的模型档。  三...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">mc-yzy15</div><div class="author-info-description">Yzy15的个人博客 | 技术教程 · 编程经验 · 学习笔记</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">221</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">472</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">21</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/mc-yzy15"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://yzy15.dpdns.org" target="_blank" title="个人主页"><i class="fas fa-home" style="color: #ff6600;"></i></a><a class="social-icon" href="https://github.com/mc-yzy15" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:yingmoliuguang@yeah.net" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a><a class="social-icon" href="https://space.bilibili.com/1338637552" target="_blank" title="Bilibili"><i class="fab fa-bilibili" style="color: #00a1d6;"></i></a><a class="social-icon" href="https://t.me/ShuangXiang_Dddddavidd_bot" target="_blank" title="Telegram"><i class="fab fa-telegram" style="color: #0088cc;"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="RSS"><i class="fas fa-rss" style="color: #ff6600;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到我的博客！这里记录着我的技术分享和生活点滴~<br>📢 <a href="/link/">广告位招租</a> | 💼 商业合作见<a href="/link/">友链页</a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目次</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E5%85%88%E8%A1%8C%EF%BC%9A%E8%AE%A9-AI-Agent-%E5%B0%91%E5%86%99-Bug-%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%B5%81%E8%AE%BE%E8%AE%A1"><span class="toc-number">1.</span> <span class="toc-text">测试先行：让 AI Agent 少写 Bug 的工作流设计</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88-AI-%E5%86%99%E4%BB%A3%E7%A0%81%E9%9C%80%E8%A6%81%E2%80%9D%E6%B5%8B%E8%AF%95%E5%85%88%E8%A1%8C%E2%80%9D"><span class="toc-number">1.1.</span> <span class="toc-text">为什么 AI 写代码需要”测试先行”</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%90%BD%E5%9C%B0%EF%BC%9A%E6%8A%8A-TDD-%E5%86%99%E8%BF%9B-Agent-%E7%9A%84%E6%8F%90%E7%A4%BA%E4%B8%8E%E6%B5%81%E7%A8%8B"><span class="toc-number">1.2.</span> <span class="toc-text">落地：把 TDD 写进 Agent 的提示与流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BE%B9%E7%95%8C%E4%B8%8E%E9%99%B7%E9%98%B1"><span class="toc-number">1.3.</span> <span class="toc-text">边界与陷阱</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E8%AF%AD"><span class="toc-number">1.4.</span> <span class="toc-text">结语</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/ai-search-2026-evolution/" title="AI 搜索的 2026：当&quot;搜索&quot;从链接分发变成答案生成，流量逻辑被改写">AI 搜索的 2026：当&quot;搜索&quot;从链接分发变成答案生成，流量逻辑被改写</a><time datetime="2026-09-07T02:20:00.000Z" title="发表于 2026-09-07 10:20:00">2026-09-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/ai-video-commercialization/" title="AI 视频的商业化元年：广告、短剧与影视工业的&quot;降本实验&quot;">AI 视频的商业化元年：广告、短剧与影视工业的&quot;降本实验&quot;</a><time datetime="2026-09-07T02:00:00.000Z" title="发表于 2026-09-07 10:00:00">2026-09-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/prompt-injection-ai-security/" title="提示注入与 Agent 安全：当 AI 会&quot;被骗&quot;时，应用如何自保">提示注入与 Agent 安全：当 AI 会&quot;被骗&quot;时，应用如何自保</a><time datetime="2026-09-07T01:40:00.000Z" title="发表于 2026-09-07 09:40:00">2026-09-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/memory-storage-supercycle-2026/" title="存储的&quot;超级周期&quot;：HBM 与 AI 之外，内存厂商才是最大赢家？">存储的&quot;超级周期&quot;：HBM 与 AI 之外，内存厂商才是最大赢家？</a><time datetime="2026-09-07T01:20:00.000Z" title="发表于 2026-09-07 09:20:00">2026-09-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/gpu-cloud-price-war/" title="GPU 云价格战与算力过剩：AI 基础设施从&quot;卖方市场&quot;转向&quot;买方市场&quot;">GPU 云价格战与算力过剩：AI 基础设施从&quot;卖方市场&quot;转向&quot;买方市场&quot;</a><time datetime="2026-09-07T01:00:00.000Z" title="发表于 2026-09-07 09:00:00">2026-09-07</time></div></div></div></div><div class="card-widget rec-card"><div style="text-align:center;padding:18px 10px;border:2px dashed #49b1f5;border-radius:8px;margin:0 auto;background:linear-gradient(135deg,#f0f9ff,#e0f2fe);"><div style="font-size:16px;font-weight:bold;color:#49b1f5;">☁️ 南影云 - 高性价比云服务器</div><div style="font-size:12px;color:#555;margin-top:6px;">上万台服务器 | T+级DDoS防护 | 无限防CC</div><div style="font-size:12px;color:#555;margin-top:4px;">🎁 通过下方链接注册享专属优惠</div><div style="margin-top:8px;"><a href="https://idc.ofoca.net/aff/PJQGAEKY" target="_blank" rel="noopener" style="display:inline-block;padding:6px 20px;background:#49b1f5;color:#fff;border-radius:16px;text-decoration:none;font-size:13px;font-weight:bold;">立即注册领优惠</a></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By mc-yzy15</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.1</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="読書モード"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="簡体字と繁体字の切り替え">繁</button><button id="darkmode" type="button" title="ライトモード/ダークモード切り替え"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="シングルカラムとダブルカラムの切り替え"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="設定"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目次"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="トップに戻る"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><script src="/js/tw_cn.js?v=5.5.4"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.9/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><div class="js-pjax"></div><script src="/js/webinfo-stats.js"></script><div class="ad-banner sponsor" style="text-align:center;padding:12px 10px;margin:10px auto;max-width:728px;background:linear-gradient(135deg,#fff5f5,#ffe0e0);border:1px solid<script src="/js/content-loader.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

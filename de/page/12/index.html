@@ -1,0 +1,247 @@
+<!DOCTYPE html><html lang="[&quot;zh-CN&quot;,&quot;en&quot;,&quot;zh-TW&quot;,&quot;ja&quot;,&quot;ko&quot;,&quot;fr&quot;,&quot;de&quot;,&quot;es&quot;,&quot;ru&quot;,&quot;pt&quot;,&quot;ar&quot;,&quot;hi&quot;,&quot;it&quot;,&quot;th&quot;,&quot;vi&quot;,&quot;id&quot;,&quot;tr&quot;,&quot;uk&quot;,&quot;pl&quot;,&quot;nl&quot;]" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Yzy15's Blog - 技术分享与生活记录 - 技术教程 | 编程经验 | 学习笔记</title><meta name="author" content="mc-yzy15"><meta name="copyright" content="mc-yzy15"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Yzy15的个人博客，专注于分享技术教程、编程经验、生活记录和学习心得。内容涵盖前端开发、后端技术、工具使用、云服务器等多个技术领域，记录成长路上的点滴。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Yzy15&#39;s Blog - 技术分享与生活记录">
+<meta property="og:url" content="https://blogs.yzy15.dpdns.org/de/page/12/">
+<meta property="og:site_name" content="Yzy15&#39;s Blog - 技术分享与生活记录">
+<meta property="og:description" content="Yzy15的个人博客，专注于分享技术教程、编程经验、生活记录和学习心得。内容涵盖前端开发、后端技术、工具使用、云服务器等多个技术领域，记录成长路上的点滴。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blogs.yzy15.dpdns.org/img/butterfly-icon.png">
+<meta property="article:author" content="mc-yzy15">
+<meta property="article:tag" content="博客,技术分享,编程,前端开发,后端,学习笔记,Yzy15">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://blogs.yzy15.dpdns.org/img/favicon.ico">
+<meta name="twitter:site" content="@mc_yzy15"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://blogs.yzy15.dpdns.org/de/page/12/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.9/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-HK1JGTYX4N"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-HK1JGTYX4N')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-HK1JGTYX4N', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Yzy15\'s Blog - 技术分享与生活记录',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'home'
+}</script><meta name="generator" content="Hexo 8.1.1"><link rel="alternate" href="/atom.xml" title="Yzy15's Blog - 技术分享与生活记录" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">221</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">472</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">21</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/homepage/"><i class="fa-fw fas fa-globe"></i><span> Homepage</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/stats/"><i class="fa-fw fas fa-chart-bar"></i><span> Stats</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="full_page" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Yzy15's Blog - 技术分享与生活记录</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/homepage/"><i class="fa-fw fas fa-globe"></i><span> Homepage</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/stats/"><i class="fa-fw fas fa-chart-bar"></i><span> Stats</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="site-info"><h1 id="site-title">Yzy15's Blog - 技术分享与生活记录</h1><div id="site_social_icons"><a class="social-icon" href="https://yzy15.dpdns.org" target="_blank" title="个人主页"><i class="fas fa-home" style="color: #ff6600;"></i></a><a class="social-icon" href="https://github.com/mc-yzy15" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:yingmoliuguang@yeah.net" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a><a class="social-icon" href="https://space.bilibili.com/1338637552" target="_blank" title="Bilibili"><i class="fab fa-bilibili" style="color: #00a1d6;"></i></a><a class="social-icon" href="https://t.me/ShuangXiang_Dddddavidd_bot" target="_blank" title="Telegram"><i class="fab fa-telegram" style="color: #0088cc;"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="RSS"><i class="fas fa-rss" style="color: #ff6600;"></i></a></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts nc" id="recent-posts"><div class="recent-post-items"><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/domestic-ai-chip-share-rising/" title="国产 AI 加速卡份额超四成：昇腾生态的起飞与隐忧">国产 AI 加速卡份额超四成：昇腾生态的起飞与隐忧</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2026-09-06T04:40:00.000Z" title="发表于 2026-09-06 12:40:00">2026-09-06</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E5%8D%8A%E5%AF%BC%E4%BD%93/">半导体</a></span></div><div class="content">国产 AI 加速卡份额超四成：昇腾生态的起飞与隐忧2026 年，国产 AI 芯片行业迎来一个标志性时刻：多家机构数据显示，国产 AI 加速卡在中国市场的份额已经超过四成，其中昇腾是绝对主力。放在三年前，这个数字还只是PPT上的愿景；今天它已经写进市场份额报告。但越是在这种高光时刻，越值得冷静拆开看看：哪些增长是真实的、可持续的，哪些只是特定条件下的阶段性红利。 份额是怎么涨上来的四成份额不是靠情怀涨出来的，背后有几股实打实的推力：  需求侧的被迫转向。外部供应持续收紧，头部云厂商与大模型公司”必须找到替代方案”，昇腾成了最现实的选项——先在训练适配、再在推理部署上规模落地。 头部模型的适配示范。当 DeepSeek 等明星模型公开完成昇腾底座迁移，等于向全行业发了张”可信认证”：国产芯片能跑顶级模型。这比任何发布会都有说服力。 生态的正循环初现。算子库、推理框架、开发者文档的完善速度肉眼可见地加快，越来越多的 ISV 愿意在昇腾上做适配，”没人敢用”的冷启动困局正在被打破。  数字背后藏着三件事份额超四成是里程碑，但还不是胜利，至少有三个隐忧不能回避： 一是软件生态的”最后一公里...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/computer-use-safety/" title="给 Agent 一台电脑之后：OS 权限治理手册">给 Agent 一台电脑之后：OS 权限治理手册</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2026-09-06T04:30:00.000Z" title="发表于 2026-09-06 12:30:00">2026-09-06</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></span></div><div class="content">给 Agent 一台电脑之后：OS 权限治理手册GPT-6 Astra 展示了”代表用户操作电脑”的能力，OS 级 Agent 从实验室走向办公桌只是时间问题。当一个能自主行动的 AI 拥有了你的屏幕、键盘与文件系统，最紧迫的问题不再是”它能不能干活”，而是”怎么给权限才不会出事”。以下是权限治理的实操手册。 权限设计的三层模型给 Agent 权限，不要用”给&#x2F;不给”的二元思维，要用三层模型：  可读层（默认开放）：读取文件、浏览网页、查询信息——这类操作风险低，可以默认允许，但要记录日志； 可写层（按需授权）：修改文件、发送消息、提交代码——这类操作会改变系统状态，必须按任务最小范围授权； 危险层（强管控）：执行命令、删除数据、访问密钥、涉及资金的转账——这类操作必须人工确认或双人复核。  落地的五个原则 最小权限：Agent 只能访问当前任务需要的文件与系统——绝不给”整个电脑”的钥匙； 会话级授权：权限跟着任务走，任务结束权限回收，不能”给一次用一年”； 敏感操作闸门：危险动作必须弹出确认——AI 不能自己给自己”放行”； 沙箱优先：能让 Agent 在虚拟机&#...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/huawei-kirin-ascend-dual-chip/" title="华为&quot;双芯同发&quot;：麒麟 2026 与昇腾 9100 的协同棋局">华为&quot;双芯同发&quot;：麒麟 2026 与昇腾 9100 的协同棋局</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2026-09-06T04:20:00.000Z" title="发表于 2026-09-06 12:20:00">2026-09-06</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E5%8D%8A%E5%AF%BC%E4%BD%93/">半导体</a></span></div><div class="content">华为”双芯同发”：麒麟 2026 与昇腾 9100 的协同棋局2026 年 7 月，华为同期亮出两张牌：面向终端的新一代麒麟处理器，与面向 AI 算力的昇腾加速卡。一个管”端”，一个管”云”，如果只看单颗芯片的性能参数，似乎都谈不上颠覆；但把这两张牌放在一起看，华为下的是另一盘棋——用一套自研体系同时卡位 AI 时代的终端入口与算力底座。 麒麟：终端侧的”冷启动能力”手机处理器这几年的竞争焦点，已经从 CPU&#x2F;GPU 跑分转移到两件事上：NPU 的端侧 AI 能力，以及与自家大模型生态的协同深度。麒麟的优势从来不是单核性能最猛，而是”整机协同”——SoC、操作系统、端侧模型、应用框架全链路自研，意味着 AI 功能可以做到软硬一体的深度优化，这是组装方案很难复制的体验。 在端侧大模型成为标配的 2026 年，”手机能不能流畅跑一个像样的本地模型”正在成为新的旗舰分水岭，而麒麟这条路线，恰好站在浪头上。 昇腾：AI 算力的”国产答案”服务器端的昇腾系列，承载的期望要大得多。在外部供应受限的大背景下，昇腾要回答的问题很直接：国产算力能不能撑起从大模型训练到推理的整条链路？ 从...</div></div></div><div class="recent-post-item rec-card ad-slot ad-placement"><div style="text-align:center;padding:20px 10px;border:2px dashed #ff6b6b;border-radius:8px;margin:0 auto;background:linear-gradient(135deg,#fff5f5,#ffe0e0);"><div style="font-size:18px;font-weight:bold;color:#ff6b6b;">☁️ 南影云 - 高性价比云服务器</div><div style="font-size:13px;color:#555;margin-top:8px;">上万台服务器 | T+级DDoS防护 | 无限防CC</div><div style="font-size:13px;color:#555;margin-top:4px;">🎁 通过下方链接注册享专属优惠</div><div style="margin-top:10px;"><a href="https://idc.ofoca.net/aff/PJQGAEKY" target="_blank" rel="noopener" style="display:inline-block;padding:8px 24px;background:#ff6b6b;color:#fff;border-radius:20px;text-decoration:none;font-size:14px;font-weight:bold;">立即注册领优惠</a></div><div style="font-size:11px;color:#999;margin-top:6px;">注册后联系博主可再领额外折扣</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/model-benchmark-saturation/" title="当&quot;屠榜&quot;成为日常：大模型评测基准正在集体失效">当&quot;屠榜&quot;成为日常：大模型评测基准正在集体失效</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2026-09-06T04:00:00.000Z" title="发表于 2026-09-06 12:00:00">2026-09-06</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></span></div><div class="content">当”屠榜”成为日常：大模型评测基准正在集体失效2026 年有个奇观：几乎每家大模型公司发布新版本，都能在新闻稿里找到”在 XX 基准上登顶”的字样。屠榜变得像打卡上班一样频繁，而开发者们对这种新闻的反应也从兴奋变成了麻木——甚至带点警惕：当一个榜单人人都是第一时，它要么失去了区分度，要么正在被系统性”应试”。 基准是怎么一步步失灵的大模型基准的失效，是三重力量叠加的结果： 一是题海战术。 公开基准的题目是静态的，模型厂商的工程师们可以对它们做针对性调优——今天叫”提示词优化”，更直接的说法是”刷题”。当模型见过、练过甚至记住了一部分评测数据，分数就变成了训练成果，而不是能力证明。 二是榜单纯度的军备竞赛。 当一个基准成为”镇店之宝”（比如当年的编码基准 SWE-bench 系列），所有厂商都会围绕它卷：改进采样、调整推理预算、加入针对该评测的搜索策略。最终，分数的增长越来越不代表真实能力的增长，只代表”对这套评测规则理解得更深”。 三是任务的快速饱和。 头部模型在不少经典基准上的分数已经逼近天花板，分数从 90 涨到 91 的新闻，对选型的参考价值约等于零——误差都比这大。 榜单...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/why-everyone-says-agentic/" title="为什么每家模型公司都在谈 Agentic">为什么每家模型公司都在谈 Agentic</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2026-09-06T04:00:00.000Z" title="发表于 2026-09-06 12:00:00">2026-09-06</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></span></div><div class="content">为什么每家模型公司都在谈 Agentic翻看最近两周的发布会，你会发现一个惊人的统一：GPT-6 Astra 讲”代表用户操作电脑”，Fable 5.1 自称”最先进的编程与知识工作模型”，Gemini 强调软件工程与多步推理，千问办公直接以企业 Agent 自居。没有人再只谈”更会聊天”，所有人都在谈同一件事——让模型替你把事办了。 三重逻辑的合谋Agentic 成为行业公约数，不是偶然，而是三重逻辑在同一个时间点汇聚：  能力逻辑：对话式模型的边际收益已经见顶。用户对”更聪明的聊天”无感，但对”能自动完成任务的助手”仍有巨大期待——能力叙事必须从”理解”升级到”执行”； 商业逻辑：聊天按 token 收费，天花板清晰；Agent 按任务成果收费，想象空间完全不同。资本需要新的增长故事，Agent 是最顺滑的答案； 竞争逻辑：当大家都做 Agent，不做的那家就会被视为”上一代产品”。叙事一旦转向，跟风就成了防守动作。  Agentic 是真能力，也是新话术需要清醒的是，Agentic 的含义已经被严重稀释。在严谨的定义里，它至少要求：自主规划、多步执行、工具调用、失败恢复与结...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/llm-api-price-war-round3/" title="大模型 API 价格战打到第三年：便宜之外还剩下什么">大模型 API 价格战打到第三年：便宜之外还剩下什么</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2026-09-06T03:40:00.000Z" title="发表于 2026-09-06 11:40:00">2026-09-06</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></span></div><div class="content">大模型 API 价格战打到第三年：便宜之外还剩下什么2026 年，大模型 API 市场已经很难用”价格战”来形容了——更准确的说法是”价格崩塌”后的存量博弈。从 DeepSeek 用超低价位划下”斩杀线”，到混元 HY3 等国产玩家贴身肉搏把单位成本打到接近临界点，三年下来，价格作为竞争武器的边际效用正在归零。那么，便宜之外，模型厂商之间到底还在卷什么？ 价格战的三阶段回头复盘这场价格战，脉络相当清晰： 第一阶段（拼态度）：厂商们把降价当”我有决心”的信号，价格战更多是 PR 战。 第二阶段（拼成本）：DeepSeek 把”极致性价比”做成路线本身，推理效率、MoE 架构、缓存命中成了真正的护城河——这个阶段，价格第一次与工程能力强绑定。 第三阶段（拼综合）：也就是现在。当头部 API 的价格都低到”每百万 token 几分钱”量级时，单纯再降 10%、20%，对开发者总成本的影响已经微乎其微。价格不再是决策核心。 便宜之外，剩下什么才值钱价格锚定失效后，厂商真正比拼的是这三件事： 一是质量稳定性。 同样的价格下，谁的输出更稳定、更少抽风？很多开发者已经发现，一个”偶尔优秀、偶尔...</div></div></div><div class="recent-post-item rec-card ad-slot ad-placement"><div style="text-align:center;padding:20px 10px;border:2px dashed #ff6b6b;border-radius:8px;margin:0 auto;background:linear-gradient(135deg,#fff5f5,#ffe0e0);"><div style="font-size:18px;font-weight:bold;color:#ff6b6b;">☁️ 南影云 - 高性价比云服务器</div><div style="font-size:13px;color:#555;margin-top:8px;">上万台服务器 | T+级DDoS防护 | 无限防CC</div><div style="font-size:13px;color:#555;margin-top:4px;">🎁 通过下方链接注册享专属优惠</div><div style="margin-top:10px;"><a href="https://idc.ofoca.net/aff/PJQGAEKY" target="_blank" rel="noopener" style="display:inline-block;padding:8px 24px;background:#ff6b6b;color:#fff;border-radius:20px;text-decoration:none;font-size:14px;font-weight:bold;">立即注册领优惠</a></div><div style="font-size:11px;color:#999;margin-top:6px;">注册后联系博主可再领额外折扣</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/agent-economy-enterprise/" title="Agent 经济落地企业：从 Demo 到发薪的最后一公里">Agent 经济落地企业：从 Demo 到发薪的最后一公里</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2026-09-06T03:20:00.000Z" title="发表于 2026-09-06 11:20:00">2026-09-06</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></span></div><div class="content">Agent 经济落地企业：从 Demo 到发薪的最后一公里千问办公首月 3000 万用户、各厂商 Agent 产品线不断拉长——Agent 经济的叙事已经足够丰满。但一个更冷静的观察是：真正在企业生产环境里”发薪干活”的 Agent 依然稀缺。 大多数 Agent 还停留在”能看不能用的 Demo”，从演示到上岗，隔着残酷的最后一公里。 Demo 与生产的差距在哪Demo 里的 Agent 看起来无所不能，真实生产里的 Agent 却处处碰壁，差距来自四个现实：  数据是脏的：Demo 用干净样例，生产要面对缺失、重复、格式混乱的真实数据——Agent 的第一步”读数据”就可能崩溃； 异常没有剧本：Demo 只演示正常流程，生产里充满了权限变更、流程例外、历史遗留——Agent 遇到没见过的异常，往往直接卡死或瞎做； 责任没人敢接：Demo 里 Agent 做错了重来即可，生产里 Agent 做错一笔可能涉及真金白银——没有明确的责任机制，没人敢让 Agent 全自动； 成本不可控：Demo 跑一次的成本可以忽略，生产里每天几千次调用的账单会让 CFO 皱眉。  企业落地 Age...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/ai-video-elimination-race/" title="AI 视频进入淘汰赛：可灵领跑、Sora 离场，下一位轮到谁">AI 视频进入淘汰赛：可灵领跑、Sora 离场，下一位轮到谁</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2026-09-06T03:20:00.000Z" title="发表于 2026-09-06 11:20:00">2026-09-06</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></span></div><div class="content">AI 视频进入淘汰赛：可灵领跑、Sora 离场，下一位轮到谁Sora 的离场像一声发令枪，把 AI 视频赛道从”秀肌肉的表演赛”拽进了”拼商业化的淘汰赛”。2026 年的格局已经清晰了不少：可灵凭借先发与中文内容生态站上头部，即梦依托字节的流量与资金步步紧逼，海外则以 Runway 为代表的工具派与 Seedance 等模型派分庭抗礼。 牌桌上的玩家，各自的底牌与软肋都藏不住了。 头部玩家众生相可灵：快手孵化的”六边形战士”。它的优势是入局早、迭代快，在写实度、运动控制与中文语义理解上积累了口碑，很多国内创作者已经把它当成”默认选项”。软肋也同样明显：快手体系给不了它全球化分发，海外市场仍需单打独斗。 即梦：字节跳动旗下，最大的变量是”爹”——背靠抖音的素材需求与豆包系的流量入口，即梦在电商、营销、短剧素材上天然近水楼台。字节的打法一贯是”后发先至”，一旦它决定在某个方向全力投入，速度会非常恐怖。 Seedance：字节在模型侧的布局（即梦底层即源于 Seed 系列），它代表的是”模型能力先行”的路线——先把生成质量做上去，再思考产品形态。 Runway：海外工具派的代表，深耕专...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/model-release-cadence/" title="从季度更新到周更：模型发布节奏的军备竞赛">从季度更新到周更：模型发布节奏的军备竞赛</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2026-09-06T03:00:00.000Z" title="发表于 2026-09-06 11:00:00">2026-09-06</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></span></div><div class="content">从季度更新到周更：模型发布节奏的军备竞赛谷歌在 Gemini 3.7 Flash 发布三周后就推出了 3.8 Flash；阿里用”0902”这样的日期后缀给 Qwen 持续打补丁式升级；OpenAI 则用”未来几天全面推送”的方式把发布拆成多波。大模型的发布节奏，正在从以季度为单位，压缩到以周为单位。 为什么大家都开始”快打”快节奏迭代不是技术自然演进的结果，而是一场被竞争逼出来的军备竞赛：  窗口期焦虑：模型能力差距被压缩后，谁能先占据”当前最强”的心智，谁就能吃到最多的增量用户——这个心智每三周就要刷新一次； 后训练红利：当预训练规模带来的差异变小，后训练（指令微调、强化学习、场景适配）成为主要差异化来源，而后训练的迭代周期天然比预训练快得多； 数据闭环压力：快速发版能更快收集真实使用反馈，反哺下一轮训练——迭代快本身成了数据飞轮的转速。  对开发者的三重困扰厂商的快节奏，对下游是一把双刃剑：  选型失效加速：上周刚评测完选定模型，这周就出了新版，评测结论快速过期； 回归风险：频繁更新意味着”这周没问题、下周可能有问题”，行为漂移成为常态； 集成成本上升：每次升级都要重新验证...</div></div></div><div class="recent-post-item rec-card ad-slot ad-placement"><div style="text-align:center;padding:20px 10px;border:2px dashed #ff6b6b;border-radius:8px;margin:0 auto;background:linear-gradient(135deg,#fff5f5,#ffe0e0);"><div style="font-size:18px;font-weight:bold;color:#ff6b6b;">☁️ 南影云 - 高性价比云服务器</div><div style="font-size:13px;color:#555;margin-top:8px;">上万台服务器 | T+级DDoS防护 | 无限防CC</div><div style="font-size:13px;color:#555;margin-top:4px;">🎁 通过下方链接注册享专属优惠</div><div style="margin-top:10px;"><a href="https://idc.ofoca.net/aff/PJQGAEKY" target="_blank" rel="noopener" style="display:inline-block;padding:8px 24px;background:#ff6b6b;color:#fff;border-radius:20px;text-decoration:none;font-size:14px;font-weight:bold;">立即注册领优惠</a></div><div style="font-size:11px;color:#999;margin-top:6px;">注册后联系博主可再领额外折扣</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/sora-shutdown-postmortem/" title="Sora 关停复盘：OpenAI 为何亲手埋葬&quot;视频 GPT&quot;">Sora 关停复盘：OpenAI 为何亲手埋葬&quot;视频 GPT&quot;</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2026-09-06T03:00:00.000Z" title="发表于 2026-09-06 11:00:00">2026-09-06</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></span></div><div class="content">Sora 关停复盘：OpenAI 为何亲手埋葬”视频 GPT”Sora 死了——不是被竞争对手打败，而是被它的缔造者亲手按下了终止键。2024 年初那段 60 秒的演示视频曾让全世界惊呼”视频的 GPT-3 时刻来了”，两年后，OpenAI 却在 2026 年上半年分阶段将其关停：独立应用与网页端在 4 月底下线，API 也在 9 月画上句号。 一款”概念股”型产品的宿命回看 Sora 的一生，它其实始终没完成从”演示惊艳”到”产品成立”的惊险一跃。问题不是技术不够炫，而是它掉进了明星 AI 产品最常见的坑：  贵得离谱。视频生成的推理成本远高于文本，Sora 的算力账单在当时被戏称为”每生成一秒钟都在烧钱”，商业化定价要么劝退用户，要么补贴到怀疑人生； 难用得伤心。演示片段是精挑细选的，真实创作中它对指令的遵循、对物理世界的还原仍然飘忽不定，创作者试过几次就回流到传统工具； 找不到付费场景。C 端用户要不起，专业用户嫌不稳，Sora 卡在”高不成低不就”的尴尬区间——这几乎是所有”先秀技术、后补产品”路线的通病。  真正跑通的不是”Sora 模式”Sora 离场的同时，生成式视...</div></div></div></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/de/page/11/#content-inner"><i class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/de/">1</a><span class="space">&hellip;</span><a class="page-number" href="/de/page/11/#content-inner">11</a><span class="page-number current">12</span><a class="page-number" href="/de/page/13/#content-inner">13</a><span class="space">&hellip;</span><a class="page-number" href="/de/page/23/#content-inner">23</a><a class="extend next" rel="next" href="/de/page/13/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">mc-yzy15</div><div class="author-info-description">Yzy15的个人博客 | 技术教程 · 编程经验 · 学习笔记</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">221</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">472</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">21</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/mc-yzy15"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://yzy15.dpdns.org" target="_blank" title="个人主页"><i class="fas fa-home" style="color: #ff6600;"></i></a><a class="social-icon" href="https://github.com/mc-yzy15" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:yingmoliuguang@yeah.net" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a><a class="social-icon" href="https://space.bilibili.com/1338637552" target="_blank" title="Bilibili"><i class="fab fa-bilibili" style="color: #00a1d6;"></i></a><a class="social-icon" href="https://t.me/ShuangXiang_Dddddavidd_bot" target="_blank" title="Telegram"><i class="fab fa-telegram" style="color: #0088cc;"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="RSS"><i class="fas fa-rss" style="color: #ff6600;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到我的博客！这里记录着我的技术分享和生活点滴~<br>📢 <a href="/link/">广告位招租</a> | 💼 商业合作见<a href="/link/">友链页</a></div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/ai-search-2026-evolution/" title="AI 搜索的 2026：当&quot;搜索&quot;从链接分发变成答案生成，流量逻辑被改写">AI 搜索的 2026：当&quot;搜索&quot;从链接分发变成答案生成，流量逻辑被改写</a><time datetime="2026-09-07T02:20:00.000Z" title="发表于 2026-09-07 10:20:00">2026-09-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/ai-video-commercialization/" title="AI 视频的商业化元年：广告、短剧与影视工业的&quot;降本实验&quot;">AI 视频的商业化元年：广告、短剧与影视工业的&quot;降本实验&quot;</a><time datetime="2026-09-07T02:00:00.000Z" title="发表于 2026-09-07 10:00:00">2026-09-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/prompt-injection-ai-security/" title="提示注入与 Agent 安全：当 AI 会&quot;被骗&quot;时，应用如何自保">提示注入与 Agent 安全：当 AI 会&quot;被骗&quot;时，应用如何自保</a><time datetime="2026-09-07T01:40:00.000Z" title="发表于 2026-09-07 09:40:00">2026-09-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/memory-storage-supercycle-2026/" title="存储的&quot;超级周期&quot;：HBM 与 AI 之外，内存厂商才是最大赢家？">存储的&quot;超级周期&quot;：HBM 与 AI 之外，内存厂商才是最大赢家？</a><time datetime="2026-09-07T01:20:00.000Z" title="发表于 2026-09-07 09:20:00">2026-09-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/gpu-cloud-price-war/" title="GPU 云价格战与算力过剩：AI 基础设施从&quot;卖方市场&quot;转向&quot;买方市场&quot;">GPU 云价格战与算力过剩：AI 基础设施从&quot;卖方市场&quot;转向&quot;买方市场&quot;</a><time datetime="2026-09-07T01:00:00.000Z" title="发表于 2026-09-07 09:00:00">2026-09-07</time></div></div></div></div><div class="card-widget rec-card"><div style="text-align:center;padding:18px 10px;border:2px dashed #49b1f5;border-radius:8px;margin:0 auto;background:linear-gradient(135deg,#f0f9ff,#e0f2fe);"><div style="font-size:16px;font-weight:bold;color:#49b1f5;">☁️ 南影云 - 高性价比云服务器</div><div style="font-size:12px;color:#555;margin-top:6px;">上万台服务器 | T+级DDoS防护 | 无限防CC</div><div style="font-size:12px;color:#555;margin-top:4px;">🎁 通过下方链接注册享专属优惠</div><div style="margin-top:8px;"><a href="https://idc.ofoca.net/aff/PJQGAEKY" target="_blank" rel="noopener" style="display:inline-block;padding:6px 20px;background:#49b1f5;color:#fff;border-radius:16px;text-decoration:none;font-size:13px;font-weight:bold;">立即注册领优惠</a></div></div></div><div class="card-widget card-categories"><div class="item-headline">
+            <i class="fas fa-folder-open"></i>
+            <span>分类</span>
+            <a class="card-more-btn" href="/categories/" title="查看更多">
+      <i class="fas fa-angle-right"></i></a>
+          </div>
+          <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/AI%E5%AE%89%E5%85%A8/"><span class="card-category-list-name">AI安全</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/AI%E7%9B%91%E7%AE%A1/"><span class="card-category-list-name">AI监管</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/WordPress/"><span class="card-category-list-name">WordPress</span><span class="card-category-list-count">16</span></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/WordPress/%E6%9C%AA%E5%88%86%E7%B1%BB/"><span class="card-category-list-name">未分类</span><span class="card-category-list-count">8</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/WordPress/%E6%AF%8F%E6%97%A5%E6%8F%90%E7%A4%BA/"><span class="card-category-list-name">每日提示</span><span class="card-category-list-count">4</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/WordPress/%E8%AE%BA%E6%96%87/"><span class="card-category-list-name">论文</span><span class="card-category-list-count">4</span></a></li></ul></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E4%BA%91%E8%AE%A1%E7%AE%97/"><span class="card-category-list-name">云计算</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E4%BA%92%E8%81%94%E7%BD%91%E5%95%86%E4%B8%9A/"><span class="card-category-list-name">互联网商业</span><span class="card-category-list-count">1</span></a></li>
+          </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E6%9F%A5/" style="font-size: 1.1em; color: #999">代码审查</a> <a href="/tags/%E9%98%BF%E9%87%8C/" style="font-size: 1.5em; color: #99a9bf">阿里</a> <a href="/tags/%E4%BA%8B%E4%BB%B6%E5%93%8D%E5%BA%94/" style="font-size: 1.1em; color: #999">事件响应</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E4%BA%BA/" style="font-size: 1.4em; color: #99a5b6">机器人</a> <a href="/tags/%E8%81%94%E5%8F%91%E7%A7%91/" style="font-size: 1.1em; color: #999">联发科</a> <a href="/tags/%E6%95%B0%E5%AD%97%E5%8C%96%E8%BD%AC%E5%9E%8B/" style="font-size: 1.1em; color: #999">数字化转型</a> <a href="/tags/%E5%AE%B6%E7%94%A8%E6%9C%BA%E5%99%A8%E4%BA%BA/" style="font-size: 1.1em; color: #999">家用机器人</a> <a href="/tags/%E8%B0%B7%E6%AD%8C%E4%BA%91/" style="font-size: 1.1em; color: #999">谷歌云</a> <a href="/tags/AI%E5%95%86%E4%B8%9A%E5%8C%96/" style="font-size: 1.1em; color: #999">AI商业化</a> <a href="/tags/%E6%99%BA%E8%83%BD%E5%BA%A7%E8%88%B1/" style="font-size: 1.2em; color: #999da3">智能座舱</a> <a href="/tags/Fable/" style="font-size: 1.1em; color: #999">Fable</a> <a href="/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" style="font-size: 1.3em; color: #99a1ac">网络安全</a> <a href="/tags/CSP/" style="font-size: 1.1em; color: #999">CSP</a> <a href="/tags/%E9%AA%81%E9%BE%99/" style="font-size: 1.3em; color: #99a1ac">骁龙</a> <a href="/tags/%E8%A1%A8%E6%A0%BC%E6%A8%A1%E5%9E%8B/" style="font-size: 1.1em; color: #999">表格模型</a> <a href="/tags/GLM/" style="font-size: 1.2em; color: #999da3">GLM</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%95%B0%E6%8D%AE/" style="font-size: 1.1em; color: #999">机器人数据</a> <a href="/tags/Apple-Silicon/" style="font-size: 1.1em; color: #999">Apple Silicon</a> <a href="/tags/L4/" style="font-size: 1.1em; color: #999">L4</a> <a href="/tags/%E8%8A%AF%E7%89%87/" style="font-size: 1.1em; color: #999">芯片</a> <a href="/tags/%E5%9C%BA%E6%99%AF%E8%90%BD%E5%9C%B0/" style="font-size: 1.1em; color: #999">场景落地</a> <a href="/tags/%E8%BD%A6%E6%9C%BA/" style="font-size: 1.1em; color: #999">车机</a> <a href="/tags/%E5%8F%AF%E5%9B%9E%E6%94%B6%E7%81%AB%E7%AE%AD/" style="font-size: 1.1em; color: #999">可回收火箭</a> <a href="/tags/%E5%9B%BD%E4%BA%A7%E6%9B%BF%E4%BB%A3/" style="font-size: 1.1em; color: #999">国产替代</a> <a href="/tags/%E7%8E%B0%E4%BB%A3%E8%BF%B7%E4%BF%A1/" style="font-size: 1.1em; color: #999">现代迷信</a> <a href="/tags/%E5%8D%8A%E5%AF%BC%E4%BD%93/" style="font-size: 1.1em; color: #999">半导体</a> <a href="/tags/%E6%B7%B1%E5%BA%A6%E4%BC%AA%E9%80%A0/" style="font-size: 1.3em; color: #99a1ac">深度伪造</a> <a href="/tags/%E7%A7%91%E5%AD%A6%E4%B8%8E%E7%8E%84%E5%AD%A6/" style="font-size: 1.1em; color: #999">科学与玄学</a> <a href="/tags/%E9%93%B0%E9%93%BE/" style="font-size: 1.1em; color: #999">铰链</a> <a href="/tags/Sora/" style="font-size: 1.1em; color: #999">Sora</a> <a href="/tags/Waymo/" style="font-size: 1.2em; color: #999da3">Waymo</a> <a href="/tags/%E7%A4%BE%E4%BC%9A%E7%BB%8F%E6%B5%8E%E4%B8%8D%E5%B9%B3%E7%AD%89/" style="font-size: 1.4em; color: #99a5b6">社会经济不平等</a> <a href="/tags/%E6%B6%A8%E4%BB%B7/" style="font-size: 1.1em; color: #999">涨价</a> <a href="/tags/%E9%80%89%E8%B4%AD%E6%8C%87%E5%8D%97/" style="font-size: 1.1em; color: #999">选购指南</a> <a href="/tags/%E8%B4%A8%E9%87%8F%E8%AF%84%E4%BC%B0/" style="font-size: 1.1em; color: #999">质量评估</a> <a href="/tags/TECNO/" style="font-size: 1.1em; color: #999">TECNO</a> <a href="/tags/%E8%87%AA%E7%A0%94%E8%8A%AF%E7%89%87/" style="font-size: 1.1em; color: #999">自研芯片</a> <a href="/tags/MiMo-Code/" style="font-size: 1.1em; color: #999">MiMo Code</a> <a href="/tags/%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" style="font-size: 1.1em; color: #999">个人网站</a> <a href="/tags/IFA/" style="font-size: 1.5em; color: #99a9bf">IFA</a></div></div><div class="card-widget card-archives">
+    <div class="item-headline">
+      <i class="fas fa-archive"></i>
+      <span>归档</span>
+      <a class="card-more-btn" href="/archives/"
+            title="查看更多">
+            <i class="fas fa-angle-right"></i>
+          </a>
+    </div>
+  
+    <ul class="card-archive-list">
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2026/09/">
+            <span class="card-archive-list-date">
+              九月 2026
+            </span>
+            <span class="card-archive-list-count">183</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2026/08/">
+            <span class="card-archive-list-date">
+              八月 2026
+            </span>
+            <span class="card-archive-list-count">20</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2026/04/">
+            <span class="card-archive-list-date">
+              四月 2026
+            </span>
+            <span class="card-archive-list-count">2</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2026/03/">
+            <span class="card-archive-list-date">
+              三月 2026
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2025/11/">
+            <span class="card-archive-list-date">
+              十一月 2025
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2025/06/">
+            <span class="card-archive-list-date">
+              六月 2025
+            </span>
+            <span class="card-archive-list-count">2</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2025/05/">
+            <span class="card-archive-list-date">
+              五月 2025
+            </span>
+            <span class="card-archive-list-count">2</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2025/03/">
+            <span class="card-archive-list-date">
+              三月 2025
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+    </ul>
+  </div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站信息</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">221</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">本站总浏览量 :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2026-09-05T19:32:11.449Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By mc-yzy15</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.1</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><script src="/js/tw_cn.js?v=5.5.4"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.9/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><div class="js-pjax"></div><script src="/js/webinfo-stats.js"></script><div class="ad-banner sponsor" style="text-align:center;padding:12px 10px;margin:10px auto;max-width:728px;background:linear-gradient(135deg,#fff5f5,#ffe0e0);border:1px solid<script src="/js/content-loader.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

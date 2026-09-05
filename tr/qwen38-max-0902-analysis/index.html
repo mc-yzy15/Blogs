@@ -1,0 +1,214 @@
+<!DOCTYPE html><html lang="[&quot;zh-CN&quot;,&quot;en&quot;,&quot;zh-TW&quot;,&quot;ja&quot;,&quot;ko&quot;,&quot;fr&quot;,&quot;de&quot;,&quot;es&quot;,&quot;ru&quot;,&quot;pt&quot;,&quot;ar&quot;,&quot;hi&quot;,&quot;it&quot;,&quot;th&quot;,&quot;vi&quot;,&quot;id&quot;,&quot;tr&quot;,&quot;uk&quot;,&quot;pl&quot;,&quot;nl&quot;]" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Qwen3.8-Max-0902：2.4T 参数与 1M 上下文背后的阿里节奏 | Yzy15's Blog - 技术分享与生活记录</title><meta name="author" content="mc-yzy15"><meta name="copyright" content="mc-yzy15"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="阿里 9 月初更新 Qwen3.8-Max-0902，2.4T 参数、1M token 上下文、编程榜登顶，并承诺开源 Max 规模权重。从发布节奏到榜单打法，这步棋在开源与商业两端都有讲究。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Qwen3.8-Max-0902：2.4T 参数与 1M 上下文背后的阿里节奏">
+<meta property="og:url" content="https://blogs.yzy15.dpdns.org/tr/qwen38-max-0902-analysis/">
+<meta property="og:site_name" content="Yzy15&#39;s Blog - 技术分享与生活记录">
+<meta property="og:description" content="阿里 9 月初更新 Qwen3.8-Max-0902，2.4T 参数、1M token 上下文、编程榜登顶，并承诺开源 Max 规模权重。从发布节奏到榜单打法，这步棋在开源与商业两端都有讲究。">
+<meta property="og:locale" content="tr_TR">
+<meta property="og:image" content="https://blogs.yzy15.dpdns.org/img/butterfly-icon.png">
+<meta property="article:published_time" content="2026-09-03T07:00:00.000Z">
+<meta property="article:modified_time" content="2026-09-05T19:31:53.652Z">
+<meta property="article:author" content="mc-yzy15">
+<meta property="article:tag" content="Qwen">
+<meta property="article:tag" content="大模型">
+<meta property="article:tag" content="开源模型">
+<meta property="article:tag" content="阿里">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://blogs.yzy15.dpdns.org/img/favicon.ico">
+<meta name="twitter:site" content="@mc_yzy15"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Qwen3.8-Max-0902：2.4T 参数与 1M 上下文背后的阿里节奏",
+  "url": "https://blogs.yzy15.dpdns.org/qwen38-max-0902-analysis/",
+  "image": "https://blogs.yzy15.dpdns.org/img/butterfly-icon.png",
+  "datePublished": "2026-09-03T07:00:00.000Z",
+  "dateModified": "2026-09-05T19:31:53.652Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "mc-yzy15",
+      "url": "https://yzy15.dpdns.org"
+    }
+  ]
+}
+</script><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Yzy15's Blog - 技术分享与生活记录",
+      "item": "https://blogs.yzy15.dpdns.org/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "人工智能",
+      "item": "https://blogs.yzy15.dpdns.org/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Qwen3.8-Max-0902：2.4T 参数与 1M 上下文背后的阿里节奏",
+      "item": "https://blogs.yzy15.dpdns.org/qwen38-max-0902-analysis/"
+    }
+  ]
+}
+</script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://blogs.yzy15.dpdns.org/tr/qwen38-max-0902-analysis/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.9/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-HK1JGTYX4N"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-HK1JGTYX4N')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-HK1JGTYX4N', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Qwen3.8-Max-0902：2.4T 参数与 1M 上下文背后的阿里节奏',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 8.1.1"><link rel="alternate" href="/atom.xml" title="Yzy15's Blog - 技术分享与生活记录" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">221</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">472</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">21</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/homepage/"><i class="fa-fw fas fa-globe"></i><span> Homepage</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/stats/"><i class="fa-fw fas fa-chart-bar"></i><span> Stats</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Yzy15's Blog - 技术分享与生活记录</span></a><a class="nav-page-title" href="/"><span class="site-name">Qwen3.8-Max-0902：2.4T 参数与 1M 上下文背后的阿里节奏</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/homepage/"><i class="fa-fw fas fa-globe"></i><span> Homepage</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/stats/"><i class="fa-fw fas fa-chart-bar"></i><span> Stats</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Qwen3.8-Max-0902：2.4T 参数与 1M 上下文背后的阿里节奏</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-09-03T07:00:00.000Z" title="发表于 2026-09-03 15:00:00">2026-09-03</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-09-05T19:31:53.652Z" title="更新于 2026-09-06 03:31:53">2026-09-06</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="Qwen3-8-Max-0902：2-4T-参数与-1M-上下文背后的阿里节奏"><a href="#Qwen3-8-Max-0902：2-4T-参数与-1M-上下文背后的阿里节奏" class="headerlink" title="Qwen3.8-Max-0902：2.4T 参数与 1M 上下文背后的阿里节奏"></a>Qwen3.8-Max-0902：2.4T 参数与 1M 上下文背后的阿里节奏</h1><p>阿里在 9 月初更新了 Qwen3.8-Max-0902：2.4T 参数规模、1M token 上下文窗口，并以 1691 分登顶 Code Arena: WebDev 榜单，同时在 QwenCloud 上以输入 2 美元、输出 6 美元每百万 token 的价格提供服务。数字之外，这更像一次精心设计的”组合拳”。</p>
+<h2 id="1M-上下文不是参数游戏，是-Agent-基建"><a href="#1M-上下文不是参数游戏，是-Agent-基建" class="headerlink" title="1M 上下文不是参数游戏，是 Agent 基建"></a>1M 上下文不是参数游戏，是 Agent 基建</h2><p>把上下文从 128K 推到 1M，工程上要解决的不只是”塞得下”，更是”记得住”——长程检索的注意力衰减、海量中间信息的忠实度，都是决定”百万 token 是否可用”的关键。阿里在这个时间点强调 1M，明显是在为 Agent 场景铺路：代码仓库级理解、超长文档分析、多轮跨会话任务，都需要模型能真正”通读”而不只是”读得完”。</p>
+<p>2.4T 参数继续押注”规模即智能”的经典路线，配合 0902 这个”小版本快迭代”的编号习惯，说明阿里的策略是<strong>旗舰不断更、能力不停步</strong>——用持续的增量发布保持存在感，不让对手有任何空窗期可以营销。</p>
+<h2 id="Code-Arena-登顶：开源模型的”编程锦标赛”"><a href="#Code-Arena-登顶：开源模型的”编程锦标赛”" class="headerlink" title="Code Arena 登顶：开源模型的”编程锦标赛”"></a>Code Arena 登顶：开源模型的”编程锦标赛”</h2><p>登上 Code Arena 榜首，是开源模型极看重的一张成绩单，因为它是动态、偏真实工程的评测，比静态 benchmark 更能说服开发者迁移。Qwen 在编程这条线上持续投入，目标人群非常明确：<strong>全球的 AI 编程用户与云上开发者</strong>。开源权重降低尝试门槛，云上 API 承接规模需求——先用开源抢心智，再用云服务收钱，这套”开源漏斗”已经被验证过多次。</p>
+<p>尤其值得注意的是 0902 明确承诺开源 Max 规模权重。此前”最大最强模型只闭源”几乎是行业惯例，阿里愿意开源旗舰档，既是对社区信任的投资，也是对闭源阵营的一次施压。</p>
+<h2 id="开发者该怎么选"><a href="#开发者该怎么选" class="headerlink" title="开发者该怎么选"></a>开发者该怎么选</h2><p>对开发者而言，Qwen3.8-Max-0902 值得加入评估队列，但决策仍要回到自己的负载：</p>
+<ol>
+<li><strong>1M 上下文是否真的需要</strong>——长上下文往往伴随更高延迟与成本，先量化自己的真实需求；</li>
+<li><strong>编程能力要用自己的仓库测</strong>——Code Arena 的口径和你团队的技术栈未必一致；</li>
+<li><strong>开源权重的运维成本</strong>——自部署 2.4T 规模的 MoE 需要的是机柜级预算，多数团队更适合走 API 或私有化中的”蒸馏版”。</li>
+</ol>
+<p>模型的竞争越来越像马拉松：拼的不再是单场发布，而是谁能用最稳的节奏，同时跑赢性能、成本与生态三张表。阿里这一手，至少把开源阵营的”天花板叙事”又往上抬了一截。</p>
+<blockquote>
+<p>**说明：**文中模型参数与榜单信息基于阿里云 Qwen 官方发布及 Code Arena 公开榜单，价格以 QwenCloud 页面为准。</p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a target="_blank" rel="noopener" href="https://yzy15.dpdns.org">mc-yzy15</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://blogs.yzy15.dpdns.org/qwen38-max-0902-analysis/">https://blogs.yzy15.dpdns.org/qwen38-max-0902-analysis/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。<strong>禁止商用</strong>。转载请注明来源 <a href="https://blogs.yzy15.dpdns.org" target="_blank">Yzy15's Blog - 技术分享与生活记录</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/">大模型</a><a class="post-meta__tags" href="/tags/%E9%98%BF%E9%87%8C/">阿里</a><a class="post-meta__tags" href="/tags/%E5%BC%80%E6%BA%90%E6%A8%A1%E5%9E%8B/">开源模型</a><a class="post-meta__tags" href="/tags/Qwen/">Qwen</a></div><div class="post-share"><div class="social-share" data-image="/img/butterfly-icon.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>感谢您的支持，您的赞赏是我持续创作的动力！</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://img.cdn1.vip/i/69ed1d29274a9_1777147177.webp" target="_blank"><img class="post-qr-code-img" src="https://img.cdn1.vip/i/69ed1d29274a9_1777147177.webp" alt="微信赞赏"/ loading='lazy'></a><div class="post-qr-code-desc">微信赞赏</div></li></ul></div></div><div class="rec-card ad-slot ad-placement"><div style="text-align:center;padding:20px 10px;border:2px dashed #ff6b6b;border-radius:8px;margin:0 auto;background:linear-gradient(135deg,#fff5f5,#ffe0e0);"><div style="font-size:18px;font-weight:bold;color:#ff6b6b;">☁️ 南影云 - 高性价比云服务器</div><div style="font-size:13px;color:#555;margin-top:8px;">上万台服务器 | T+级DDoS防护 | 无限防CC</div><div style="font-size:13px;color:#555;margin-top:4px;">🎁 通过下方链接注册享专属优惠</div><div style="margin-top:10px;"><a href="https://idc.ofoca.net/aff/PJQGAEKY" target="_blank" rel="noopener" style="display:inline-block;padding:8px 24px;background:#ff6b6b;color:#fff;border-radius:20px;text-decoration:none;font-size:14px;font-weight:bold;">立即注册领优惠</a></div><div style="font-size:11px;color:#999;margin-top:6px;">注册后联系博主可再领额外折扣</div></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/gpt6-codex-integration/" title="GPT-6 Astra 进入 Codex：AI 编程的&quot;旗舰大脑&quot;时代"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">GPT-6 Astra 进入 Codex：AI 编程的"旗舰大脑"时代</div></div><div class="info-2"><div class="info-item-1">GPT-6 Astra 进入 Codex：AI 编程的”旗舰大脑”时代GPT-6 Astra 发布的消息里，程序员最该关注的可能不是跑分，而是它”登陆 Work 与 Codex”的安排。这意味着 OpenAI 最强大的模型将直接接入编程 Agent 与工作场景——AI 编程的竞争，正式从”工具之争”升级为”旗舰大脑之争”。 Codex 接上旗舰大脑意味着什么过去的编程 Agent 大多跑在”够用但非最强”的模型上——因为旗舰太贵、太慢，不划算。但 GPT-6 Astra 的能力组合（软件工程 + 计算机操作 + 长程推理）恰恰是为编程 Agent 量身定制的：  更强的长程规划：真实工程任务是”规划-执行-验证-修复”的循环，需要模型在几十步之后还记得最初的目标——这正是旗舰模型的强项； 跨工具操作能力：当 Agent 不只是改代码，还能操作终端、浏览器、IDE 时，它能覆盖的工程环节大幅扩展； 任务完成度的质变：从”生成代码片段”到”把整个任务办完”，差的不只是模型大小，而是目标追踪与自我纠错能力。  竞争格局被重新洗牌GPT-6 进 Codex，对 AI 编程市场的影响是结构...</div></div></div></a><a class="pagination-related" href="/meta-muse-voice-transcribe/" title="Meta Muse Voice Transcribe：0.18 美元/小时的语音转写意味着什么"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Meta Muse Voice Transcribe：0.18 美元/小时的语音转写意味着什么</div></div><div class="info-2"><div class="info-item-1">Meta Muse Voice Transcribe：0.18 美元&#x2F;小时的语音转写意味着什么Meta 发布了首个实时音频感知模型 Muse Voice Transcribe，官方把转写成本压到每小时 0.18 美元。放在三年前，这样的价格会被称为”颠覆”；但在今天的市场语境里，它更像一记早就该来的重锤——语音转写早已是商品，Meta 只是用模型规模把价格打到了新的地板。 实时音频感知：被低估的技术门槛转写（Transcribe）听起来是”老功能”，但”实时音频感知”是另一回事：它要求模型对连续音频流做低延迟的流式理解，而不是等一段录音结束再批量转写。这背后是推理架构、流式解码与延迟优化的综合能力，也解释了为什么 Meta 要单独为它发一个模型——语音 Agent 的体验上限，很大程度上由这段”边听边懂”的延迟决定。 而 0.18 美元&#x2F;小时的价格锚点一旦确立，会立刻传导到下游：凡是按小时或按分钟转写收费的 SaaS，要么降价，要么必须证明自己提供了模型之外的增量价值。 谁在买语音转写，为什么现在语音转写的需求正被两个趋势放大：  会议与协同的 AI 化：所有...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/qwen38-max-0902-analysis/" title="Qwen3.8-Max-0902：2.4T 参数与 1M 上下文背后的阿里节奏"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-03</div><div class="info-item-2">Qwen3.8-Max-0902：2.4T 参数与 1M 上下文背后的阿里节奏</div></div><div class="info-2"><div class="info-item-1">Qwen3.8-Max-0902：2.4T 参数与 1M 上下文背后的阿里节奏阿里在 9 月初更新了 Qwen3.8-Max-0902：2.4T 参数规模、1M token 上下文窗口，并以 1691 分登顶 Code Arena: WebDev 榜单，同时在 QwenCloud 上以输入 2 美元、输出 6 美元每百万 token 的价格提供服务。数字之外，这更像一次精心设计的”组合拳”。 1M 上下文不是参数游戏，是 Agent 基建把上下文从 128K 推到 1M，工程上要解决的不只是”塞得下”，更是”记得住”——长程检索的注意力衰减、海量中间信息的忠实度，都是决定”百万 token 是否可用”的关键。阿里在这个时间点强调 1M，明显是在为 Agent 场景铺路：代码仓库级理解、超长文档分析、多轮跨会话任务，都需要模型能真正”通读”而不只是”读得完”。 2.4T 参数继续押注”规模即智能”的经典路线，配合 0902 这个”小版本快迭代”的编号习惯，说明阿里的策略是旗舰不断更、能力不停步——用持续的增量发布保持存在感，不让对手有任何空窗期可以营销。 Code Arena 登顶...</div></div></div></a><a class="pagination-related" href="/deepseek-v4-1-preview/" title="DeepSeek V4.1 前瞻：开源、低价与&quot;斩杀线&quot;还能复制吗"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-06</div><div class="info-item-2">DeepSeek V4.1 前瞻：开源、低价与&quot;斩杀线&quot;还能复制吗</div></div><div class="info-2"><div class="info-item-1">DeepSeek V4.1 前瞻：开源、低价与”斩杀线”还能复制吗DeepSeek 大概是近两年被讨论最多、也最难以预测的国产模型团队。V4 Flash 正式版发布后，它把”又便宜又够用”的价格基线狠狠抬了一截——那篇文章里我称之为”斩杀线”：当市场存在一个强到离谱又便宜到离谱的选项时，所有定价高于它、能力却不显著强于它的模型，都要被迫解释自己为什么存在。而现在，围绕 V4.1 的前瞻讨论已经开始在开发者社区升温。 DeepSeek 的路径依赖：开源 + 极致性价比DeepSeek 到目前为止的成功，建立在两个支柱上：把权重开放出来，把价格打下去。前者换来社区信任与二次创新，后者换来真实的开发者调用量。这套打法的可怕之处在于，它不是靠营销话术建立的，而是靠每次发布都”真给到”建立的口碑。 V4.1 若要延续叙事，大概率依然会沿这条路走：能力再上一个台阶的同时，价格保持或继续下探，权重继续开放或至少开放核心版本。只要这两个承诺不动摇，它在开发者心智里的位置就很难被撼动。 但也别把”便宜”当成无限弹夹必须承认，DeepSeek 面临的压力正在变大：  成本红线。持续用低价换市场，前提...</div></div></div></a><a class="pagination-related" href="/open-source-llm-china-2026/" title="国产开源模型全景：谁能接住&quot;开源+便宜&quot;的接力棒"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-06</div><div class="info-item-2">国产开源模型全景：谁能接住&quot;开源+便宜&quot;的接力棒</div></div><div class="info-2"><div class="info-item-1">国产开源模型全景：谁能接住”开源+便宜”的接力棒过去一年，DeepSeek 用”开源 + 便宜”给国产模型立下了行业基准。如今智谱 GLM 系列持续开源、阿里承诺开放 Qwen3.8-Max 的 Max 规模权重、Kimi 在编码与 Agent 上押注——国产开源阵营已经从”一枝独秀”演变为”多路并进”。新的问题是：谁会接住 DeepSeek 交出的这一棒？ 四条路线已经清晰 DeepSeek：性价比原教旨——开源、低价、性能扎实，用最少的资源办最大的事。它的风险是优势被稀释后，需要证明自己还能继续”斩杀”； 阿里 Qwen：开源漏斗——开源抢心智、云上收钱的商业闭环最成熟。开源 Max 规模权重，等于把”最大最强”也变成漏斗的入口； 智谱 GLM：场景 + 国产算力——用 Agent 能力积累与国产卡全链路叙事，在政企市场建立差异化； Kimi：编码与 Agent 纵深——押注”模型即生产力”，把能力收敛到写代码与跑任务的高价值场景。  接棒的关键不在模型，在生态“开源 + 便宜”能持续多久，取决于三件事：  能否持续养得起开源：开源是成本，不是收入。只有云服务、企业版等商业化...</div></div></div></a><a class="pagination-related" href="/local-first-agent-reminder/" title="本地优先的 Agent：隐私与可控的另一条路"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-06</div><div class="info-item-2">本地优先的 Agent：隐私与可控的另一条路</div></div><div class="info-2"><div class="info-item-1">本地优先的 Agent：隐私与可控的另一条路2026 年，几乎每个 Agent 产品都在强调”理解你、替你做事”。但理解越深，代价越明显：你的邮件、文档、日程、操作习惯，全被传上云端服务器。于是一股反向潮流正在成形——本地优先（local-first）的 Agent：模型跑在自己的设备上，数据不出设备，行为完全由你掌控。 本地优先解决了什么最大的价值是隐私边界。很多敏感场景——法律、医疗、金融、企业研发——不是不想用 Agent，而是不敢把数据交给第三方。本地部署让”数据不出域”从合规口号变成架构事实。其次是可控性：云端 Agent 的更新、审查、服务条款你无法左右，本地 Agent 的代码、权重、行为规则都摊在明面上，能审计、能修改。再次是稳定性：不依赖网络与外部服务可用性，断网也能干活。 为之付出的代价天下没有免费的隐私。本地优先要面对三道坎：  能力差距：设备端的算力决定了模型规模上限。轻量模型能处理日常任务，但复杂推理、长文档、多步规划仍明显弱于云端旗舰； 维护成本：模型更新、工具接入、依赖管理都要自己做，云端的”开箱即用”在这里变成了”自己动手”； 生态割裂：本地 Ag...</div></div></div></a><a class="pagination-related" href="/gemini-3-8-flash-analysis/" title="Gemini 3.8 Flash：轻量模型的迭代竞赛，赢家不是跑分"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-06</div><div class="info-item-2">Gemini 3.8 Flash：轻量模型的迭代竞赛，赢家不是跑分</div></div><div class="info-2"><div class="info-item-1">Gemini 3.8 Flash：轻量模型的迭代竞赛，赢家不是跑分Google 在 2026 年 9 月初推出了 Gemini 3.8 Flash。按官方的说法，这是个”轻量版”模型，但性能曲线却直逼上一代旗舰（发布会现场甚至拿它与 Opus 5 对标）。竞争对手的嘲讽也来得很快——“险胜 DeepSeek”的标签被贴到它头上，暗指这种”轻量级对标旗舰”的营销话术越来越像军备竞赛里的擦边球。 Flash 才是真正的主战场把注意力从旗舰发布会上挪开，2026 年大模型竞争最白热化的地带，其实是 Flash 这类”高性能轻量模型”。原因很朴素：绝大多数真实业务不需要最聪明的模型，需要的是”够聪明、足够快、足够便宜”的模型。旗舰负责树立品牌和价格锚点，Flash 负责抢下开发者每天真实调用的那部分流量。 Google 的 Flash 系历来是”延迟敏感型”任务的常客——客服、分类、抽取、实时辅助。这一代 3.8 Flash 把能力天花板往上抬之后，原本需要动用旗舰的任务也会开始下放，这对开发者的成本账是实打实的利好。 “险胜”之争说明什么同行嘲讽它”险胜 DeepSeek”，与其说是抹...</div></div></div></a><a class="pagination-related" href="/llm-api-price-war-round3/" title="大模型 API 价格战打到第三年：便宜之外还剩下什么"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-06</div><div class="info-item-2">大模型 API 价格战打到第三年：便宜之外还剩下什么</div></div><div class="info-2"><div class="info-item-1">大模型 API 价格战打到第三年：便宜之外还剩下什么2026 年，大模型 API 市场已经很难用”价格战”来形容了——更准确的说法是”价格崩塌”后的存量博弈。从 DeepSeek 用超低价位划下”斩杀线”，到混元 HY3 等国产玩家贴身肉搏把单位成本打到接近临界点，三年下来，价格作为竞争武器的边际效用正在归零。那么，便宜之外，模型厂商之间到底还在卷什么？ 价格战的三阶段回头复盘这场价格战，脉络相当清晰： 第一阶段（拼态度）：厂商们把降价当”我有决心”的信号，价格战更多是 PR 战。 第二阶段（拼成本）：DeepSeek 把”极致性价比”做成路线本身，推理效率、MoE 架构、缓存命中成了真正的护城河——这个阶段，价格第一次与工程能力强绑定。 第三阶段（拼综合）：也就是现在。当头部 API 的价格都低到”每百万 token 几分钱”量级时，单纯再降 10%、20%，对开发者总成本的影响已经微乎其微。价格不再是决策核心。 便宜之外，剩下什么才值钱价格锚定失效后，厂商真正比拼的是这三件事： 一是质量稳定性。 同样的价格下，谁的输出更稳定、更少抽风？很多开发者已经发现，一个”偶尔优秀、偶尔...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">mc-yzy15</div><div class="author-info-description">Yzy15的个人博客 | 技术教程 · 编程经验 · 学习笔记</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">221</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">472</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">21</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/mc-yzy15"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://yzy15.dpdns.org" target="_blank" title="个人主页"><i class="fas fa-home" style="color: #ff6600;"></i></a><a class="social-icon" href="https://github.com/mc-yzy15" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:yingmoliuguang@yeah.net" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a><a class="social-icon" href="https://space.bilibili.com/1338637552" target="_blank" title="Bilibili"><i class="fab fa-bilibili" style="color: #00a1d6;"></i></a><a class="social-icon" href="https://t.me/ShuangXiang_Dddddavidd_bot" target="_blank" title="Telegram"><i class="fab fa-telegram" style="color: #0088cc;"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="RSS"><i class="fas fa-rss" style="color: #ff6600;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到我的博客！这里记录着我的技术分享和生活点滴~<br>📢 <a href="/link/">广告位招租</a> | 💼 商业合作见<a href="/link/">友链页</a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Qwen3-8-Max-0902%EF%BC%9A2-4T-%E5%8F%82%E6%95%B0%E4%B8%8E-1M-%E4%B8%8A%E4%B8%8B%E6%96%87%E8%83%8C%E5%90%8E%E7%9A%84%E9%98%BF%E9%87%8C%E8%8A%82%E5%A5%8F"><span class="toc-number">1.</span> <span class="toc-text">Qwen3.8-Max-0902：2.4T 参数与 1M 上下文背后的阿里节奏</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1M-%E4%B8%8A%E4%B8%8B%E6%96%87%E4%B8%8D%E6%98%AF%E5%8F%82%E6%95%B0%E6%B8%B8%E6%88%8F%EF%BC%8C%E6%98%AF-Agent-%E5%9F%BA%E5%BB%BA"><span class="toc-number">1.1.</span> <span class="toc-text">1M 上下文不是参数游戏，是 Agent 基建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Code-Arena-%E7%99%BB%E9%A1%B6%EF%BC%9A%E5%BC%80%E6%BA%90%E6%A8%A1%E5%9E%8B%E7%9A%84%E2%80%9D%E7%BC%96%E7%A8%8B%E9%94%A6%E6%A0%87%E8%B5%9B%E2%80%9D"><span class="toc-number">1.2.</span> <span class="toc-text">Code Arena 登顶：开源模型的”编程锦标赛”</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%80%E5%8F%91%E8%80%85%E8%AF%A5%E6%80%8E%E4%B9%88%E9%80%89"><span class="toc-number">1.3.</span> <span class="toc-text">开发者该怎么选</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/ai-search-2026-evolution/" title="AI 搜索的 2026：当&quot;搜索&quot;从链接分发变成答案生成，流量逻辑被改写">AI 搜索的 2026：当&quot;搜索&quot;从链接分发变成答案生成，流量逻辑被改写</a><time datetime="2026-09-07T02:20:00.000Z" title="发表于 2026-09-07 10:20:00">2026-09-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/ai-video-commercialization/" title="AI 视频的商业化元年：广告、短剧与影视工业的&quot;降本实验&quot;">AI 视频的商业化元年：广告、短剧与影视工业的&quot;降本实验&quot;</a><time datetime="2026-09-07T02:00:00.000Z" title="发表于 2026-09-07 10:00:00">2026-09-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/prompt-injection-ai-security/" title="提示注入与 Agent 安全：当 AI 会&quot;被骗&quot;时，应用如何自保">提示注入与 Agent 安全：当 AI 会&quot;被骗&quot;时，应用如何自保</a><time datetime="2026-09-07T01:40:00.000Z" title="发表于 2026-09-07 09:40:00">2026-09-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/memory-storage-supercycle-2026/" title="存储的&quot;超级周期&quot;：HBM 与 AI 之外，内存厂商才是最大赢家？">存储的&quot;超级周期&quot;：HBM 与 AI 之外，内存厂商才是最大赢家？</a><time datetime="2026-09-07T01:20:00.000Z" title="发表于 2026-09-07 09:20:00">2026-09-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/gpu-cloud-price-war/" title="GPU 云价格战与算力过剩：AI 基础设施从&quot;卖方市场&quot;转向&quot;买方市场&quot;">GPU 云价格战与算力过剩：AI 基础设施从&quot;卖方市场&quot;转向&quot;买方市场&quot;</a><time datetime="2026-09-07T01:00:00.000Z" title="发表于 2026-09-07 09:00:00">2026-09-07</time></div></div></div></div><div class="card-widget rec-card"><div style="text-align:center;padding:18px 10px;border:2px dashed #49b1f5;border-radius:8px;margin:0 auto;background:linear-gradient(135deg,#f0f9ff,#e0f2fe);"><div style="font-size:16px;font-weight:bold;color:#49b1f5;">☁️ 南影云 - 高性价比云服务器</div><div style="font-size:12px;color:#555;margin-top:6px;">上万台服务器 | T+级DDoS防护 | 无限防CC</div><div style="font-size:12px;color:#555;margin-top:4px;">🎁 通过下方链接注册享专属优惠</div><div style="margin-top:8px;"><a href="https://idc.ofoca.net/aff/PJQGAEKY" target="_blank" rel="noopener" style="display:inline-block;padding:6px 20px;background:#49b1f5;color:#fff;border-radius:16px;text-decoration:none;font-size:13px;font-weight:bold;">立即注册领优惠</a></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By mc-yzy15</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.1</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><script src="/js/tw_cn.js?v=5.5.4"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.9/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><div class="js-pjax"></div><script src="/js/webinfo-stats.js"></script><div class="ad-banner sponsor" style="text-align:center;padding:12px 10px;margin:10px auto;max-width:728px;background:linear-gradient(135deg,#fff5f5,#ffe0e0);border:1px solid<script src="/js/content-loader.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

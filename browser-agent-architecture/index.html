@@ -1,0 +1,227 @@
+<!DOCTYPE html><html lang="[&quot;zh-CN&quot;,&quot;en&quot;,&quot;zh-TW&quot;,&quot;ja&quot;,&quot;ko&quot;,&quot;fr&quot;,&quot;de&quot;,&quot;es&quot;,&quot;ru&quot;,&quot;pt&quot;,&quot;ar&quot;,&quot;hi&quot;,&quot;it&quot;,&quot;th&quot;,&quot;vi&quot;,&quot;id&quot;,&quot;tr&quot;,&quot;uk&quot;,&quot;pl&quot;,&quot;nl&quot;]" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>浏览器 Agent 的技术栈拆解 | Yzy15's Blog - 技术分享与生活记录</title><meta name="author" content="mc-yzy15"><meta name="copyright" content="mc-yzy15"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="GPT-6 级模型让&quot;看屏幕、点按钮&quot;的浏览器 Agent 成为可能，但一个能稳定干活的浏览器 Agent 依赖的远不止模型。本文拆解无障碍树、视觉模型与操作可靠性三块核心技术栈。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浏览器 Agent 的技术栈拆解">
+<meta property="og:url" content="https://blogs.yzy15.dpdns.org/browser-agent-architecture/">
+<meta property="og:site_name" content="Yzy15&#39;s Blog - 技术分享与生活记录">
+<meta property="og:description" content="GPT-6 级模型让&quot;看屏幕、点按钮&quot;的浏览器 Agent 成为可能，但一个能稳定干活的浏览器 Agent 依赖的远不止模型。本文拆解无障碍树、视觉模型与操作可靠性三块核心技术栈。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blogs.yzy15.dpdns.org/img/butterfly-icon.png">
+<meta property="article:published_time" content="2026-09-06T08:00:00.000Z">
+<meta property="article:modified_time" content="2026-09-05T19:31:53.645Z">
+<meta property="article:author" content="mc-yzy15">
+<meta property="article:tag" content="Agent">
+<meta property="article:tag" content="工程实践">
+<meta property="article:tag" content="技术拆解">
+<meta property="article:tag" content="浏览器自动化">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://blogs.yzy15.dpdns.org/img/favicon.ico">
+<meta name="twitter:site" content="@mc_yzy15"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "浏览器 Agent 的技术栈拆解",
+  "url": "https://blogs.yzy15.dpdns.org/browser-agent-architecture/",
+  "image": "https://blogs.yzy15.dpdns.org/img/butterfly-icon.png",
+  "datePublished": "2026-09-06T08:00:00.000Z",
+  "dateModified": "2026-09-05T19:31:53.645Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "mc-yzy15",
+      "url": "https://yzy15.dpdns.org"
+    }
+  ]
+}
+</script><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Yzy15's Blog - 技术分享与生活记录",
+      "item": "https://blogs.yzy15.dpdns.org/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "开发者生态",
+      "item": "https://blogs.yzy15.dpdns.org/categories/%E5%BC%80%E5%8F%91%E8%80%85%E7%94%9F%E6%80%81/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "浏览器 Agent 的技术栈拆解",
+      "item": "https://blogs.yzy15.dpdns.org/browser-agent-architecture/"
+    }
+  ]
+}
+</script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://blogs.yzy15.dpdns.org/browser-agent-architecture/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.9/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-HK1JGTYX4N"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-HK1JGTYX4N')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-HK1JGTYX4N', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '浏览器 Agent 的技术栈拆解',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 8.1.1"><link rel="alternate" href="/atom.xml" title="Yzy15's Blog - 技术分享与生活记录" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">221</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">472</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">21</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/homepage/"><i class="fa-fw fas fa-globe"></i><span> Homepage</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/stats/"><i class="fa-fw fas fa-chart-bar"></i><span> Stats</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Yzy15's Blog - 技术分享与生活记录</span></a><a class="nav-page-title" href="/"><span class="site-name">浏览器 Agent 的技术栈拆解</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/homepage/"><i class="fa-fw fas fa-globe"></i><span> Homepage</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/stats/"><i class="fa-fw fas fa-chart-bar"></i><span> Stats</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">浏览器 Agent 的技术栈拆解</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-09-06T08:00:00.000Z" title="发表于 2026-09-06 16:00:00">2026-09-06</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-09-05T19:31:53.645Z" title="更新于 2026-09-06 03:31:53">2026-09-06</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%BC%80%E5%8F%91%E8%80%85%E7%94%9F%E6%80%81/">开发者生态</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="浏览器-Agent-的技术栈拆解"><a href="#浏览器-Agent-的技术栈拆解" class="headerlink" title="浏览器 Agent 的技术栈拆解"></a>浏览器 Agent 的技术栈拆解</h1><p>当 GPT-6 把”操作电脑”变成模型能力，浏览器 Agent（能自主打开网页、填表、点击、完成任务的 AI）成为最热门的落地形态。但做过的人都知道：<strong>让模型”看懂”网页容易，让 Agent”稳定操作”很难。</strong> 拆开一个生产级浏览器 Agent，技术栈大致分三层。</p>
+<h2 id="第一层：网页理解（页面怎么”看”）"><a href="#第一层：网页理解（页面怎么”看”）" class="headerlink" title="第一层：网页理解（页面怎么”看”）"></a>第一层：网页理解（页面怎么”看”）</h2><p>模型读网页有三种路径，各有取舍：</p>
+<ol>
+<li><strong>DOM&#x2F;无障碍树（Accessibility Tree）</strong>：直接把页面的结构化语义（按钮、输入框、链接）喂给模型——精确、省 token，是当前主流首选；</li>
+<li><strong>纯视觉（截图）</strong>：模型直接看渲染后的截图——最接近人眼，能处理 Canvas、复杂图表，但 token 消耗高、对像素级操作不稳定；</li>
+<li><strong>混合方案</strong>：以无障碍树为主干，遇到动态内容或视觉元素时切截图补充——工程上的折中主流。</li>
+</ol>
+<h2 id="第二层：操作执行（手怎么动）"><a href="#第二层：操作执行（手怎么动）" class="headerlink" title="第二层：操作执行（手怎么动）"></a>第二层：操作执行（手怎么动）</h2><p>理解了页面，Agent 还要”动手”。可靠性设计是关键：</p>
+<ol>
+<li><strong>选择器 vs 坐标</strong>：优先用语义选择器（按钮 ID&#x2F;角色）定位元素，坐标点击只作兜底——页面布局一变，坐标就废了；</li>
+<li><strong>状态验证</strong>：每次操作后要验证页面状态（是否真的跳转&#x2F;提交成功），而不是”点完就算”；</li>
+<li><strong>失败重试与恢复</strong>：弹窗、验证码、加载慢——Agent 要能识别异常、回退重试，而不是卡死。</li>
+</ol>
+<h2 id="第三层：任务闭环（脑子怎么想）"><a href="#第三层：任务闭环（脑子怎么想）" class="headerlink" title="第三层：任务闭环（脑子怎么想）"></a>第三层：任务闭环（脑子怎么想）</h2><p>最上层的任务层负责”规划与验证”：</p>
+<ol>
+<li><strong>目标分解</strong>：把”帮我订机票”分解成”搜索→筛选→填表→支付→确认”的可执行步骤；</li>
+<li><strong>中间校验</strong>：关键节点（如支付前）停下确认或检查金额，避免一步错步步错；</li>
+<li><strong>结果断言</strong>：任务完成的标准要可验证（”预订成功”的凭证是什么），而不是”页面看起来差不多了”。</li>
+</ol>
+<h2 id="三个工程陷阱"><a href="#三个工程陷阱" class="headerlink" title="三个工程陷阱"></a>三个工程陷阱</h2><ol>
+<li><strong>验证码与反爬</strong>：真实网站有各种人机验证，浏览器 Agent 的规模化运营绕不开合规问题——先想清楚你的使用边界；</li>
+<li><strong>会话与登录态</strong>：管理 Cookie、多账户隔离、避免污染用户真实会话——这是最容易翻车的工程细节；</li>
+<li><strong>成本模型</strong>：长任务的 token 消耗可能很惊人，截图方案尤其费钱——按”每次操作成本”做预算。</li>
+</ol>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>浏览器 Agent 的成熟度，正从”能做 Demo”走向”能干活”。但它的工程门槛比看起来高得多——<strong>模型负责聪明，工程负责可靠。</strong> 如果你要在这条赛道上做产品，请把 80% 的精力花在”操作可靠性”上，而不是继续追更强的模型。</p>
+<blockquote>
+<p>**说明：**本文为浏览器 Agent 的技术架构拆解，具体方案请结合场景选型。</p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a target="_blank" rel="noopener" href="https://yzy15.dpdns.org">mc-yzy15</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://blogs.yzy15.dpdns.org/browser-agent-architecture/">https://blogs.yzy15.dpdns.org/browser-agent-architecture/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。<strong>禁止商用</strong>。转载请注明来源 <a href="https://blogs.yzy15.dpdns.org" target="_blank">Yzy15's Blog - 技术分享与生活记录</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Agent/">Agent</a><a class="post-meta__tags" href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/">工程实践</a><a class="post-meta__tags" href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8%E8%87%AA%E5%8A%A8%E5%8C%96/">浏览器自动化</a><a class="post-meta__tags" href="/tags/%E6%8A%80%E6%9C%AF%E6%8B%86%E8%A7%A3/">技术拆解</a></div><div class="post-share"><div class="social-share" data-image="/img/butterfly-icon.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>感谢您的支持，您的赞赏是我持续创作的动力！</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://img.cdn1.vip/i/69ed1d29274a9_1777147177.webp" target="_blank"><img class="post-qr-code-img" src="https://img.cdn1.vip/i/69ed1d29274a9_1777147177.webp" alt="微信赞赏"/ loading='lazy'></a><div class="post-qr-code-desc">微信赞赏</div></li></ul></div></div><div class="rec-card ad-slot ad-placement"><div style="text-align:center;padding:20px 10px;border:2px dashed #ff6b6b;border-radius:8px;margin:0 auto;background:linear-gradient(135deg,#fff5f5,#ffe0e0);"><div style="font-size:18px;font-weight:bold;color:#ff6b6b;">☁️ 南影云 - 高性价比云服务器</div><div style="font-size:13px;color:#555;margin-top:8px;">上万台服务器 | T+级DDoS防护 | 无限防CC</div><div style="font-size:13px;color:#555;margin-top:4px;">🎁 通过下方链接注册享专属优惠</div><div style="margin-top:10px;"><a href="https://idc.ofoca.net/aff/PJQGAEKY" target="_blank" rel="noopener" style="display:inline-block;padding:8px 24px;background:#ff6b6b;color:#fff;border-radius:20px;text-decoration:none;font-size:14px;font-weight:bold;">立即注册领优惠</a></div><div style="font-size:11px;color:#999;margin-top:6px;">注册后联系博主可再领额外折扣</div></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/deepseek-wait-whats-next/" title="各家都在发 Flash，DeepSeek 下一步该打什么牌"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">各家都在发 Flash，DeepSeek 下一步该打什么牌</div></div><div class="info-2"><div class="info-item-1">各家都在发 Flash，DeepSeek 下一步该打什么牌过去一年，DeepSeek 用”开源 + 极致性价比”教育了整个市场，让”Flash 档”成为行业标配。但 2026 年秋天，风向开始微妙地变化：智谱 GLM-5.3 Flash 指名对标、谷歌三周一次迭代 Flash、阿里在轻量档持续加码——当所有人都学会了你的打法，原创者反而要面对”被自己的规则反噬”的困境。 DeepSeek 的处境：优势正在被稀释DeepSeek 建立的两大支柱，都在被同行追赶：  开源：Qwen 承诺开源 Max 规模权重，GLM 系列持续开放，开源不再稀缺； 性价比：价格战的规则一旦被复制，比拼就进入”谁的推理成本更低”的硬仗，而 DeepSeek 在国产算力规模化上的叙事并不比智谱更有优势。  更微妙的是”斩杀线”的副作用：DeepSeek 把轻量档价格压到极致后，自己也很难再把价格往上提——价格锚一旦定死，就是双向的。 DeepSeek 手里的牌依然不少但说 DeepSeek 会被围剿，为时过早。它的底牌包括：  技术口碑的复利：连续几个版本”真给到”建立的信誉，是发布会 PPT 买不来的；...</div></div></div></a><a class="pagination-related" href="/ai-glasses-2026-roundup/" title="AI 眼镜的 2026：新品井喷之后，到底该怎么选"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">AI 眼镜的 2026：新品井喷之后，到底该怎么选</div></div><div class="info-2"><div class="info-item-1">AI 眼镜的 2026：新品井喷之后，到底该怎么选如果说 2024 年是 AI 眼镜的”元年预告”，2025 年是”巨头入场”，那 2026 年就是彻头彻尾的”大乱斗”：头部科技公司的旗舰款、手机厂商的生态款、甚至白牌厂商的”百元 AI 眼镜”一起涌进市场。热度空前的另一面，是选购难度的指数级上升——同样叫”AI 眼镜”，产品之间可能差着好几个世代。 先分清品类：别被同一个名字骗了市面上的 AI 眼镜，其实分属完全不同的物种，买错方向的代价远大于买错品牌：  摄像头 AI 眼镜（拍照&#x2F;录像 + AI 问答）：当前最主流，核心是”第一视角记录 + 语音交互”。代表产品多为科技巨头或大厂的走量款。适合记录生活、当随身助理的人。 显示 AI 眼镜（AR&#x2F;信息显示）：镜片内能投射信息，把”眼镜变屏幕”。技术门槛高、价格贵、生态尚在早期。适合尝鲜极客与开发者。 纯音频&#x2F;无显示轻量款：只有语音交互，本质是”带 AI 的蓝牙耳机 + 眼镜”，价格亲民，但”AI 味”最淡，最容易让小白产生”就这？”的落差。  选购第一原则：先想清楚你要的是”记录”还是”显示”，再谈...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/agent-cost-control/" title="Agent 账单失控：token 成本治理三板斧"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-06</div><div class="info-item-2">Agent 账单失控：token 成本治理三板斧</div></div><div class="info-2"><div class="info-item-1">Agent 账单失控：token 成本治理三板斧聊天机器人的 token 账单是可预测的，Agent 的不是——一个”看起来简单”的任务可能包含几十次模型调用、几万 token 的上下文往返。许多团队在 Agent 上线第一周就被账单教育了：Agent 的成本问题，必须在架构阶段就治理，而不是等账单来了再救火。 为什么 Agent 这么烧钱Agent 的成本结构与传统对话完全不同：  调用次数爆炸：一次任务 &#x3D; 规划 + N 次工具调用 + N 次结果反思，每次都是一次完整的模型往返； 上下文膨胀：工具返回结果、历史步骤、项目背景都在往上下文里塞，输入 token 是最大的成本黑洞； 失败重试成本：Agent 出错重试不是免费重来——每次重试都重新烧一遍钱。  三板斧之一：压缩（输入瘦身） 工具结果裁剪：工具返回 5000 token 的数据，只把相关的 500 token 喂给模型——别让”全量返回”白白烧钱； 历史摘要化：长任务不需要完整保留每轮对话，跑几步就压缩一次历史，只留决策要点； 上下文预算：给每类任务设上下文上限，超过就强制精简或切换更便宜的模型档。  三...</div></div></div></a><a class="pagination-related" href="/agent-eval-methodology/" title="怎么评估一个 Agent 真的能用"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-06</div><div class="info-item-2">怎么评估一个 Agent 真的能用</div></div><div class="info-2"><div class="info-item-1">怎么评估一个 Agent 真的能用千问用”10 万元本金经营 365 天”来考 AI 店长，厂商们用”任务完成率”宣传自己的 Agent——但作为买家，怎么判断一个 Agent 在你的场景里真的能用？单看厂商的”完成率”远远不够，你需要一套自己的评估框架。 为什么”完成率”不够用“任务完成率 90%”这个数字无法回答的问题太多了：任务集是什么？简单还是复杂？”完成”的定义是什么——是交付了结果，还是结果经过验证是对的？失败时是自动恢复还是需要人救火？同一个 90%，可能是”只挑简单任务测”的结果，也可能是”真刀真枪”的成绩。 四维评估框架评估一个 Agent，建议从四个维度打分：  端到端成功率：从下任务到拿结果，不人工干预的成功比例。注意要分层统计——简单任务、中等任务、复杂任务分开报，别只看平均数； 干预率：每完成 N 个任务，需要人类介入多少次？这是”无人值守”程度的直接度量——比成功率更反映工程成熟度； 错误严重度：Agent 失败不可怕，可怕的是”失败得很危险”——把错误按”可自动恢复 &#x2F; 需要修正 &#x2F; 造成破坏”分级统计； 成本效率：完成一个任务消...</div></div></div></a><a class="pagination-related" href="/agent-memory-design/" title="Agent 记忆设计入门：缓存、档案与遗忘"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-06</div><div class="info-item-2">Agent 记忆设计入门：缓存、档案与遗忘</div></div><div class="info-2"><div class="info-item-1">Agent 记忆设计入门：缓存、档案与遗忘GPT-6 时代，模型上下文窗口已经可以塞下几十万 token——但 Agent 依然需要专门的记忆系统。因为”塞得下”不等于”记得住”，更不等于”能在正确的时候想起正确的事”。当 Agent 开始跑跨越多轮、持续数周的真实任务，记忆架构成为决定成败的隐藏变量。 三层记忆架构参考人类记忆的分层，Agent 记忆通常设计为三层：  工作记忆（短期）：当前任务进行中的上下文——就是模型上下文窗口本身。设计要点是”够用即可”，塞太多无关内容反而会干扰推理； 情景记忆（中期）：跨会话的关键信息——之前处理过什么、用户偏好、进行到哪一步。通常存结构化记录或向量库，任务恢复时按需召回； 语义记忆（长期）：沉淀下来的领域知识、项目规范、历史决策——类似团队的 Wiki，为所有任务提供稳定的背景知识。  比”存”更重要的是”取”大多数记忆系统做不好，不是因为存不下，而是因为取不对：  相关性优先：召回记忆时，只取与当前任务真正相关的片段——把十万条记忆全塞进上下文，等于没有记忆； 时效性权重：三个月前的决定可能已经过期，召回时要考虑时间衰减； 来源可信度...</div></div></div></a><a class="pagination-related" href="/gpt6-computer-use-agent/" title="当 GPT-6 学会替你操作电脑：OS 级 Agent 的机会与风险"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-05</div><div class="info-item-2">当 GPT-6 学会替你操作电脑：OS 级 Agent 的机会与风险</div></div><div class="info-2"><div class="info-item-1">当 GPT-6 学会替你操作电脑：OS 级 Agent 的机会与风险GPT-6 Astra 发布时，最让开发者兴奋的不是跑分，而是它被明确描述为”擅长代表用户操作电脑”。屏幕视觉理解加软件工程能力，意味着 Agent 正在从”聊天框里的顾问”变成”坐在你工位上替你干活的人”。这一步跨出去，机会和风险同样巨大。 为什么”操作电脑”是质变过去两年的 Agent 大多是”会调用工具的程序”：读文件、发请求、跑命令，前提是每个动作都被预先定义成 API。而 OS 级 Agent 面对的是未经预处理的真实界面——截图、点按钮、填表单、跨应用协同。它的本质是把”会用电脑”这项人类技能模型化。 这项能力的想象空间很直接：报销、数据搬运、重复性录入、跨系统操作……大量”低技术含量但耗人”的白领工作第一次真正暴露在自动化射程内。而 GPT-6 把它放进旗舰叙事，等于向市场宣告：下一个主战场是”替人干活”，不是”陪人聊天”。 风险清单比机会清单更长能力越大，需要回答的问题越多：  权限边界：一个能操作你电脑的模型，等于同时拥有了你所有应用的访问权。最小权限原则必须从”建议”变成”默认架构”； 误操作...</div></div></div></a><a class="pagination-related" href="/vertical-agent-bubble/" title="垂直 Agent 的泡沫与真金"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-06</div><div class="info-item-2">垂直 Agent 的泡沫与真金</div></div><div class="info-2"><div class="info-item-1">垂直 Agent 的泡沫与真金“XX 行业的垂直 Agent”大概是 2026 年创业路演里出现频率最高的句式。客服、运维、财务、法律、医疗——每个行业都在被套上 Agent 的外衣。但在同样的叙事下，有的场景能跑出真金白银，有的只是给 VC 看的泡沫。差距在哪？ 判断真伪的三把尺 错误代价：Agent 做错的代价决定了客户敢不敢用。客服场景答错一句损失有限，财务场景记错一笔就是事故——错误代价越低，越容易落地，所以客服、内容、文档类是 Agent 最先进去的场景，而医疗、金融核心环节要慢得多； 流程确定性：场景的流程越标准化，Agent 越容易接管。报销审核、工单分派这类”规则清晰”的流程是真需求；需要大量”潜规则与人情世故”的谈判、公关场景，Agent 短期内只是玩具； 数据可得性：Agent 的聪明程度取决于它能拿到多少高质量数据。能拿到企业内部结构化数据、历史案例的场景（客服知识库、财务凭证）比”要从零建数据”的场景（心理咨询、战略咨询）更容易做出效果。  泡沫的典型特征很多”垂直 Agent”项目其实是同一类产品的换皮：  通用模型 + 提示词 &#x3D; 伪垂直：没...</div></div></div></a><a class="pagination-related" href="/smart-home-agent-standard/" title="智能家居需要新的 Agent 标准"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-06</div><div class="info-item-2">智能家居需要新的 Agent 标准</div></div><div class="info-2"><div class="info-item-1">智能家居需要新的 Agent 标准智能家居讲了十几年，体验却始终差一口气：每个品牌一个 App、设备之间互不联通、”智能”变成了”智障”。Matter 等协议解决了”设备怎么连”的问题，但 2026 年随着 AI Agent 入场，行业面临一个新问题：当 Agent 要统一操控全屋设备，连接协议之上的”智能层”也需要标准。 智能家居的两层问题智能家居的困境可以拆成两层：  连接层（已有标准）：Matter、Thread、Wi-Fi 等协议让不同品牌的设备”能连上”——这层已经基本打通； 智能层（缺乏标准）：设备连上了，但”谁来理解你的意图、谁来调度设备”没有统一答案。每个品牌都在做自己的 App、自己的语音助手、自己的自动化规则——用户面对的不是一个家，而是一堆互不协作的系统。  Agent 为什么可能是破局者AI Agent 的出现，让”智能层”第一次有了统一的可能性：Agent 不需要每个设备品牌都开发一套——它通过理解自然语言意图，调用不同设备的接口完成任务。”把客厅调成观影模式”这句话，传统方案需要用户在 App 里设置自动化场景；Agent 方案是它自己理解并执行。Ag...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">mc-yzy15</div><div class="author-info-description">Yzy15的个人博客 | 技术教程 · 编程经验 · 学习笔记</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">221</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">472</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">21</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/mc-yzy15"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://yzy15.dpdns.org" target="_blank" title="个人主页"><i class="fas fa-home" style="color: #ff6600;"></i></a><a class="social-icon" href="https://github.com/mc-yzy15" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:yingmoliuguang@yeah.net" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a><a class="social-icon" href="https://space.bilibili.com/1338637552" target="_blank" title="Bilibili"><i class="fab fa-bilibili" style="color: #00a1d6;"></i></a><a class="social-icon" href="https://t.me/ShuangXiang_Dddddavidd_bot" target="_blank" title="Telegram"><i class="fab fa-telegram" style="color: #0088cc;"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="RSS"><i class="fas fa-rss" style="color: #ff6600;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到我的博客！这里记录着我的技术分享和生活点滴~<br>📢 <a href="/link/">广告位招租</a> | 💼 商业合作见<a href="/link/">友链页</a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8-Agent-%E7%9A%84%E6%8A%80%E6%9C%AF%E6%A0%88%E6%8B%86%E8%A7%A3"><span class="toc-number">1.</span> <span class="toc-text">浏览器 Agent 的技术栈拆解</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E5%B1%82%EF%BC%9A%E7%BD%91%E9%A1%B5%E7%90%86%E8%A7%A3%EF%BC%88%E9%A1%B5%E9%9D%A2%E6%80%8E%E4%B9%88%E2%80%9D%E7%9C%8B%E2%80%9D%EF%BC%89"><span class="toc-number">1.1.</span> <span class="toc-text">第一层：网页理解（页面怎么”看”）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E5%B1%82%EF%BC%9A%E6%93%8D%E4%BD%9C%E6%89%A7%E8%A1%8C%EF%BC%88%E6%89%8B%E6%80%8E%E4%B9%88%E5%8A%A8%EF%BC%89"><span class="toc-number">1.2.</span> <span class="toc-text">第二层：操作执行（手怎么动）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E5%B1%82%EF%BC%9A%E4%BB%BB%E5%8A%A1%E9%97%AD%E7%8E%AF%EF%BC%88%E8%84%91%E5%AD%90%E6%80%8E%E4%B9%88%E6%83%B3%EF%BC%89"><span class="toc-number">1.3.</span> <span class="toc-text">第三层：任务闭环（脑子怎么想）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E4%B8%AA%E5%B7%A5%E7%A8%8B%E9%99%B7%E9%98%B1"><span class="toc-number">1.4.</span> <span class="toc-text">三个工程陷阱</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E8%AF%AD"><span class="toc-number">1.5.</span> <span class="toc-text">结语</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/ai-search-2026-evolution/" title="AI 搜索的 2026：当&quot;搜索&quot;从链接分发变成答案生成，流量逻辑被改写">AI 搜索的 2026：当&quot;搜索&quot;从链接分发变成答案生成，流量逻辑被改写</a><time datetime="2026-09-07T02:20:00.000Z" title="发表于 2026-09-07 10:20:00">2026-09-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/ai-video-commercialization/" title="AI 视频的商业化元年：广告、短剧与影视工业的&quot;降本实验&quot;">AI 视频的商业化元年：广告、短剧与影视工业的&quot;降本实验&quot;</a><time datetime="2026-09-07T02:00:00.000Z" title="发表于 2026-09-07 10:00:00">2026-09-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/prompt-injection-ai-security/" title="提示注入与 Agent 安全：当 AI 会&quot;被骗&quot;时，应用如何自保">提示注入与 Agent 安全：当 AI 会&quot;被骗&quot;时，应用如何自保</a><time datetime="2026-09-07T01:40:00.000Z" title="发表于 2026-09-07 09:40:00">2026-09-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/memory-storage-supercycle-2026/" title="存储的&quot;超级周期&quot;：HBM 与 AI 之外，内存厂商才是最大赢家？">存储的&quot;超级周期&quot;：HBM 与 AI 之外，内存厂商才是最大赢家？</a><time datetime="2026-09-07T01:20:00.000Z" title="发表于 2026-09-07 09:20:00">2026-09-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/gpu-cloud-price-war/" title="GPU 云价格战与算力过剩：AI 基础设施从&quot;卖方市场&quot;转向&quot;买方市场&quot;">GPU 云价格战与算力过剩：AI 基础设施从&quot;卖方市场&quot;转向&quot;买方市场&quot;</a><time datetime="2026-09-07T01:00:00.000Z" title="发表于 2026-09-07 09:00:00">2026-09-07</time></div></div></div></div><div class="card-widget rec-card"><div style="text-align:center;padding:18px 10px;border:2px dashed #49b1f5;border-radius:8px;margin:0 auto;background:linear-gradient(135deg,#f0f9ff,#e0f2fe);"><div style="font-size:16px;font-weight:bold;color:#49b1f5;">☁️ 南影云 - 高性价比云服务器</div><div style="font-size:12px;color:#555;margin-top:6px;">上万台服务器 | T+级DDoS防护 | 无限防CC</div><div style="font-size:12px;color:#555;margin-top:4px;">🎁 通过下方链接注册享专属优惠</div><div style="margin-top:8px;"><a href="https://idc.ofoca.net/aff/PJQGAEKY" target="_blank" rel="noopener" style="display:inline-block;padding:6px 20px;background:#49b1f5;color:#fff;border-radius:16px;text-decoration:none;font-size:13px;font-weight:bold;">立即注册领优惠</a></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By mc-yzy15</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.1</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><script src="/js/tw_cn.js?v=5.5.4"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.9/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><div class="js-pjax"></div><script src="/js/webinfo-stats.js"></script><div class="ad-banner sponsor" style="text-align:center;padding:12px 10px;margin:10px auto;max-width:728px;background:linear-gradient(135deg,#fff5f5,#ffe0e0);border:1px solid<script src="/js/content-loader.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

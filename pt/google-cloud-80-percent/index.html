@@ -1,0 +1,222 @@
+<!DOCTYPE html><html lang="[&quot;zh-CN&quot;,&quot;en&quot;,&quot;zh-TW&quot;,&quot;ja&quot;,&quot;ko&quot;,&quot;fr&quot;,&quot;de&quot;,&quot;es&quot;,&quot;ru&quot;,&quot;pt&quot;,&quot;ar&quot;,&quot;hi&quot;,&quot;it&quot;,&quot;th&quot;,&quot;vi&quot;,&quot;id&quot;,&quot;tr&quot;,&quot;uk&quot;,&quot;pl&quot;,&quot;nl&quot;]" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>云业务增速分化：谷歌云 80% 与国内云 45% | Yzy15's Blog - 技术分享与生活记录</title><meta name="author" content="mc-yzy15"><meta name="copyright" content="mc-yzy15"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="谷歌云增速一度高达 80%，国内头部云厂商约 45%，同样的 AI 浪潮下增速差距为何如此之大？全球云市场正在被 AI 重新分层定价。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="云业务增速分化：谷歌云 80% 与国内云 45%">
+<meta property="og:url" content="https://blogs.yzy15.dpdns.org/pt/google-cloud-80-percent/">
+<meta property="og:site_name" content="Yzy15&#39;s Blog - 技术分享与生活记录">
+<meta property="og:description" content="谷歌云增速一度高达 80%，国内头部云厂商约 45%，同样的 AI 浪潮下增速差距为何如此之大？全球云市场正在被 AI 重新分层定价。">
+<meta property="og:locale">
+<meta property="og:image" content="https://blogs.yzy15.dpdns.org/img/butterfly-icon.png">
+<meta property="article:published_time" content="2026-08-27T12:00:00.000Z">
+<meta property="article:modified_time" content="2026-09-05T19:31:53.648Z">
+<meta property="article:author" content="mc-yzy15">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="云计算">
+<meta property="article:tag" content="谷歌云">
+<meta property="article:tag" content="阿里云">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://blogs.yzy15.dpdns.org/img/favicon.ico">
+<meta name="twitter:site" content="@mc_yzy15"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "云业务增速分化：谷歌云 80% 与国内云 45%",
+  "url": "https://blogs.yzy15.dpdns.org/google-cloud-80-percent/",
+  "image": "https://blogs.yzy15.dpdns.org/img/butterfly-icon.png",
+  "datePublished": "2026-08-27T12:00:00.000Z",
+  "dateModified": "2026-09-05T19:31:53.648Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "mc-yzy15",
+      "url": "https://yzy15.dpdns.org"
+    }
+  ]
+}
+</script><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Yzy15's Blog - 技术分享与生活记录",
+      "item": "https://blogs.yzy15.dpdns.org/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "人工智能",
+      "item": "https://blogs.yzy15.dpdns.org/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "云业务增速分化：谷歌云 80% 与国内云 45%",
+      "item": "https://blogs.yzy15.dpdns.org/google-cloud-80-percent/"
+    }
+  ]
+}
+</script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://blogs.yzy15.dpdns.org/pt/google-cloud-80-percent/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.9/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-HK1JGTYX4N"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-HK1JGTYX4N')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-HK1JGTYX4N', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '云业务增速分化：谷歌云 80% 与国内云 45%',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 8.1.1"><link rel="alternate" href="/atom.xml" title="Yzy15's Blog - 技术分享与生活记录" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">221</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">472</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">21</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/homepage/"><i class="fa-fw fas fa-globe"></i><span> Homepage</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/stats/"><i class="fa-fw fas fa-chart-bar"></i><span> Stats</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Yzy15's Blog - 技术分享与生活记录</span></a><a class="nav-page-title" href="/"><span class="site-name">云业务增速分化：谷歌云 80% 与国内云 45%</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/homepage/"><i class="fa-fw fas fa-globe"></i><span> Homepage</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/stats/"><i class="fa-fw fas fa-chart-bar"></i><span> Stats</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">云业务增速分化：谷歌云 80% 与国内云 45%</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-08-27T12:00:00.000Z" title="发表于 2026-08-27 20:00:00">2026-08-27</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-09-05T19:31:53.648Z" title="更新于 2026-09-06 03:31:53">2026-09-06</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="云业务增速分化：谷歌云-80-与国内云-45"><a href="#云业务增速分化：谷歌云-80-与国内云-45" class="headerlink" title="云业务增速分化：谷歌云 80% 与国内云 45%"></a>云业务增速分化：谷歌云 80% 与国内云 45%</h1><p>同样的 AI 浪潮，全球云厂商却交出了差异悬殊的成绩单：谷歌云一度录得接近 80% 的同比增速，而国内头部云厂商的增速普遍在 45% 上下。<strong>数字背后的差距，折射出中美云市场在 AI 变现路径上的深层差异。</strong></p>
+<h2 id="增速差距从哪来"><a href="#增速差距从哪来" class="headerlink" title="增速差距从哪来"></a>增速差距从哪来</h2><p>谷歌云与国内云的高增长都来自 AI，但结构截然不同：</p>
+<ol>
+<li><strong>客户结构</strong>：谷歌云的大客户是 OpenAI 等全球 AI 独角兽与海外企业——它们需要”从零到一”的算力，需求爆发直接、单价高；国内云的核心客户更多是互联网存量业务与政企数字化——AI 是增量，但替代存量需要时间；</li>
+<li><strong>变现路径</strong>：海外市场”模型即服务”的付费习惯成熟，企业愿意为 token 与算力直接付费；国内市场 AI 应用仍以免费&#x2F;低价获客为主，<strong>算力消耗了，钱却没回来——这是国内 AI 云”增收不增利”的根源；</strong></li>
+<li><strong>基数效应</strong>：谷歌云的基数远小于亚马逊与微软，低基数放大了增速——<strong>80% 与 45% 的对比，部分来自起跑线不同。</strong></li>
+</ol>
+<h2 id="AI-正在给云市场重新分层"><a href="#AI-正在给云市场重新分层" class="headerlink" title="AI 正在给云市场重新分层"></a>AI 正在给云市场重新分层</h2><p>AI 浪潮对云市场的重塑，不只是”总量变大”，更是”结构分层”：</p>
+<ol>
+<li><strong>训练云与推理云</strong>：训练需求集中、单价高但波动大；推理需求分散、持续但毛利薄——<strong>两类需求的商业模式完全不同；</strong></li>
+<li><strong>算力云与模型云</strong>：只卖算力的”资源型云”与提供模型能力的”智能型云”正在分化——后者有更高的附加值与客户粘性；</li>
+<li><strong>全球化与本土化</strong>：海外云受益于全球 AI 资本开支的流动，国内云则更依赖本土 AI 应用生态的成熟——<strong>两条增长曲线的斜率，取决于各自市场的 AI 渗透节奏。</strong></li>
+</ol>
+<h2 id="国内云追差距的可能路径"><a href="#国内云追差距的可能路径" class="headerlink" title="国内云追差距的可能路径"></a>国内云追差距的可能路径</h2><p>国内云厂商要缩小与谷歌云们的增速差，需要几个条件的共振：</p>
+<ol>
+<li><strong>AI 应用的规模化付费</strong>：当国内的 AI 应用从”烧钱抢用户”进入”规模化变现”，云上的 token 消耗才会真正转化为收入；</li>
+<li><strong>政企 AI 的放量</strong>：政务与行业的 AI 落地是巨大的增量市场，但需要更长的决策与交付周期；</li>
+<li><strong>出海</strong>：跟随中国企业的全球化，把国内成熟的 AI 云能力输出到东南亚、中东等市场——<strong>用海外增量补充国内增速。</strong></li>
+</ol>
+<h2 id="增速不是唯一标尺"><a href="#增速不是唯一标尺" class="headerlink" title="增速不是唯一标尺"></a>增速不是唯一标尺</h2><p>谷歌云的 80% 与国内云的 45% 都是 AI 浪潮的受益者，增速差距不必过度解读——不同市场处在 AI 商业化的不同阶段。<strong>真正值得跟踪的指标不是”谁更快”，而是”谁的增长更健康”</strong>：收入的含金量（AI 收入占比与毛利）、客户的留存（AI 客户是否持续增购）、以及增长的可持续性（是否依赖补贴与大单）。云市场的 AI 分层刚刚开始，<strong>现在的增速排名，远不是终局。</strong></p>
+<blockquote>
+<p>**说明：**本文为云计算市场的对比分析，增速数据以各公司财报为准。</p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a target="_blank" rel="noopener" href="https://yzy15.dpdns.org">mc-yzy15</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://blogs.yzy15.dpdns.org/google-cloud-80-percent/">https://blogs.yzy15.dpdns.org/google-cloud-80-percent/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。<strong>禁止商用</strong>。转载请注明来源 <a href="https://blogs.yzy15.dpdns.org" target="_blank">Yzy15's Blog - 技术分享与生活记录</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/AI/">AI</a><a class="post-meta__tags" href="/tags/%E9%98%BF%E9%87%8C%E4%BA%91/">阿里云</a><a class="post-meta__tags" href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/">云计算</a><a class="post-meta__tags" href="/tags/%E8%B0%B7%E6%AD%8C%E4%BA%91/">谷歌云</a></div><div class="post-share"><div class="social-share" data-image="/img/butterfly-icon.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>感谢您的支持，您的赞赏是我持续创作的动力！</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://img.cdn1.vip/i/69ed1d29274a9_1777147177.webp" target="_blank"><img class="post-qr-code-img" src="https://img.cdn1.vip/i/69ed1d29274a9_1777147177.webp" alt="微信赞赏"/ loading='lazy'></a><div class="post-qr-code-desc">微信赞赏</div></li></ul></div></div><div class="rec-card ad-slot ad-placement"><div style="text-align:center;padding:20px 10px;border:2px dashed #ff6b6b;border-radius:8px;margin:0 auto;background:linear-gradient(135deg,#fff5f5,#ffe0e0);"><div style="font-size:18px;font-weight:bold;color:#ff6b6b;">☁️ 南影云 - 高性价比云服务器</div><div style="font-size:13px;color:#555;margin-top:8px;">上万台服务器 | T+级DDoS防护 | 无限防CC</div><div style="font-size:13px;color:#555;margin-top:4px;">🎁 通过下方链接注册享专属优惠</div><div style="margin-top:10px;"><a href="https://idc.ofoca.net/aff/PJQGAEKY" target="_blank" rel="noopener" style="display:inline-block;padding:8px 24px;background:#ff6b6b;color:#fff;border-radius:20px;text-decoration:none;font-size:14px;font-weight:bold;">立即注册领优惠</a></div><div style="font-size:11px;color:#999;margin-top:6px;">注册后联系博主可再领额外折扣</div></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/glm-53-flash-domestic-cards/" title="GLM-5.3 Flash 与 10 万张国产卡：智谱的算力宣言"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">GLM-5.3 Flash 与 10 万张国产卡：智谱的算力宣言</div></div><div class="info-2"><div class="info-item-1">GLM-5.3 Flash 与 10 万张国产卡：智谱的算力宣言8 月底，智谱推出轻量级旗舰模型 GLM-5.3 Flash，产品定位直指 DeepSeek V4 Flash。真正让行业震动的不是模型本身，而是伴随它的一则信息：这套线上推理服务由超过 10 万张国产芯片集群承载，据媒体报道算力供应商或来自华为、摩尔线程与海光——全链路跑在国产硬件之上。 为什么”跑在国产卡上”是大事过去国产模型公司即便技术追平，也总被一个问题掣肘：”你的训练和推理是不是也依赖进口算力？”GLM-5.3 Flash 的意义在于第一次用规模化交付回答：推理这件事，国产芯片集群已经能扛住头部模型的真实流量。 这背后有清晰的产业逻辑：  供应链确定性：在算力管制不断收紧的环境里，能用国产卡规模化承载推理，意味着商业命脉不再系于单一进口来源； 成本结构的长期优化：国产卡的采购与运维成本曲线正在下探，规模化使用会进一步摊薄单位算力成本； 生态正反馈：真实流量是最好的测试集，10 万张卡的推理负载会倒逼国产芯片栈（驱动、编译、框架）快速成熟。  智谱的差异化定位选择”轻量旗舰 + 国产算力”这个组合，智谱打的是...</div></div></div></a><a class="pagination-related" href="/unitree-ipo-aftermath/" title="宇树上市后第一周：A 股&quot;人形机器人第一股&quot;的估值真相"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">宇树上市后第一周：A 股"人形机器人第一股"的估值真相</div></div><div class="info-2"><div class="info-item-1">宇树上市后第一周：A 股”人形机器人第一股”的估值真相宇树科技登陆 A 股市场，”人形机器人第一股”的称号让它的每一个交易日都备受关注。上市首周，围绕它的核心问题只有一个：这家公司的估值，究竟是人形机器人产业红利的前瞻定价，还是主题炒作的情绪溢价？ 宇树的成色：不只是概念宇树与多数”PPT 机器人公司”不同，它是有真实业务支撑的：四足机器人在全球市场占有可观份额，人形机器人也开始批量出货，年营收与利润规模在同行中处于前列。“有产品、有收入、有利润”是它区别于纯粹概念股的底牌。 约三成的市场份额（各类口径不一）说明其在细分赛道的领先地位——至少在”卖得动”这件事上，宇树已经跑赢了绝大多数同行。 估值的三重支撑与压力A 股给宇树的高估值，建立在三重叙事之上：  赛道稀缺性：”人形机器人第一股”意味着没有可比对象，市场只能用”下一个特斯拉&#x2F;下一个苹果”的想象力定价； 产业政策预期：具身智能被写入多个产业规划，市场愿意为政策受益者支付溢价； 量产拐点叙事：人形机器人正处在”从 0 到 1 出货”的临界点，投资人赌的是出货量的指数增长。  但压力同样现实：机器人本体制造的毛利率并...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/google-cloud-80-percent/" title="云业务增速分化：谷歌云 80% 与国内云 45%"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-27</div><div class="info-item-2">云业务增速分化：谷歌云 80% 与国内云 45%</div></div><div class="info-2"><div class="info-item-1">云业务增速分化：谷歌云 80% 与国内云 45%同样的 AI 浪潮，全球云厂商却交出了差异悬殊的成绩单：谷歌云一度录得接近 80% 的同比增速，而国内头部云厂商的增速普遍在 45% 上下。数字背后的差距，折射出中美云市场在 AI 变现路径上的深层差异。 增速差距从哪来谷歌云与国内云的高增长都来自 AI，但结构截然不同：  客户结构：谷歌云的大客户是 OpenAI 等全球 AI 独角兽与海外企业——它们需要”从零到一”的算力，需求爆发直接、单价高；国内云的核心客户更多是互联网存量业务与政企数字化——AI 是增量，但替代存量需要时间； 变现路径：海外市场”模型即服务”的付费习惯成熟，企业愿意为 token 与算力直接付费；国内市场 AI 应用仍以免费&#x2F;低价获客为主，算力消耗了，钱却没回来——这是国内 AI 云”增收不增利”的根源； 基数效应：谷歌云的基数远小于亚马逊与微软，低基数放大了增速——80% 与 45% 的对比，部分来自起跑线不同。  AI 正在给云市场重新分层AI 浪潮对云市场的重塑，不只是”总量变大”，更是”结构分层”：  训练云与推理云：训练需求集中、单价高但...</div></div></div></a><a class="pagination-related" href="/china-cloud-ai-484-billion/" title="阿里&quot;AI 云与算力&quot;分部收入 484 亿：一次组织与叙事的双重手术"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-04</div><div class="info-item-2">阿里&quot;AI 云与算力&quot;分部收入 484 亿：一次组织与叙事的双重手术</div></div><div class="info-2"><div class="info-item-1">阿里”AI 云与算力”分部收入 484 亿：一次组织与叙事的双重手术阿里将云智能集团与平头哥整合为”AI 云与算力服务”分部后，交出了首份成绩单：季度收入 484.37 亿元，同比增长 45%，为 22 个季度以来的最高增速；其中 AI 相关产品收入 123.76 亿元，连续第 12 个季度保持三位数增长，年化收入突破 495 亿元。 45% 的增速从哪来在云计算整体增速放缓的行业背景下，45% 的增长主要来自三股力量：  AI 原生需求：大模型训练与推理带来的算力消耗，是云厂商最确定的新增量——阿里云几乎吃下了国内 AI 创业公司的大头； 组织整合的化学反应：云与芯片（平头哥）并表后，从”卖云资源”升级为”卖 AI 算力全家桶”，客户买单的不再只是虚拟机，而是”芯片-集群-模型服务”的整条链路； 政企 AI 落地：国资云、政务大模型、产业智能化项目，为 AI 云贡献了大量订单。  组织手术的深意把云和芯片放进同一个分部，不只是财务报表的合并，更是战略意图的宣示：阿里要对外传递的信号是——我们不是”云厂商 + 芯片部门”，而是”AI 算力时代的端到端供应商”。 对内，这种整合也解...</div></div></div></a><a class="pagination-related" href="/alibaba-cloud-ai-restructure/" title="阿里云与平头哥合体：AI 云与算力分部的 45% 增长"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-28</div><div class="info-item-2">阿里云与平头哥合体：AI 云与算力分部的 45% 增长</div></div><div class="info-2"><div class="info-item-1">阿里云与平头哥合体：AI 云与算力分部的 45% 增长阿里把云智能与平头哥芯片业务整合为”AI 云与算力”分部后，交出的首份成绩单相当亮眼：分部收入同比大增，其中 AI 相关云收入增速更是显著高于整体——组织合并的化学反应，正在阿里的财报里显影。 为什么把云和芯片放进一个分部组织调整从来不只是”报表归类”，它传递了明确的战略意图：  对齐目标：云与芯片过去分属不同体系，容易各算各的账；合并后，“芯片为云服务、云为 AI 服务”的链条在组织上被打通，考核指标也从各自的收入变成了”AI 云的整体竞争力”； 统一资源调度：自研芯片（含平头哥的处理器与 AI 芯片）在云上的落地需要算力资源、研发与商务的协同，一个分部让决策链条更短； 对外讲一个故事：投资人与客户看到的从”阿里云”和”平头哥”两个实体，变成”具备从芯片到云到 AI 全栈能力的算力平台“——叙事更完整，估值逻辑更清晰。  45% 增长的成色分部的 45% 高增长（不同口径下 AI 云收入增速更快）需要拆开看：  AI 是最大引擎：大模型训练与推理的算力需求，是云业务近年最确定的增长来源——AI 云的增长不是”挤占”了传统云，...</div></div></div></a><a class="pagination-related" href="/robot-vacuum-ai-2026/" title="扫地机器人卷向&quot;具身&quot;：清洁电器的 AI 化"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-06</div><div class="info-item-2">扫地机器人卷向&quot;具身&quot;：清洁电器的 AI 化</div></div><div class="info-2"><div class="info-item-1">扫地机器人卷向”具身”：清洁电器的 AI 化扫地机器人是智能家居里最早”自动化”的品类，但过去几年的技术路线一直是”激光雷达 + 路径规划”——本质是给机器人一张地图，让它按规则清扫。2026 年的新趋势是：扫地机器人开始”具身化”——用视觉理解场景、识别物体、自主决策，清洁电器正在变成具身智能的第一个规模化试验场。 从”地图清扫”到”场景理解”传统扫地机器人把房间当作”二维地图”，看到的是墙与障碍物；新一代产品试图理解”三维场景”：  视觉识别物体：通过摄像头识别电线、宠物粪便、袜子等”不该吸的东西”，避免事故； 理解场景语义：区分地毯、地板、门槛，知道”这里是厨房、那里是沙发底下”，为不同区域定制清洁策略； 自主决策：根据脏污程度决定是否反复清扫、是否先扫后拖——从”执行指令”走向”判断需求”。  为什么扫地机器人最适合”具身”落地具身智能喊了很多年，最先大规模落地的很可能是扫地机器人，原因很现实：  场景足够封闭可控：家庭环境相对固定，任务边界清晰（清洁），容错空间较大——比开放世界的通用机器人简单得多； 已有规模与数据：扫地机器人已卖出数千万台，厂商拥有海量的真实家庭环境...</div></div></div></a><a class="pagination-related" href="/motorola-qira-watch/" title="摩托罗拉 moto watch ultra：个人 AI 上手腕"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-04</div><div class="info-item-2">摩托罗拉 moto watch ultra：个人 AI 上手腕</div></div><div class="info-2"><div class="info-item-1">摩托罗拉 moto watch ultra：个人 AI 上手腕智能手表市场沉寂了几年后，摩托罗拉带着 moto watch ultra 重新出现在聚光灯下。它的卖点不是传统的健康与运动，而是”个人 AI 上手腕“——手表不再只是手机的延伸，而要成为独立承载 AI 服务的终端。 手表上的 AI 能做什么腕上 AI 与手机 AI 的差异在于场景：手机是”你主动拿起”的设备，手表是”一直戴在身上”的设备。前者适合重度交互，后者适合轻量、及时、上下文感知的服务：  健康数据的主动解读：不只是记录心率与睡眠，而是结合多日数据给出可执行的建议； 通知的智能分流：AI 判断哪些消息值得打断你，哪些可以稍后处理——减少手机的干扰； 语音与快捷任务：抬腕即问、快速记录、日程提醒，把”掏出手机”的动作省掉。  从手机 AI 到生态 AImoto watch ultra 背后是联想&#x2F;摩托罗拉试图把 AI 叙事从手机延伸到穿戴的生态逻辑：手机上的 AI 助手（如 Qira 等自有服务）在手表上获得新的入口。穿戴设备的价值在于增加 AI 的”在场时间”——AI 不再只在手机里等你召唤，而是通过手...</div></div></div></a><a class="pagination-related" href="/gpu-cloud-price-war/" title="GPU 云价格战与算力过剩：AI 基础设施从&quot;卖方市场&quot;转向&quot;买方市场&quot;"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-07</div><div class="info-item-2">GPU 云价格战与算力过剩：AI 基础设施从&quot;卖方市场&quot;转向&quot;买方市场&quot;</div></div><div class="info-2"><div class="info-item-1">GPU 云价格战与算力过剩：AI 基础设施从”卖方市场”转向”买方市场”过去几年，AI 圈最”凡尔赛”的一句话是”我抢到了 H100”——高端 GPU 一卡难求、排队数月、溢价惊人，算力是彻头彻尾的”卖方市场”。但 2026 年的风向正在改变：越来越多信号表明，GPU 云市场正在经历一场从”短缺”到”结构性过剩”的转向——租用价格开始松动，算力提供方从”躺着收钱”变成”主动降价抢客”。 对 AI 创业公司来说，这可能比任何模型发布都更值得高兴。 算力为什么”不够用”变成了”用不完”GPU 供给从紧缺转向过剩，是几股力量共同作用的结果：  供给的集中放量。过去两年，全球新建的超大规模数据中心陆续投产，新一代 GPU 的出货爬坡也进入高峰期——之前”画饼”的产能，2026 年开始真正变成可用的算力； 国产算力的分流。国产 AI 加速卡生态的成熟，让一部分原本必须抢海外 GPU 的需求找到了替代，缓解了高端卡的供需矛盾； 需求的”效率革命”。模型训练越来越讲究效率——更好的架构、更省算力的推理优化、更聪明的调度，让”同样的任务需要更少的卡”。当需求方的”胃口”变小，供给的相对过剩就更明...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">mc-yzy15</div><div class="author-info-description">Yzy15的个人博客 | 技术教程 · 编程经验 · 学习笔记</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">221</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">472</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">21</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/mc-yzy15"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://yzy15.dpdns.org" target="_blank" title="个人主页"><i class="fas fa-home" style="color: #ff6600;"></i></a><a class="social-icon" href="https://github.com/mc-yzy15" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:yingmoliuguang@yeah.net" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a><a class="social-icon" href="https://space.bilibili.com/1338637552" target="_blank" title="Bilibili"><i class="fab fa-bilibili" style="color: #00a1d6;"></i></a><a class="social-icon" href="https://t.me/ShuangXiang_Dddddavidd_bot" target="_blank" title="Telegram"><i class="fab fa-telegram" style="color: #0088cc;"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="RSS"><i class="fas fa-rss" style="color: #ff6600;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到我的博客！这里记录着我的技术分享和生活点滴~<br>📢 <a href="/link/">广告位招租</a> | 💼 商业合作见<a href="/link/">友链页</a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%91%E4%B8%9A%E5%8A%A1%E5%A2%9E%E9%80%9F%E5%88%86%E5%8C%96%EF%BC%9A%E8%B0%B7%E6%AD%8C%E4%BA%91-80-%E4%B8%8E%E5%9B%BD%E5%86%85%E4%BA%91-45"><span class="toc-number">1.</span> <span class="toc-text">云业务增速分化：谷歌云 80% 与国内云 45%</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A2%9E%E9%80%9F%E5%B7%AE%E8%B7%9D%E4%BB%8E%E5%93%AA%E6%9D%A5"><span class="toc-number">1.1.</span> <span class="toc-text">增速差距从哪来</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AI-%E6%AD%A3%E5%9C%A8%E7%BB%99%E4%BA%91%E5%B8%82%E5%9C%BA%E9%87%8D%E6%96%B0%E5%88%86%E5%B1%82"><span class="toc-number">1.2.</span> <span class="toc-text">AI 正在给云市场重新分层</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BD%E5%86%85%E4%BA%91%E8%BF%BD%E5%B7%AE%E8%B7%9D%E7%9A%84%E5%8F%AF%E8%83%BD%E8%B7%AF%E5%BE%84"><span class="toc-number">1.3.</span> <span class="toc-text">国内云追差距的可能路径</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A2%9E%E9%80%9F%E4%B8%8D%E6%98%AF%E5%94%AF%E4%B8%80%E6%A0%87%E5%B0%BA"><span class="toc-number">1.4.</span> <span class="toc-text">增速不是唯一标尺</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/ai-search-2026-evolution/" title="AI 搜索的 2026：当&quot;搜索&quot;从链接分发变成答案生成，流量逻辑被改写">AI 搜索的 2026：当&quot;搜索&quot;从链接分发变成答案生成，流量逻辑被改写</a><time datetime="2026-09-07T02:20:00.000Z" title="发表于 2026-09-07 10:20:00">2026-09-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/ai-video-commercialization/" title="AI 视频的商业化元年：广告、短剧与影视工业的&quot;降本实验&quot;">AI 视频的商业化元年：广告、短剧与影视工业的&quot;降本实验&quot;</a><time datetime="2026-09-07T02:00:00.000Z" title="发表于 2026-09-07 10:00:00">2026-09-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/prompt-injection-ai-security/" title="提示注入与 Agent 安全：当 AI 会&quot;被骗&quot;时，应用如何自保">提示注入与 Agent 安全：当 AI 会&quot;被骗&quot;时，应用如何自保</a><time datetime="2026-09-07T01:40:00.000Z" title="发表于 2026-09-07 09:40:00">2026-09-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/memory-storage-supercycle-2026/" title="存储的&quot;超级周期&quot;：HBM 与 AI 之外，内存厂商才是最大赢家？">存储的&quot;超级周期&quot;：HBM 与 AI 之外，内存厂商才是最大赢家？</a><time datetime="2026-09-07T01:20:00.000Z" title="发表于 2026-09-07 09:20:00">2026-09-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/gpu-cloud-price-war/" title="GPU 云价格战与算力过剩：AI 基础设施从&quot;卖方市场&quot;转向&quot;买方市场&quot;">GPU 云价格战与算力过剩：AI 基础设施从&quot;卖方市场&quot;转向&quot;买方市场&quot;</a><time datetime="2026-09-07T01:00:00.000Z" title="发表于 2026-09-07 09:00:00">2026-09-07</time></div></div></div></div><div class="card-widget rec-card"><div style="text-align:center;padding:18px 10px;border:2px dashed #49b1f5;border-radius:8px;margin:0 auto;background:linear-gradient(135deg,#f0f9ff,#e0f2fe);"><div style="font-size:16px;font-weight:bold;color:#49b1f5;">☁️ 南影云 - 高性价比云服务器</div><div style="font-size:12px;color:#555;margin-top:6px;">上万台服务器 | T+级DDoS防护 | 无限防CC</div><div style="font-size:12px;color:#555;margin-top:4px;">🎁 通过下方链接注册享专属优惠</div><div style="margin-top:8px;"><a href="https://idc.ofoca.net/aff/PJQGAEKY" target="_blank" rel="noopener" style="display:inline-block;padding:6px 20px;background:#49b1f5;color:#fff;border-radius:16px;text-decoration:none;font-size:13px;font-weight:bold;">立即注册领优惠</a></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By mc-yzy15</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.1</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><script src="/js/tw_cn.js?v=5.5.4"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.9/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><div class="js-pjax"></div><script src="/js/webinfo-stats.js"></script><div class="ad-banner sponsor" style="text-align:center;padding:12px 10px;margin:10px auto;max-width:728px;background:linear-gradient(135deg,#fff5f5,#ffe0e0);border:1px solid<script src="/js/content-loader.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

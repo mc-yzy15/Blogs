@@ -1,0 +1,222 @@
+<!DOCTYPE html><html lang="[&quot;zh-CN&quot;,&quot;en&quot;,&quot;zh-TW&quot;,&quot;ja&quot;,&quot;ko&quot;,&quot;fr&quot;,&quot;de&quot;,&quot;es&quot;,&quot;ru&quot;,&quot;pt&quot;,&quot;ar&quot;,&quot;hi&quot;,&quot;it&quot;,&quot;th&quot;,&quot;vi&quot;,&quot;id&quot;,&quot;tr&quot;,&quot;uk&quot;,&quot;pl&quot;,&quot;nl&quot;]" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Agent 经济落地企业：从 Demo 到发薪的最后一公里 | Yzy15's Blog - 技术分享与生活记录</title><meta name="author" content="mc-yzy15"><meta name="copyright" content="mc-yzy15"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="千问办公首月 3000 万用户、各家 Agent 发布会不断——但真正在企业里&quot;发薪干活&quot;的 Agent 依然稀缺。从 Demo 到生产，Agent 落地隔着权限、数据、成本与信任的&quot;最后一公里&quot;。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Agent 经济落地企业：从 Demo 到发薪的最后一公里">
+<meta property="og:url" content="https://blogs.yzy15.dpdns.org/es/agent-economy-enterprise/">
+<meta property="og:site_name" content="Yzy15&#39;s Blog - 技术分享与生活记录">
+<meta property="og:description" content="千问办公首月 3000 万用户、各家 Agent 发布会不断——但真正在企业里&quot;发薪干活&quot;的 Agent 依然稀缺。从 Demo 到生产，Agent 落地隔着权限、数据、成本与信任的&quot;最后一公里&quot;。">
+<meta property="og:locale" content="es_ES">
+<meta property="og:image" content="https://blogs.yzy15.dpdns.org/img/butterfly-icon.png">
+<meta property="article:published_time" content="2026-09-06T03:20:00.000Z">
+<meta property="article:modified_time" content="2026-09-05T19:31:53.643Z">
+<meta property="article:author" content="mc-yzy15">
+<meta property="article:tag" content="AI落地">
+<meta property="article:tag" content="Agent">
+<meta property="article:tag" content="企业应用">
+<meta property="article:tag" content="商业化">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://blogs.yzy15.dpdns.org/img/favicon.ico">
+<meta name="twitter:site" content="@mc_yzy15"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Agent 经济落地企业：从 Demo 到发薪的最后一公里",
+  "url": "https://blogs.yzy15.dpdns.org/agent-economy-enterprise/",
+  "image": "https://blogs.yzy15.dpdns.org/img/butterfly-icon.png",
+  "datePublished": "2026-09-06T03:20:00.000Z",
+  "dateModified": "2026-09-05T19:31:53.643Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "mc-yzy15",
+      "url": "https://yzy15.dpdns.org"
+    }
+  ]
+}
+</script><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Yzy15's Blog - 技术分享与生活记录",
+      "item": "https://blogs.yzy15.dpdns.org/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "人工智能",
+      "item": "https://blogs.yzy15.dpdns.org/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Agent 经济落地企业：从 Demo 到发薪的最后一公里",
+      "item": "https://blogs.yzy15.dpdns.org/agent-economy-enterprise/"
+    }
+  ]
+}
+</script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://blogs.yzy15.dpdns.org/es/agent-economy-enterprise/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.9/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-HK1JGTYX4N"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-HK1JGTYX4N')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-HK1JGTYX4N', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Agent 经济落地企业：从 Demo 到发薪的最后一公里',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 8.1.1"><link rel="alternate" href="/atom.xml" title="Yzy15's Blog - 技术分享与生活记录" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">221</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">472</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">21</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/homepage/"><i class="fa-fw fas fa-globe"></i><span> Homepage</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/stats/"><i class="fa-fw fas fa-chart-bar"></i><span> Stats</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Yzy15's Blog - 技术分享与生活记录</span></a><a class="nav-page-title" href="/"><span class="site-name">Agent 经济落地企业：从 Demo 到发薪的最后一公里</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/homepage/"><i class="fa-fw fas fa-globe"></i><span> Homepage</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/stats/"><i class="fa-fw fas fa-chart-bar"></i><span> Stats</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Agent 经济落地企业：从 Demo 到发薪的最后一公里</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-09-06T03:20:00.000Z" title="发表于 2026-09-06 11:20:00">2026-09-06</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-09-05T19:31:53.643Z" title="更新于 2026-09-06 03:31:53">2026-09-06</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="Agent-经济落地企业：从-Demo-到发薪的最后一公里"><a href="#Agent-经济落地企业：从-Demo-到发薪的最后一公里" class="headerlink" title="Agent 经济落地企业：从 Demo 到发薪的最后一公里"></a>Agent 经济落地企业：从 Demo 到发薪的最后一公里</h1><p>千问办公首月 3000 万用户、各厂商 Agent 产品线不断拉长——Agent 经济的叙事已经足够丰满。但一个更冷静的观察是：<strong>真正在企业生产环境里”发薪干活”的 Agent 依然稀缺。</strong> 大多数 Agent 还停留在”能看不能用的 Demo”，从演示到上岗，隔着残酷的最后一公里。</p>
+<h2 id="Demo-与生产的差距在哪"><a href="#Demo-与生产的差距在哪" class="headerlink" title="Demo 与生产的差距在哪"></a>Demo 与生产的差距在哪</h2><p>Demo 里的 Agent 看起来无所不能，真实生产里的 Agent 却处处碰壁，差距来自四个现实：</p>
+<ol>
+<li><strong>数据是脏的</strong>：Demo 用干净样例，生产要面对缺失、重复、格式混乱的真实数据——Agent 的第一步”读数据”就可能崩溃；</li>
+<li><strong>异常没有剧本</strong>：Demo 只演示正常流程，生产里充满了权限变更、流程例外、历史遗留——Agent 遇到没见过的异常，往往直接卡死或瞎做；</li>
+<li><strong>责任没人敢接</strong>：Demo 里 Agent 做错了重来即可，生产里 Agent 做错一笔可能涉及真金白银——<strong>没有明确的责任机制，没人敢让 Agent 全自动</strong>；</li>
+<li><strong>成本不可控</strong>：Demo 跑一次的成本可以忽略，生产里每天几千次调用的账单会让 CFO 皱眉。</li>
+</ol>
+<h2 id="企业落地-Agent-的四步走"><a href="#企业落地-Agent-的四步走" class="headerlink" title="企业落地 Agent 的四步走"></a>企业落地 Agent 的四步走</h2><ol>
+<li><strong>选对人机边界</strong>：先找”高频、规则清晰、错误代价低”的场景试点（如工单分类、报告初稿），让 Agent 证明自己，再逐步扩展；</li>
+<li><strong>人机协同而非无人值守</strong>：第一阶段的 Agent 定位是”提效助手”——自动做初稿，人工做终审。攒够信任数据后再谈自动化；</li>
+<li><strong>先通数据与权限</strong>：Agent 落地前，先把数据质量、权限体系、审批流这些”脏活”干完——它们是 Agent 的地基；</li>
+<li><strong>建立效果度量</strong>：用”节省工时、错误率、ROI”而非”Demo 演示效果”来评估 Agent——能度量，才能管理。</li>
+</ol>
+<h2 id="三个容易被忽略的坑"><a href="#三个容易被忽略的坑" class="headerlink" title="三个容易被忽略的坑"></a>三个容易被忽略的坑</h2><ol>
+<li><strong>Agent 也会”过拟合”</strong>：它可能只在你试点的场景表现好，换一批数据就打回原形——要持续用真实数据回测；</li>
+<li><strong>提示注入是企业级问题</strong>：当 Agent 读取外部邮件、网页内容时，恶意指令攻击会从”理论”变成”财务损失”；</li>
+<li><strong>运维是新成本中心</strong>：Agent 需要监控、告警、版本管理——别只算模型成本，把运维成本算进去。</li>
+</ol>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>Agent 经济的下半场，比的不是谁家 Demo 更炫，而是<strong>谁先跑通”权限 + 数据 + 信任 + 度量”的最后一公里</strong>。3000 万用户的千问办公们证明了需求存在，接下来要证明的是：Agent 不仅能被试用，还能被长期、安全、盈利地使用。那才是 Agent 真正”发薪”的时刻。</p>
+<blockquote>
+<p>**说明：**本文为 Agent 企业落地的实践观察，案例与数据引自公开报道。</p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a target="_blank" rel="noopener" href="https://yzy15.dpdns.org">mc-yzy15</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://blogs.yzy15.dpdns.org/agent-economy-enterprise/">https://blogs.yzy15.dpdns.org/agent-economy-enterprise/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。<strong>禁止商用</strong>。转载请注明来源 <a href="https://blogs.yzy15.dpdns.org" target="_blank">Yzy15's Blog - 技术分享与生活记录</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Agent/">Agent</a><a class="post-meta__tags" href="/tags/%E4%BC%81%E4%B8%9A%E5%BA%94%E7%94%A8/">企业应用</a><a class="post-meta__tags" href="/tags/%E5%95%86%E4%B8%9A%E5%8C%96/">商业化</a><a class="post-meta__tags" href="/tags/AI%E8%90%BD%E5%9C%B0/">AI落地</a></div><div class="post-share"><div class="social-share" data-image="/img/butterfly-icon.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>感谢您的支持，您的赞赏是我持续创作的动力！</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://img.cdn1.vip/i/69ed1d29274a9_1777147177.webp" target="_blank"><img class="post-qr-code-img" src="https://img.cdn1.vip/i/69ed1d29274a9_1777147177.webp" alt="微信赞赏"/ loading='lazy'></a><div class="post-qr-code-desc">微信赞赏</div></li></ul></div></div><div class="rec-card ad-slot ad-placement"><div style="text-align:center;padding:20px 10px;border:2px dashed #ff6b6b;border-radius:8px;margin:0 auto;background:linear-gradient(135deg,#fff5f5,#ffe0e0);"><div style="font-size:18px;font-weight:bold;color:#ff6b6b;">☁️ 南影云 - 高性价比云服务器</div><div style="font-size:13px;color:#555;margin-top:8px;">上万台服务器 | T+级DDoS防护 | 无限防CC</div><div style="font-size:13px;color:#555;margin-top:4px;">🎁 通过下方链接注册享专属优惠</div><div style="margin-top:10px;"><a href="https://idc.ofoca.net/aff/PJQGAEKY" target="_blank" rel="noopener" style="display:inline-block;padding:8px 24px;background:#ff6b6b;color:#fff;border-radius:20px;text-decoration:none;font-size:14px;font-weight:bold;">立即注册领优惠</a></div><div style="font-size:11px;color:#999;margin-top:6px;">注册后联系博主可再领额外折扣</div></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/ai-video-elimination-race/" title="AI 视频进入淘汰赛：可灵领跑、Sora 离场，下一位轮到谁"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">AI 视频进入淘汰赛：可灵领跑、Sora 离场，下一位轮到谁</div></div><div class="info-2"><div class="info-item-1">AI 视频进入淘汰赛：可灵领跑、Sora 离场，下一位轮到谁Sora 的离场像一声发令枪，把 AI 视频赛道从”秀肌肉的表演赛”拽进了”拼商业化的淘汰赛”。2026 年的格局已经清晰了不少：可灵凭借先发与中文内容生态站上头部，即梦依托字节的流量与资金步步紧逼，海外则以 Runway 为代表的工具派与 Seedance 等模型派分庭抗礼。 牌桌上的玩家，各自的底牌与软肋都藏不住了。 头部玩家众生相可灵：快手孵化的”六边形战士”。它的优势是入局早、迭代快，在写实度、运动控制与中文语义理解上积累了口碑，很多国内创作者已经把它当成”默认选项”。软肋也同样明显：快手体系给不了它全球化分发，海外市场仍需单打独斗。 即梦：字节跳动旗下，最大的变量是”爹”——背靠抖音的素材需求与豆包系的流量入口，即梦在电商、营销、短剧素材上天然近水楼台。字节的打法一贯是”后发先至”，一旦它决定在某个方向全力投入，速度会非常恐怖。 Seedance：字节在模型侧的布局（即梦底层即源于 Seed 系列），它代表的是”模型能力先行”的路线——先把生成质量做上去，再思考产品形态。 Runway：海外工具派的代表，深耕专...</div></div></div></a><a class="pagination-related" href="/sora-shutdown-postmortem/" title="Sora 关停复盘：OpenAI 为何亲手埋葬&quot;视频 GPT&quot;"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Sora 关停复盘：OpenAI 为何亲手埋葬"视频 GPT"</div></div><div class="info-2"><div class="info-item-1">Sora 关停复盘：OpenAI 为何亲手埋葬”视频 GPT”Sora 死了——不是被竞争对手打败，而是被它的缔造者亲手按下了终止键。2024 年初那段 60 秒的演示视频曾让全世界惊呼”视频的 GPT-3 时刻来了”，两年后，OpenAI 却在 2026 年上半年分阶段将其关停：独立应用与网页端在 4 月底下线，API 也在 9 月画上句号。 一款”概念股”型产品的宿命回看 Sora 的一生，它其实始终没完成从”演示惊艳”到”产品成立”的惊险一跃。问题不是技术不够炫，而是它掉进了明星 AI 产品最常见的坑：  贵得离谱。视频生成的推理成本远高于文本，Sora 的算力账单在当时被戏称为”每生成一秒钟都在烧钱”，商业化定价要么劝退用户，要么补贴到怀疑人生； 难用得伤心。演示片段是精挑细选的，真实创作中它对指令的遵循、对物理世界的还原仍然飘忽不定，创作者试过几次就回流到传统工具； 找不到付费场景。C 端用户要不起，专业用户嫌不稳，Sora 卡在”高不成低不就”的尴尬区间——这几乎是所有”先秀技术、后补产品”路线的通病。  真正跑通的不是”Sora 模式”Sora 离场的同时，生成式视...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/agent-economy-enterprise/" title="Agent 经济落地企业：从 Demo 到发薪的最后一公里"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-06</div><div class="info-item-2">Agent 经济落地企业：从 Demo 到发薪的最后一公里</div></div><div class="info-2"><div class="info-item-1">Agent 经济落地企业：从 Demo 到发薪的最后一公里千问办公首月 3000 万用户、各厂商 Agent 产品线不断拉长——Agent 经济的叙事已经足够丰满。但一个更冷静的观察是：真正在企业生产环境里”发薪干活”的 Agent 依然稀缺。 大多数 Agent 还停留在”能看不能用的 Demo”，从演示到上岗，隔着残酷的最后一公里。 Demo 与生产的差距在哪Demo 里的 Agent 看起来无所不能，真实生产里的 Agent 却处处碰壁，差距来自四个现实：  数据是脏的：Demo 用干净样例，生产要面对缺失、重复、格式混乱的真实数据——Agent 的第一步”读数据”就可能崩溃； 异常没有剧本：Demo 只演示正常流程，生产里充满了权限变更、流程例外、历史遗留——Agent 遇到没见过的异常，往往直接卡死或瞎做； 责任没人敢接：Demo 里 Agent 做错了重来即可，生产里 Agent 做错一笔可能涉及真金白银——没有明确的责任机制，没人敢让 Agent 全自动； 成本不可控：Demo 跑一次的成本可以忽略，生产里每天几千次调用的账单会让 CFO 皱眉。  企业落地 Age...</div></div></div></a><a class="pagination-related" href="/autonomous-workflow-audit/" title="自动化工作流的审计与可回滚设计"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-06</div><div class="info-item-2">自动化工作流的审计与可回滚设计</div></div><div class="info-2"><div class="info-item-1">自动化工作流的审计与可回滚设计当 Agent 从”回答问题”进化到”替你下单、发邮件、改配置、结报销”，企业上马的就不只是一个 AI 项目，而是一套需要被治理的生产系统。很多试点项目在 Demo 阶段惊艳全场，一进生产就出事，缺的不是模型能力，而是围绕自动化工作流的护栏设计。 第一层护栏：最小权限与动态授权Agent 不应拿到”一把万能钥匙”。合理做法是把任务拆成能力单元，每个单元只授予完成任务所需的最小权限，并采用动态授权：危险操作（转账、删除、发布）在执行前临时申请，超时自动失效。静态的”全量管理员”授权模式必须废弃，这是审计的前提——权限边界不清，事后根本说不清是谁在何时做了什么。 第二层护栏：全量、不可篡改的审计自动化系统的日志要比人工系统更严格，因为故障可能批量发生。审计至少要记录四个要素：谁发起的指令、模型看到了什么上下文、实际执行了什么动作、每个动作的结果。日志应做到只追加、不可篡改，并覆盖人-Agent 之间、Agent-系统之间的所有交互。一旦出问题，审计日志是定责、止损与改进的唯一依据。 第三层护栏：风险分级的人工闸门不是所有操作都要人批，但也不是任何操作都能...</div></div></div></a><a class="pagination-related" href="/agent-open-source-340pct/" title="GitHub Agent 项目一年涨 340%：开源正在&quot;代理化&quot;"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-26</div><div class="info-item-2">GitHub Agent 项目一年涨 340%：开源正在&quot;代理化&quot;</div></div><div class="info-2"><div class="info-item-1">GitHub Agent 项目一年涨 340%：开源正在”代理化”一份行业统计显示，GitHub 上 AI Agent 相关项目数量在过去 12 个月增长了 340%，Star 数破万的新项目层出不穷。作为开发者生态的晴雨表，GitHub 的数据往往领先行业趋势 6-12 个月——“代理化”正在从概念变成开源世界的底色。 340% 增长里藏着什么翻看这波 Agent 开源潮的构成，大致可以分成四类：  框架层：LangChain 之后的新一代编排框架、多 Agent 协作框架，争夺的是”Agent 开发的工程标准”； 工具层：MCP Server 连接器、浏览器自动化、终端操作工具——把世界变成 Agent 可调用的 API； 应用层：垂直场景的 Agent（客服、写作、数据分析）开始以完整产品形态开源； 基建层：记忆系统、评测工具、可观测性、沙箱——支撑 Agent 可靠运行的”水电煤”。  开源”代理化”的三重影响 技能栈迁移：开发者要学的不再只是”调 API”，而是 Agent 的编排、记忆、容错设计——“Agent 工程师”正在成为新的岗位名； 协作方式变化：GitHub...</div></div></div></a><a class="pagination-related" href="/anthropic-revenue-superiority/" title="Anthropic 收入与估值反超 OpenAI？"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-06</div><div class="info-item-2">Anthropic 收入与估值反超 OpenAI？</div></div><div class="info-2"><div class="info-item-1">Anthropic 收入与估值反超 OpenAI？放在两年前，这几乎是个不可能的问题：OpenAI 是 AI 浪潮的代名词，而 Anthropic 只是”那个安全的替代品”。但 2026 年，随着 Fable 等新模型的强劲表现与企业市场的高歌猛进，“Anthropic 收入与估值反超 OpenAI”从笑话变成了行业认真讨论的议题。 Anthropic 凭什么逼近 OpenAIAnthropic 的追赶有清晰的路线支撑：  企业市场的深耕：Anthropic 从一开始就走”To B 优先”路线——安全、可审计、企业级部署能力，让它成为众多大企业 AI 转型的首选供应商，企业客户的客单价与留存率远高于 C 端用户； 开发者口碑的积累：Claude 系列在编程与长上下文任务上的表现，让它在开发者群体中建立了”技术信仰”——开发者的选择直接影响企业的采购； 商业模式的健康度：Anthropic 的收入以 API 与企业订阅为主，每一分收入都有明确的付费方——相比依赖 C 端订阅与广告的模型，它的收入结构更”扎实”。  两条路线的商业分野Anthropic 与 OpenAI 的竞争，本质...</div></div></div></a><a class="pagination-related" href="/from-api-economy-to-agent-economy/" title="从&quot;API 经济&quot;到&quot;Agent 经济&quot;：开发者正在从写接口转向写技能"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-06</div><div class="info-item-2">从&quot;API 经济&quot;到&quot;Agent 经济&quot;：开发者正在从写接口转向写技能</div></div><div class="info-2"><div class="info-item-1">从”API 经济”到”Agent 经济”：开发者正在从写接口转向写技能过去十几年，软件行业的价值单位是 API：公司把能力封装成接口，开发者把接口拼装成应用，”API 经济”由此得名。而 2026 年的软件世界，正在悄然发生一场更深的转移：价值的单位，从”可调用的接口“变成”可委托的技能“——不是让你调用一个函数，而是让 AI Agent 替你完成一整件事。这场从”API 经济”到”Agent 经济”的转移，将重塑开发者、软件产品与商业模式的底层逻辑。 从”接口”到”技能”：差在哪理解这场转移，先看一个具体差异：  API 时代：你提供一个”天气查询接口”，调用者传入城市代码，拿回 JSON。调用者负责编排——自己写逻辑判断”下雨了该带伞”。 Agent 时代：你提供一个”出行建议技能”，Agent 自己决定何时查询天气、如何结合日程、用自然语言给用户完整建议。编排的职责，从”调用者的代码”转移到了”Agent 的理解”。  换句话说：过去开发者交付的是”积木”，现在要交付的是”会自己拼积木的机器人”。 当 Agent 能自主决定”何时调用什么、如何组合结果”时，软件的形态就从”...</div></div></div></a><a class="pagination-related" href="/robotaxi-profitability-turning-point/" title="Robotaxi 的商业化拐点：无人驾驶出租车到底什么时候能赚钱"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-06</div><div class="info-item-2">Robotaxi 的商业化拐点：无人驾驶出租车到底什么时候能赚钱</div></div><div class="info-2"><div class="info-item-1">Robotaxi 的商业化拐点：无人驾驶出租车到底什么时候能赚钱Robotaxi 行业已经讲了很多年故事：安全、技术、颠覆出行。但 2026 年，投资人追问的话题越来越单刀直入：你什么时候能赚钱？ 当技术验证基本完成、运营城市不断扩张之后，”商业化拐点”就成了整个行业的新考卷——而这张考卷的答案，藏在成本、定价与运营效率的账本里。 先算清楚 Robotaxi 的成本账Robotaxi 每公里的成本，大体由四块构成：  车辆成本（折旧）：一辆带激光雷达等全套传感器的无人车，成本远高于普通网约车；车辆越贵，每公里分摊的折旧越高。 能源&#x2F;维护成本：电车能源成本低，但传感器标定、整车维护的专业门槛高，维保并不便宜。 远程监控与安全成本：即使无安全员，也需要远程接管中心、地面保障团队——“安全冗余”是省不掉的人力账。 研发摊销：巨额研发投入要摊进每一公里，这决定了早期任何运营数据都不可能是真实盈利。  这也是为什么业内有个共识：在没有规模之前，Robotaxi 每公里的真实成本必然高于有人网约车。 商业化的逻辑，是用规模摊薄固定成本，直到边际成本降到足够低。 拐点出现的三个信号判...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">mc-yzy15</div><div class="author-info-description">Yzy15的个人博客 | 技术教程 · 编程经验 · 学习笔记</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">221</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">472</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">21</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/mc-yzy15"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://yzy15.dpdns.org" target="_blank" title="个人主页"><i class="fas fa-home" style="color: #ff6600;"></i></a><a class="social-icon" href="https://github.com/mc-yzy15" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:yingmoliuguang@yeah.net" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a><a class="social-icon" href="https://space.bilibili.com/1338637552" target="_blank" title="Bilibili"><i class="fab fa-bilibili" style="color: #00a1d6;"></i></a><a class="social-icon" href="https://t.me/ShuangXiang_Dddddavidd_bot" target="_blank" title="Telegram"><i class="fab fa-telegram" style="color: #0088cc;"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="RSS"><i class="fas fa-rss" style="color: #ff6600;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到我的博客！这里记录着我的技术分享和生活点滴~<br>📢 <a href="/link/">广告位招租</a> | 💼 商业合作见<a href="/link/">友链页</a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Agent-%E7%BB%8F%E6%B5%8E%E8%90%BD%E5%9C%B0%E4%BC%81%E4%B8%9A%EF%BC%9A%E4%BB%8E-Demo-%E5%88%B0%E5%8F%91%E8%96%AA%E7%9A%84%E6%9C%80%E5%90%8E%E4%B8%80%E5%85%AC%E9%87%8C"><span class="toc-number">1.</span> <span class="toc-text">Agent 经济落地企业：从 Demo 到发薪的最后一公里</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Demo-%E4%B8%8E%E7%94%9F%E4%BA%A7%E7%9A%84%E5%B7%AE%E8%B7%9D%E5%9C%A8%E5%93%AA"><span class="toc-number">1.1.</span> <span class="toc-text">Demo 与生产的差距在哪</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%81%E4%B8%9A%E8%90%BD%E5%9C%B0-Agent-%E7%9A%84%E5%9B%9B%E6%AD%A5%E8%B5%B0"><span class="toc-number">1.2.</span> <span class="toc-text">企业落地 Agent 的四步走</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E4%B8%AA%E5%AE%B9%E6%98%93%E8%A2%AB%E5%BF%BD%E7%95%A5%E7%9A%84%E5%9D%91"><span class="toc-number">1.3.</span> <span class="toc-text">三个容易被忽略的坑</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E8%AF%AD"><span class="toc-number">1.4.</span> <span class="toc-text">结语</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/ai-search-2026-evolution/" title="AI 搜索的 2026：当&quot;搜索&quot;从链接分发变成答案生成，流量逻辑被改写">AI 搜索的 2026：当&quot;搜索&quot;从链接分发变成答案生成，流量逻辑被改写</a><time datetime="2026-09-07T02:20:00.000Z" title="发表于 2026-09-07 10:20:00">2026-09-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/ai-video-commercialization/" title="AI 视频的商业化元年：广告、短剧与影视工业的&quot;降本实验&quot;">AI 视频的商业化元年：广告、短剧与影视工业的&quot;降本实验&quot;</a><time datetime="2026-09-07T02:00:00.000Z" title="发表于 2026-09-07 10:00:00">2026-09-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/prompt-injection-ai-security/" title="提示注入与 Agent 安全：当 AI 会&quot;被骗&quot;时，应用如何自保">提示注入与 Agent 安全：当 AI 会&quot;被骗&quot;时，应用如何自保</a><time datetime="2026-09-07T01:40:00.000Z" title="发表于 2026-09-07 09:40:00">2026-09-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/memory-storage-supercycle-2026/" title="存储的&quot;超级周期&quot;：HBM 与 AI 之外，内存厂商才是最大赢家？">存储的&quot;超级周期&quot;：HBM 与 AI 之外，内存厂商才是最大赢家？</a><time datetime="2026-09-07T01:20:00.000Z" title="发表于 2026-09-07 09:20:00">2026-09-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/gpu-cloud-price-war/" title="GPU 云价格战与算力过剩：AI 基础设施从&quot;卖方市场&quot;转向&quot;买方市场&quot;">GPU 云价格战与算力过剩：AI 基础设施从&quot;卖方市场&quot;转向&quot;买方市场&quot;</a><time datetime="2026-09-07T01:00:00.000Z" title="发表于 2026-09-07 09:00:00">2026-09-07</time></div></div></div></div><div class="card-widget rec-card"><div style="text-align:center;padding:18px 10px;border:2px dashed #49b1f5;border-radius:8px;margin:0 auto;background:linear-gradient(135deg,#f0f9ff,#e0f2fe);"><div style="font-size:16px;font-weight:bold;color:#49b1f5;">☁️ 南影云 - 高性价比云服务器</div><div style="font-size:12px;color:#555;margin-top:6px;">上万台服务器 | T+级DDoS防护 | 无限防CC</div><div style="font-size:12px;color:#555;margin-top:4px;">🎁 通过下方链接注册享专属优惠</div><div style="margin-top:8px;"><a href="https://idc.ofoca.net/aff/PJQGAEKY" target="_blank" rel="noopener" style="display:inline-block;padding:6px 20px;background:#49b1f5;color:#fff;border-radius:16px;text-decoration:none;font-size:13px;font-weight:bold;">立即注册领优惠</a></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By mc-yzy15</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.1</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><script src="/js/tw_cn.js?v=5.5.4"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.9/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><div class="js-pjax"></div><script src="/js/webinfo-stats.js"></script><div class="ad-banner sponsor" style="text-align:center;padding:12px 10px;margin:10px auto;max-width:728px;background:linear-gradient(135deg,#fff5f5,#ffe0e0);border:1px solid<script src="/js/content-loader.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

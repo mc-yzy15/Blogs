@@ -1,0 +1,218 @@
+<!DOCTYPE html><html lang="[&quot;zh-CN&quot;,&quot;en&quot;,&quot;zh-TW&quot;,&quot;ja&quot;,&quot;ko&quot;,&quot;fr&quot;,&quot;de&quot;,&quot;es&quot;,&quot;ru&quot;,&quot;pt&quot;,&quot;ar&quot;,&quot;hi&quot;,&quot;it&quot;,&quot;th&quot;,&quot;vi&quot;,&quot;id&quot;,&quot;tr&quot;,&quot;uk&quot;,&quot;pl&quot;,&quot;nl&quot;]" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>VLA 上车：机器人大脑的统一架构趋势 | Yzy15's Blog - 技术分享与生活记录</title><meta name="author" content="mc-yzy15"><meta name="copyright" content="mc-yzy15"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="视觉-语言-动作模型（VLA）正在成为人形机器人的&quot;统一大脑&quot;：把感知、理解与动作规划融进一个模型。这条技术路线的收敛意味着什么？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VLA 上车：机器人大脑的统一架构趋势">
+<meta property="og:url" content="https://blogs.yzy15.dpdns.org/ja/vla-model-robot-brain/">
+<meta property="og:site_name" content="Yzy15&#39;s Blog - 技术分享与生活记录">
+<meta property="og:description" content="视觉-语言-动作模型（VLA）正在成为人形机器人的&quot;统一大脑&quot;：把感知、理解与动作规划融进一个模型。这条技术路线的收敛意味着什么？">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:image" content="https://blogs.yzy15.dpdns.org/img/butterfly-icon.png">
+<meta property="article:published_time" content="2026-09-06T13:30:00.000Z">
+<meta property="article:modified_time" content="2026-09-05T19:31:53.654Z">
+<meta property="article:author" content="mc-yzy15">
+<meta property="article:tag" content="VLA">
+<meta property="article:tag" content="具身智能">
+<meta property="article:tag" content="大模型">
+<meta property="article:tag" content="机器人">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://blogs.yzy15.dpdns.org/img/favicon.ico">
+<meta name="twitter:site" content="@mc_yzy15"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "VLA 上车：机器人大脑的统一架构趋势",
+  "url": "https://blogs.yzy15.dpdns.org/vla-model-robot-brain/",
+  "image": "https://blogs.yzy15.dpdns.org/img/butterfly-icon.png",
+  "datePublished": "2026-09-06T13:30:00.000Z",
+  "dateModified": "2026-09-05T19:31:53.654Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "mc-yzy15",
+      "url": "https://yzy15.dpdns.org"
+    }
+  ]
+}
+</script><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Yzy15's Blog - 技术分享与生活记录",
+      "item": "https://blogs.yzy15.dpdns.org/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "机器人",
+      "item": "https://blogs.yzy15.dpdns.org/categories/%E6%9C%BA%E5%99%A8%E4%BA%BA/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "VLA 上车：机器人大脑的统一架构趋势",
+      "item": "https://blogs.yzy15.dpdns.org/vla-model-robot-brain/"
+    }
+  ]
+}
+</script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://blogs.yzy15.dpdns.org/ja/vla-model-robot-brain/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.9/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-HK1JGTYX4N"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-HK1JGTYX4N')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-HK1JGTYX4N', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'VLA 上车：机器人大脑的统一架构趋势',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 8.1.1"><link rel="alternate" href="/atom.xml" title="Yzy15's Blog - 技术分享与生活记录" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">221</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">472</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">21</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/homepage/"><i class="fa-fw fas fa-globe"></i><span> Homepage</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/stats/"><i class="fa-fw fas fa-chart-bar"></i><span> Stats</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Yzy15's Blog - 技术分享与生活记录</span></a><a class="nav-page-title" href="/"><span class="site-name">VLA 上车：机器人大脑的统一架构趋势</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  ホームに戻る</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/homepage/"><i class="fa-fw fas fa-globe"></i><span> Homepage</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/stats/"><i class="fa-fw fas fa-chart-bar"></i><span> Stats</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">VLA 上车：机器人大脑的统一架构趋势</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">作成日</span><time class="post-meta-date-created" datetime="2026-09-06T13:30:00.000Z" title="作成日 2026-09-06 21:30:00">2026-09-06</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新日</span><time class="post-meta-date-updated" datetime="2026-09-05T19:31:53.654Z" title="更新日 2026-09-06 03:31:53">2026-09-06</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%9C%BA%E5%99%A8%E4%BA%BA/">机器人</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">閲覧数:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="VLA-上车：机器人大脑的统一架构趋势"><a href="#VLA-上车：机器人大脑的统一架构趋势" class="headerlink" title="VLA 上车：机器人大脑的统一架构趋势"></a>VLA 上车：机器人大脑的统一架构趋势</h1><p>人形机器人的”大脑”正在经历一场架构收敛：从过去”视觉识别、语言理解、运动规划各管一段”的分模块方案，走向<strong>VLA（Vision-Language-Action，视觉-语言-动作）模型</strong>——用一个统一的模型，把”看到什么、理解什么、该怎么做”全部贯通。这可能是机器人技术路线最重要的一次转向。</p>
+<h2 id="从分模块到端到端"><a href="#从分模块到端到端" class="headerlink" title="从分模块到端到端"></a>从分模块到端到端</h2><p>传统机器人系统是”流水线”：视觉模块负责识别物体，语义模块负责理解指令，规划模块负责拆解动作，控制模块负责执行——每个环节独立开发、独立调优，问题在于<strong>误差逐级放大、长尾场景难以覆盖</strong>（视觉看错了，后面全错）。</p>
+<p>VLA 的思路是”端到端”：直接把视觉输入与语言指令映射到动作输出，用一个大规模模型学习”看到 + 听到 → 该动”的完整映射。<strong>它不再需要工程师手工编写”什么情况怎么应对”的规则，而是从海量数据里自己学到应对之道</strong>——这与大语言模型从文本中学习语言规律的逻辑一脉相承。</p>
+<h2 id="为什么-VLA-在-2026-年成为共识"><a href="#为什么-VLA-在-2026-年成为共识" class="headerlink" title="为什么 VLA 在 2026 年成为共识"></a>为什么 VLA 在 2026 年成为共识</h2><p>VLA 不是新概念，但直到最近才具备工程可行性，推动力有三个：</p>
+<ol>
+<li><strong>基础模型能力的溢出</strong>：视觉-语言大模型（VLM）的成熟，为 VLA 提供了强大的”感知 + 理解”底座；</li>
+<li><strong>数据与算力的到位</strong>：机器人操作数据规模化采集成为可能，端到端训练所需的算力成本也在下降；</li>
+<li><strong>行业验证的正反馈</strong>：头部玩家相继展示 VLA 驱动的真实操作能力，让观望者确信这条路走得通。</li>
+</ol>
+<h2 id="VLA-路线上的真实挑战"><a href="#VLA-路线上的真实挑战" class="headerlink" title="VLA 路线上的真实挑战"></a>VLA 路线上的真实挑战</h2><p>VLA 方向的共识在增强，难度也毫不含糊：</p>
+<ol>
+<li><strong>数据仍是天花板</strong>：VLA 需要海量”视觉-语言-动作”配对数据，比纯语言模型的数据更难获取；</li>
+<li><strong>高频控制与模型延迟</strong>：机器人的动作控制需要毫秒级响应，大模型的推理延迟是天然的矛盾——通常需要”VLA 规划 + 传统控制兜底”的分层架构；</li>
+<li><strong>安全与可解释性</strong>：端到端模型的决策过程难以解释，在安全敏感场景中，如何验证与兜底是必须回答的问题。</li>
+</ol>
+<h2 id="统一架构的终局想象"><a href="#统一架构的终局想象" class="headerlink" title="统一架构的终局想象"></a>统一架构的终局想象</h2><p>VLA 的收敛，意味着机器人大脑正在复制大语言模型走过的路：<strong>从”规则工程”走向”数据驱动”，从”专用模块”走向”通用底座”。</strong> 当各家都采用 VLA 架构，竞争的核心就会从”架构选择”转移到”数据规模与模型能力”。可以预见，未来的机器人公司会越来越像今天的 AI 大模型公司——<strong>比的不再是谁的机械臂更精密，而是谁的”大脑”见过更多真实世界的操作，学得更快、更稳。</strong></p>
+<blockquote>
+<p>**说明：**本文为 VLA 技术路线的行业分析，观点基于公开技术报告与实践。</p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>著者: </span><span class="post-copyright-info"><a target="_blank" rel="noopener" href="https://yzy15.dpdns.org">mc-yzy15</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>リンク: </span><span class="post-copyright-info"><a href="https://blogs.yzy15.dpdns.org/vla-model-robot-brain/">https://blogs.yzy15.dpdns.org/vla-model-robot-brain/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>著作権表示: </span><span class="post-copyright-info">このブログのすべての記事は、<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> ライセンスの下で提供されています。<strong>商用利用禁止</strong>。転載時には出典を明記してください: <a href="https://blogs.yzy15.dpdns.org">Yzy15's Blog - 技术分享与生活记录</a>。</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%85%B7%E8%BA%AB%E6%99%BA%E8%83%BD/">具身智能</a><a class="post-meta__tags" href="/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/">大模型</a><a class="post-meta__tags" href="/tags/%E6%9C%BA%E5%99%A8%E4%BA%BA/">机器人</a><a class="post-meta__tags" href="/tags/VLA/">VLA</a></div><div class="post-share"><div class="social-share" data-image="/img/butterfly-icon.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>感谢您的支持，您的赞赏是我持续创作的动力！</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://img.cdn1.vip/i/69ed1d29274a9_1777147177.webp" target="_blank"><img class="post-qr-code-img" src="https://img.cdn1.vip/i/69ed1d29274a9_1777147177.webp" alt="微信赞赏"/ loading='lazy'></a><div class="post-qr-code-desc">微信赞赏</div></li></ul></div></div><div class="rec-card ad-slot ad-placement"><div style="text-align:center;padding:20px 10px;border:2px dashed #ff6b6b;border-radius:8px;margin:0 auto;background:linear-gradient(135deg,#fff5f5,#ffe0e0);"><div style="font-size:18px;font-weight:bold;color:#ff6b6b;">☁️ 南影云 - 高性价比云服务器</div><div style="font-size:13px;color:#555;margin-top:8px;">上万台服务器 | T+级DDoS防护 | 无限防CC</div><div style="font-size:13px;color:#555;margin-top:4px;">🎁 通过下方链接注册享专属优惠</div><div style="margin-top:10px;"><a href="https://idc.ofoca.net/aff/PJQGAEKY" target="_blank" rel="noopener" style="display:inline-block;padding:8px 24px;background:#ff6b6b;color:#fff;border-radius:20px;text-decoration:none;font-size:14px;font-weight:bold;">立即注册领优惠</a></div><div style="font-size:11px;color:#999;margin-top:6px;">注册后联系博主可再领额外折扣</div></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/xiaomi-18-fold-surge-o3/" title="小米 18 Fold 与玄戒 O3：自研芯片的折叠答卷"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">前へ</div><div class="info-item-2">小米 18 Fold 与玄戒 O3：自研芯片的折叠答卷</div></div><div class="info-2"><div class="info-item-1">小米 18 Fold 与玄戒 O3：自研芯片的折叠答卷小米的新一代折叠旗舰与玄戒自研芯片的新进展，很可能在 9 月同台亮相。如果成真，这将是一次意味深长的组合拳：折叠屏承载小米冲击高端的”面子”，自研芯片则决定它能否掌握高端定价的”里子”。 折叠新机：阔折叠与小折叠的两手布局继首款阔折叠（横向大折叠）之后，小米预计继续深耕折叠形态。折叠屏是国产厂商冲击苹果腹地最锋利的形态武器，但竞争已从”谁能折叠”进入”谁的折叠更好用”的阶段：铰链寿命、折痕控制、大屏软件适配、轻薄与续航的平衡，每一项都是硬功夫。小米需要证明的不只是”我有折叠”，而是折叠能带来直板机给不了的效率与体验。 玄戒 O3：自研芯片的成人礼从玄戒 O1 到传闻中的 O3，小米的自研芯片之路走了多年。对小米而言，自研 SoC 的战略意义至少有四层：供应链安全（不再完全受制于外部供应商）、成本结构（规模化后摊薄 BOM）、差异化叙事（高端需要”独门技术”支撑溢价）、以及生态整合（芯片与系统、AI 深度协同）。但自研芯片也意味着巨大的研发投入与风险——基带、功耗、影像 ISP 等每一环都是深坑。玄戒 O3 的成色，直接决定”小...</div></div></div></a><a class="pagination-related" href="/smart-home-agent-standard/" title="智能家居需要新的 Agent 标准"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">次へ</div><div class="info-item-2">智能家居需要新的 Agent 标准</div></div><div class="info-2"><div class="info-item-1">智能家居需要新的 Agent 标准智能家居讲了十几年，体验却始终差一口气：每个品牌一个 App、设备之间互不联通、”智能”变成了”智障”。Matter 等协议解决了”设备怎么连”的问题，但 2026 年随着 AI Agent 入场，行业面临一个新问题：当 Agent 要统一操控全屋设备，连接协议之上的”智能层”也需要标准。 智能家居的两层问题智能家居的困境可以拆成两层：  连接层（已有标准）：Matter、Thread、Wi-Fi 等协议让不同品牌的设备”能连上”——这层已经基本打通； 智能层（缺乏标准）：设备连上了，但”谁来理解你的意图、谁来调度设备”没有统一答案。每个品牌都在做自己的 App、自己的语音助手、自己的自动化规则——用户面对的不是一个家，而是一堆互不协作的系统。  Agent 为什么可能是破局者AI Agent 的出现，让”智能层”第一次有了统一的可能性：Agent 不需要每个设备品牌都开发一套——它通过理解自然语言意图，调用不同设备的接口完成任务。”把客厅调成观影模式”这句话，传统方案需要用户在 App 里设置自动化场景；Agent 方案是它自己理解并执行。Ag...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>関連記事</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/vla-model-robot-brain/" title="VLA 上车：机器人大脑的统一架构趋势"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-06</div><div class="info-item-2">VLA 上车：机器人大脑的统一架构趋势</div></div><div class="info-2"><div class="info-item-1">VLA 上车：机器人大脑的统一架构趋势人形机器人的”大脑”正在经历一场架构收敛：从过去”视觉识别、语言理解、运动规划各管一段”的分模块方案，走向VLA（Vision-Language-Action，视觉-语言-动作）模型——用一个统一的模型，把”看到什么、理解什么、该怎么做”全部贯通。这可能是机器人技术路线最重要的一次转向。 从分模块到端到端传统机器人系统是”流水线”：视觉模块负责识别物体，语义模块负责理解指令，规划模块负责拆解动作，控制模块负责执行——每个环节独立开发、独立调优，问题在于误差逐级放大、长尾场景难以覆盖（视觉看错了，后面全错）。 VLA 的思路是”端到端”：直接把视觉输入与语言指令映射到动作输出，用一个大规模模型学习”看到 + 听到 → 该动”的完整映射。它不再需要工程师手工编写”什么情况怎么应对”的规则，而是从海量数据里自己学到应对之道——这与大语言模型从文本中学习语言规律的逻辑一脉相承。 为什么 VLA 在 2026 年成为共识VLA 不是新概念，但直到最近才具备工程可行性，推动力有三个：  基础模型能力的溢出：视觉-语言大模型（VLM）的成熟，为 VLA 提...</div></div></div></a><a class="pagination-related" href="/china-embodied-ai-financing/" title="具身智能 200 亿融资与 13 家百亿公司：热钱去哪了"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-30</div><div class="info-item-2">具身智能 200 亿融资与 13 家百亿公司：热钱去哪了</div></div><div class="info-2"><div class="info-item-1">具身智能 200 亿融资与 13 家百亿公司：热钱去哪了据不完全统计，2026 年至今国内具身智能企业已披露超过 30 起融资，总金额约 200 亿元，百亿元估值公司数量扩充至 13 家。从宇树上市、小鹏机器人 9 亿美元融资到各类种子轮，具身智能无疑是 2026 年一级市场最热的名字。但热钱汹涌的另一面是，所有人都在等那个问题被回答：钱最终会变成什么？ 热钱集中在哪几类玩家这 200 亿并非均匀撒向整个赛道，而是有明显的流向：  有量产能力的本体厂：宇树、小鹏这类”能造出来、能交付”的公司拿走了最大份额——资本终于从 PPT 转向了产线； 巨头战略卡位：腾讯、阿里、美团、京东反复出现在机器人投资名单上，它们买的不只是财务回报，而是下一个”超级终端”的入场券； 核心零部件与基础设施：灵初、瞬适这类做本体之外的”卖水人”也开始拿到钱，说明产业链正在从整机向纵深延伸。  13 家百亿公司的估值逻辑13 家百亿估值，放在全球都没有先例。这个数字的支撑逻辑是”对标叙事”：人形机器人被对标为”下一个智能汽车”或”下一个手机”，市场用终局想象力给当下定价。但这里有一个必须正视的错配：终局市场...</div></div></div></a><a class="pagination-related" href="/embodied-ai-2026-trends/" title="具身智能 2026 六大趋势：从&quot;造人形&quot;转向&quot;抢落地&quot;"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-06</div><div class="info-item-2">具身智能 2026 六大趋势：从&quot;造人形&quot;转向&quot;抢落地&quot;</div></div><div class="info-2"><div class="info-item-1">具身智能 2026 六大趋势：从”造人形”转向”抢落地”具身智能——让 AI 拥有身体、能感知并操作物理世界——是 2026 年科技圈最热的关键词之一。但如果你把 2025 年和 2026 年的具身智能新闻放在一起看，会发现一个明显的转向：去年大家在比”谁能造出更像人、动作更炫的机器人”，今年行业的核心矛盾已经变成**”谁能先让机器人在真实场景里干活、赚钱”**。以下是 2026 年具身智能最值得关注的六大趋势。 趋势一：VLA 大模型成为机器人的”新大脑”端到端的视觉-语言-动作（VLA）大模型正在取代”模块化流水线”成为机器人控制的主流范式：机器人不再需要工程师为每个动作手写规则，而是像大模型一样，从海量数据中学习”看到什么、就该做什么”。VLA 的进步，让机器人第一次拥有了”举一反三”的泛化能力——学会叠一件衣服，换一种款式也能大致处理。智能的上限，正从”编程技巧”转向”数据质量”。 趋势二：仿真与合成数据打破”数据荒”机器人的最大瓶颈从来是数据：让真实机器人做十万次抓取，时间和成本都不可接受。2026 年的解法是仿真数据合成：在虚拟世界里生成海量训练场景，再迁移到现实。仿...</div></div></div></a><a class="pagination-related" href="/claude-fable-5-1-analysis/" title="Claude Fable 5.1：八项屠榜与最高 45% 降价的组合拳"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-06</div><div class="info-item-2">Claude Fable 5.1：八项屠榜与最高 45% 降价的组合拳</div></div><div class="info-2"><div class="info-item-1">Claude Fable 5.1：八项屠榜与最高 45% 降价的组合拳如果说 GPT-6 Astra 的发布是 OpenAI 在”秀上限”，那么 Anthropic 紧随其后的 Claude Fable 5.1 就是在打另一套拳法：用一批基准测试的领先成绩守住”最懂复杂工程任务”的口碑，同时用最高 45% 的降价把价格表拉进新的档位。 屠榜是姿态，降价是态度“八项屠榜”这类说法，在 2026 年的语境下已经要打折看：头部模型的基准成绩早已进入互相刷新的饱和区间，任何一家拿出新版本都能挑出几项”领先”。真正值得关注的是 Anthropic 这次把降价一起端上桌——在旗舰与旗舰贴身肉搏时，敢于对主力档位动刀子，说明它的成本结构和商业策略都发生了实质变化。 对开发者而言，45% 这个数字在不同场景下的体感完全不同。如果你只是拿 API 写写摘要、做做改写，降价的边际价值有限；但如果你跑的是长文档理解、代码审查、批量 Agent 任务这类 token 消耗大户，降价直接改变项目的成本模型——原本”用不起旗舰”的任务，突然进入了预算射程。 为什么选这个时间点把发布窗口放在 GPT-6 官宣...</div></div></div></a><a class="pagination-related" href="/model-release-cadence/" title="从季度更新到周更：模型发布节奏的军备竞赛"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-06</div><div class="info-item-2">从季度更新到周更：模型发布节奏的军备竞赛</div></div><div class="info-2"><div class="info-item-1">从季度更新到周更：模型发布节奏的军备竞赛谷歌在 Gemini 3.7 Flash 发布三周后就推出了 3.8 Flash；阿里用”0902”这样的日期后缀给 Qwen 持续打补丁式升级；OpenAI 则用”未来几天全面推送”的方式把发布拆成多波。大模型的发布节奏，正在从以季度为单位，压缩到以周为单位。 为什么大家都开始”快打”快节奏迭代不是技术自然演进的结果，而是一场被竞争逼出来的军备竞赛：  窗口期焦虑：模型能力差距被压缩后，谁能先占据”当前最强”的心智，谁就能吃到最多的增量用户——这个心智每三周就要刷新一次； 后训练红利：当预训练规模带来的差异变小，后训练（指令微调、强化学习、场景适配）成为主要差异化来源，而后训练的迭代周期天然比预训练快得多； 数据闭环压力：快速发版能更快收集真实使用反馈，反哺下一轮训练——迭代快本身成了数据飞轮的转速。  对开发者的三重困扰厂商的快节奏，对下游是一把双刃剑：  选型失效加速：上周刚评测完选定模型，这周就出了新版，评测结论快速过期； 回归风险：频繁更新意味着”这周没问题、下周可能有问题”，行为漂移成为常态； 集成成本上升：每次升级都要重新验证...</div></div></div></a><a class="pagination-related" href="/frontier-model-moats/" title="旗舰模型的新护城河：数据飞轮、安全与生态"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-06</div><div class="info-item-2">旗舰模型的新护城河：数据飞轮、安全与生态</div></div><div class="info-2"><div class="info-item-1">旗舰模型的新护城河：数据飞轮、安全与生态GPT-6 Astra、Fable 5.1、Gemini 3.8、Qwen3.8-Max 在基准上打得难解难分，参数规模却不再被当作核心卖点。当”最强”越来越难定义，旗舰模型之间真正拉开差距的，开始转移到三样更难复制的东西上。 数据飞轮：迭代速度的底层燃料模型公司的核心竞争力，正在从”一次训练的起点”转向”持续迭代的转速”。而转速取决于数据飞轮：谁的产品有更多真实用户，谁就能拿到更多真实使用反馈；这些反馈转化为后训练数据，让模型在下一次迭代中更懂真实任务；更好的模型又吸引更多用户。 这就是为什么拥有 C 端入口的产品（ChatGPT、豆包）和拥有开发者生态的平台（GitHub、HF）在竞争中天然占优——他们每天产生的是别人买不到的真实行为数据，而合成数据练得再多，也补不上”真实世界反馈”的缺口。 安全信用：企业采购的隐形门槛能力可以通过追赶缩小，但”信任”不行。当 Agent 开始替企业操作真实系统，采购方评估模型的第一维度不再是跑分，而是：  安全评级与第三方审计报告是否齐备； 是否经历过足够多的真实攻击考验； 出了事故，责任机制与溯源能...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">mc-yzy15</div><div class="author-info-description">Yzy15的个人博客 | 技术教程 · 编程经验 · 学习笔记</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">221</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">472</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">21</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/mc-yzy15"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://yzy15.dpdns.org" target="_blank" title="个人主页"><i class="fas fa-home" style="color: #ff6600;"></i></a><a class="social-icon" href="https://github.com/mc-yzy15" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:yingmoliuguang@yeah.net" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a><a class="social-icon" href="https://space.bilibili.com/1338637552" target="_blank" title="Bilibili"><i class="fab fa-bilibili" style="color: #00a1d6;"></i></a><a class="social-icon" href="https://t.me/ShuangXiang_Dddddavidd_bot" target="_blank" title="Telegram"><i class="fab fa-telegram" style="color: #0088cc;"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="RSS"><i class="fas fa-rss" style="color: #ff6600;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到我的博客！这里记录着我的技术分享和生活点滴~<br>📢 <a href="/link/">广告位招租</a> | 💼 商业合作见<a href="/link/">友链页</a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目次</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#VLA-%E4%B8%8A%E8%BD%A6%EF%BC%9A%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%A4%A7%E8%84%91%E7%9A%84%E7%BB%9F%E4%B8%80%E6%9E%B6%E6%9E%84%E8%B6%8B%E5%8A%BF"><span class="toc-number">1.</span> <span class="toc-text">VLA 上车：机器人大脑的统一架构趋势</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8E%E5%88%86%E6%A8%A1%E5%9D%97%E5%88%B0%E7%AB%AF%E5%88%B0%E7%AB%AF"><span class="toc-number">1.1.</span> <span class="toc-text">从分模块到端到端</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88-VLA-%E5%9C%A8-2026-%E5%B9%B4%E6%88%90%E4%B8%BA%E5%85%B1%E8%AF%86"><span class="toc-number">1.2.</span> <span class="toc-text">为什么 VLA 在 2026 年成为共识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#VLA-%E8%B7%AF%E7%BA%BF%E4%B8%8A%E7%9A%84%E7%9C%9F%E5%AE%9E%E6%8C%91%E6%88%98"><span class="toc-number">1.3.</span> <span class="toc-text">VLA 路线上的真实挑战</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%9F%E4%B8%80%E6%9E%B6%E6%9E%84%E7%9A%84%E7%BB%88%E5%B1%80%E6%83%B3%E8%B1%A1"><span class="toc-number">1.4.</span> <span class="toc-text">统一架构的终局想象</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/ai-search-2026-evolution/" title="AI 搜索的 2026：当&quot;搜索&quot;从链接分发变成答案生成，流量逻辑被改写">AI 搜索的 2026：当&quot;搜索&quot;从链接分发变成答案生成，流量逻辑被改写</a><time datetime="2026-09-07T02:20:00.000Z" title="发表于 2026-09-07 10:20:00">2026-09-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/ai-video-commercialization/" title="AI 视频的商业化元年：广告、短剧与影视工业的&quot;降本实验&quot;">AI 视频的商业化元年：广告、短剧与影视工业的&quot;降本实验&quot;</a><time datetime="2026-09-07T02:00:00.000Z" title="发表于 2026-09-07 10:00:00">2026-09-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/prompt-injection-ai-security/" title="提示注入与 Agent 安全：当 AI 会&quot;被骗&quot;时，应用如何自保">提示注入与 Agent 安全：当 AI 会&quot;被骗&quot;时，应用如何自保</a><time datetime="2026-09-07T01:40:00.000Z" title="发表于 2026-09-07 09:40:00">2026-09-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/memory-storage-supercycle-2026/" title="存储的&quot;超级周期&quot;：HBM 与 AI 之外，内存厂商才是最大赢家？">存储的&quot;超级周期&quot;：HBM 与 AI 之外，内存厂商才是最大赢家？</a><time datetime="2026-09-07T01:20:00.000Z" title="发表于 2026-09-07 09:20:00">2026-09-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/gpu-cloud-price-war/" title="GPU 云价格战与算力过剩：AI 基础设施从&quot;卖方市场&quot;转向&quot;买方市场&quot;">GPU 云价格战与算力过剩：AI 基础设施从&quot;卖方市场&quot;转向&quot;买方市场&quot;</a><time datetime="2026-09-07T01:00:00.000Z" title="发表于 2026-09-07 09:00:00">2026-09-07</time></div></div></div></div><div class="card-widget rec-card"><div style="text-align:center;padding:18px 10px;border:2px dashed #49b1f5;border-radius:8px;margin:0 auto;background:linear-gradient(135deg,#f0f9ff,#e0f2fe);"><div style="font-size:16px;font-weight:bold;color:#49b1f5;">☁️ 南影云 - 高性价比云服务器</div><div style="font-size:12px;color:#555;margin-top:6px;">上万台服务器 | T+级DDoS防护 | 无限防CC</div><div style="font-size:12px;color:#555;margin-top:4px;">🎁 通过下方链接注册享专属优惠</div><div style="margin-top:8px;"><a href="https://idc.ofoca.net/aff/PJQGAEKY" target="_blank" rel="noopener" style="display:inline-block;padding:6px 20px;background:#49b1f5;color:#fff;border-radius:16px;text-decoration:none;font-size:13px;font-weight:bold;">立即注册领优惠</a></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By mc-yzy15</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.1</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="読書モード"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="簡体字と繁体字の切り替え">繁</button><button id="darkmode" type="button" title="ライトモード/ダークモード切り替え"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="シングルカラムとダブルカラムの切り替え"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="設定"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目次"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="トップに戻る"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><script src="/js/tw_cn.js?v=5.5.4"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.9/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><div class="js-pjax"></div><script src="/js/webinfo-stats.js"></script><div class="ad-banner sponsor" style="text-align:center;padding:12px 10px;margin:10px auto;max-width:728px;background:linear-gradient(135deg,#fff5f5,#ffe0e0);border:1px solid<script src="/js/content-loader.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
