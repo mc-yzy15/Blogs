@@ -1,0 +1,221 @@
+<!DOCTYPE html><html lang="[&quot;zh-CN&quot;,&quot;en&quot;,&quot;zh-TW&quot;,&quot;ja&quot;,&quot;ko&quot;,&quot;fr&quot;,&quot;de&quot;,&quot;es&quot;,&quot;ru&quot;,&quot;pt&quot;,&quot;ar&quot;,&quot;hi&quot;,&quot;it&quot;,&quot;th&quot;,&quot;vi&quot;,&quot;id&quot;,&quot;tr&quot;,&quot;uk&quot;,&quot;pl&quot;,&quot;nl&quot;]" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>OpenAI Codex 的&quot;计费信任危机&quot;：当 AI 编程开始偷偷烧钱 | Yzy15's Blog - 技术分享与生活记录</title><meta name="author" content="mc-yzy15"><meta name="copyright" content="mc-yzy15"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="围绕 OpenAI Codex 的计费争议在 2026 年持续发酵，不少开发者反映其 token 消耗与费用远超预期。本文拆解 AI 编程工具&quot;隐形烧钱&quot;的成因、计费透明度的行业问题，以及开发者该如何保护自己的钱包。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenAI Codex 的&quot;计费信任危机&quot;：当 AI 编程开始偷偷烧钱">
+<meta property="og:url" content="https://blogs.yzy15.dpdns.org/ru/openai-codex-trust-crisis/">
+<meta property="og:site_name" content="Yzy15&#39;s Blog - 技术分享与生活记录">
+<meta property="og:description" content="围绕 OpenAI Codex 的计费争议在 2026 年持续发酵，不少开发者反映其 token 消耗与费用远超预期。本文拆解 AI 编程工具&quot;隐形烧钱&quot;的成因、计费透明度的行业问题，以及开发者该如何保护自己的钱包。">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:image" content="https://blogs.yzy15.dpdns.org/img/butterfly-icon.png">
+<meta property="article:published_time" content="2026-09-06T12:00:00.000Z">
+<meta property="article:modified_time" content="2026-09-05T18:14:20.971Z">
+<meta property="article:author" content="mc-yzy15">
+<meta property="article:tag" content="AI编程">
+<meta property="article:tag" content="API计费">
+<meta property="article:tag" content="Codex">
+<meta property="article:tag" content="OpenAI">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://blogs.yzy15.dpdns.org/img/favicon.ico">
+<meta name="twitter:site" content="@mc_yzy15"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "OpenAI Codex 的\"计费信任危机\"：当 AI 编程开始偷偷烧钱",
+  "url": "https://blogs.yzy15.dpdns.org/openai-codex-trust-crisis/",
+  "image": "https://blogs.yzy15.dpdns.org/img/butterfly-icon.png",
+  "datePublished": "2026-09-06T12:00:00.000Z",
+  "dateModified": "2026-09-05T18:14:20.971Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "mc-yzy15",
+      "url": "https://yzy15.dpdns.org"
+    }
+  ]
+}
+</script><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Yzy15's Blog - 技术分享与生活记录",
+      "item": "https://blogs.yzy15.dpdns.org/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "开发者生态",
+      "item": "https://blogs.yzy15.dpdns.org/categories/%E5%BC%80%E5%8F%91%E8%80%85%E7%94%9F%E6%80%81/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "OpenAI Codex 的\"计费信任危机\"：当 AI 编程开始偷偷烧钱",
+      "item": "https://blogs.yzy15.dpdns.org/openai-codex-trust-crisis/"
+    }
+  ]
+}
+</script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://blogs.yzy15.dpdns.org/ru/openai-codex-trust-crisis/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.9/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-HK1JGTYX4N"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-HK1JGTYX4N')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-HK1JGTYX4N', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'OpenAI Codex 的"计费信任危机"：当 AI 编程开始偷偷烧钱',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 8.1.1"><link rel="alternate" href="/atom.xml" title="Yzy15's Blog - 技术分享与生活记录" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">76</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">209</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">19</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/homepage/"><i class="fa-fw fas fa-globe"></i><span> Homepage</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/stats/"><i class="fa-fw fas fa-chart-bar"></i><span> Stats</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Yzy15's Blog - 技术分享与生活记录</span></a><a class="nav-page-title" href="/"><span class="site-name">OpenAI Codex 的&quot;计费信任危机&quot;：当 AI 编程开始偷偷烧钱</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/homepage/"><i class="fa-fw fas fa-globe"></i><span> Homepage</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/stats/"><i class="fa-fw fas fa-chart-bar"></i><span> Stats</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">OpenAI Codex 的&quot;计费信任危机&quot;：当 AI 编程开始偷偷烧钱</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-09-06T12:00:00.000Z" title="发表于 2026-09-06 20:00:00">2026-09-06</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-09-05T18:14:20.971Z" title="更新于 2026-09-06 02:14:20">2026-09-06</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%BC%80%E5%8F%91%E8%80%85%E7%94%9F%E6%80%81/">开发者生态</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="OpenAI-Codex-的”计费信任危机”：当-AI-编程开始偷偷烧钱"><a href="#OpenAI-Codex-的”计费信任危机”：当-AI-编程开始偷偷烧钱" class="headerlink" title="OpenAI Codex 的”计费信任危机”：当 AI 编程开始偷偷烧钱"></a>OpenAI Codex 的”计费信任危机”：当 AI 编程开始偷偷烧钱</h1><p>OpenAI 的 Codex 本是 AI 编程赛道最受期待的工具之一——背靠 GPT 系最强模型，天然拥有顶级代码能力。但 2026 年围绕它的关键词，从”强大”变成了**”烧钱”**：越来越多开发者反映，Codex 在一次看似普通的任务里消耗的 token 和费用远超预期，账单高到令人肉疼。这场”计费信任危机”，正在消耗用户对 Codex 乃至整个 AI 编程品类的信任。</p>
+<h2 id="Codex-为什么”烧钱”"><a href="#Codex-为什么”烧钱”" class="headerlink" title="Codex 为什么”烧钱”"></a>Codex 为什么”烧钱”</h2><p>AI 编程工具烧钱，其实有结构性原因，Codex 只是最典型的样本：</p>
+<ol>
+<li><strong>Agent 模式的 token 黑洞</strong>。Agent 式编程要”自己看代码→决定改哪→动手改→跑测试→看报错→再改”，每一轮都要把大量上下文喂给模型。一次跨多文件的重构任务，可能消耗几十万甚至上百万 token——这还只是”一次任务”。开发者按”任务数”预期成本，厂商按”token 量”计费，认知错位由此而来。</li>
+<li><strong>长上下文的复利</strong>。Codex 主打长上下文能力，而长上下文每次请求都按全量计费。上下文越长，单次调用越贵，任务越复杂，账单越失控——<strong>“能力强”和”烧钱快”在这类工具里往往是同一件事。</strong></li>
+<li><strong>失败重试的沉默成本</strong>。当 Agent 走错方向、反复试错时，每一次失败都计费。用户看到的只是”它最后成功了”，看不到背后几十次失败的 token——成本被”结果”掩盖了。</li>
+</ol>
+<h2 id="为什么这构成”信任危机”"><a href="#为什么这构成”信任危机”" class="headerlink" title="为什么这构成”信任危机”"></a>为什么这构成”信任危机”</h2><p>计费问题之所以升级为信任危机，是因为它击中了开发者对工具的底层预期：<strong>工具应该帮我省钱省力，而不是让我时刻提防钱包。</strong> 当用户开始”不敢让 Agent 放开干活”、每跑一步都要盯着消耗时，工具的核心价值（放手让 AI 干活）就崩塌了——这比单纯的”贵”严重得多。</p>
+<p>更深层的信任问题在于透明度：很多开发者反映，费用增长的归因不清晰——是模型升级了、上下文变长了、还是计费规则变了？<strong>当用户无法解释自己的账单时，怀疑就会蔓延。</strong></p>
+<h2 id="这不仅是-Codex-的问题"><a href="#这不仅是-Codex-的问题" class="headerlink" title="这不仅是 Codex 的问题"></a>这不仅是 Codex 的问题</h2><p>公平地说，token 消耗超预期是 AI 编程工具的通病，不是 Codex 独有。只是 Codex 作为头部产品，把行业长期回避的问题放到了聚光灯下：<strong>Agent 式编程的成本模型，还没有跟上产品体验的进化。</strong> 各家都在抢”谁更能干活”，却很少有厂商认真回答”让用户怎么算得清账”。</p>
+<p>行业需要补课的包括：按任务&#x2F;按结果计费的新模式、更透明的消耗可视化、以及”成本上限”这类强制护栏——让用户敢把 Agent 放开手。</p>
+<h2 id="开发者的自保指南"><a href="#开发者的自保指南" class="headerlink" title="开发者的自保指南"></a>开发者的自保指南</h2><p>在行业把账算明白之前，开发者只能自己动手保护钱包：</p>
+<ol>
+<li><strong>设硬性成本上限</strong>：用工具提供的额度限制（没有就用定时器&#x2F;代理层兜底），给每次会话设”熔断线”；</li>
+<li><strong>小步快跑，别让 Agent 自由发挥</strong>：把大任务拆成小任务，每步验证后再继续，减少失败重试的沉默消耗；</li>
+<li><strong>任务分级</strong>：简单改动用便宜模型&#x2F;本地工具，只有复杂重构才动用顶级 Agent——别用大炮打蚊子；</li>
+<li><strong>记账</strong>：把每次任务的 token 消耗记下来，一周后你会发现哪些工作流在”烧钱”，然后优化它。</li>
+</ol>
+<h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>Codex 的计费争议，本质是 AI 编程行业”跑得太快、账本没跟上”的一个缩影。对 OpenAI 而言，修复的不是一个计费 bug，而是用户对”AI 帮我写代码”这件事的信任预期；对开发者而言，AI 编程工具依然是生产力利器，但请记住一条铁律——<strong>让它帮你干活之前，先搞清楚它每小时要烧你多少钱。</strong></p>
+<blockquote>
+<p>**说明：**文中关于 Codex 计费争议的描述基于 2026 年公开的开发者反馈与报道，具体计费规则请以 OpenAI 官方为准。</p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a target="_blank" rel="noopener" href="https://yzy15.dpdns.org">mc-yzy15</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://blogs.yzy15.dpdns.org/openai-codex-trust-crisis/">https://blogs.yzy15.dpdns.org/openai-codex-trust-crisis/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。<strong>禁止商用</strong>。转载请注明来源 <a href="https://blogs.yzy15.dpdns.org" target="_blank">Yzy15's Blog - 技术分享与生活记录</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/AI%E7%BC%96%E7%A8%8B/">AI编程</a><a class="post-meta__tags" href="/tags/Codex/">Codex</a><a class="post-meta__tags" href="/tags/OpenAI/">OpenAI</a><a class="post-meta__tags" href="/tags/API%E8%AE%A1%E8%B4%B9/">API计费</a></div><div class="post-share"><div class="social-share" data-image="/img/butterfly-icon.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>感谢您的支持，您的赞赏是我持续创作的动力！</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://img.cdn1.vip/i/69ed1d29274a9_1777147177.webp" target="_blank"><img class="post-qr-code-img" src="https://img.cdn1.vip/i/69ed1d29274a9_1777147177.webp" alt="微信赞赏"/ loading='lazy'></a><div class="post-qr-code-desc">微信赞赏</div></li></ul></div></div><div class="rec-card ad-slot ad-placement"><div style="text-align:center;padding:20px 10px;border:2px dashed #ff6b6b;border-radius:8px;margin:0 auto;background:linear-gradient(135deg,#fff5f5,#ffe0e0);"><div style="font-size:18px;font-weight:bold;color:#ff6b6b;">☁️ 南影云 - 高性价比云服务器</div><div style="font-size:13px;color:#555;margin-top:8px;">上万台服务器 | T+级DDoS防护 | 无限防CC</div><div style="font-size:13px;color:#555;margin-top:4px;">🎁 通过下方链接注册享专属优惠</div><div style="margin-top:10px;"><a href="https://idc.ofoca.net/aff/PJQGAEKY" target="_blank" rel="noopener" style="display:inline-block;padding:8px 24px;background:#ff6b6b;color:#fff;border-radius:20px;text-decoration:none;font-size:14px;font-weight:bold;">立即注册领优惠</a></div><div style="font-size:11px;color:#999;margin-top:6px;">注册后联系博主可再领额外折扣</div></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/claude-code-vs-cursor-2026/" title="Claude Code 与 Cursor 的 2026：终端强 Agent 与 AI 原生编辑器的路线之争"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">Claude Code 与 Cursor 的 2026：终端强 Agent 与 AI 原生编辑器的路线之争</div></div><div class="info-2"><div class="info-item-1">Claude Code 与 Cursor 的 2026：终端强 Agent 与 AI 原生编辑器的路线之争2026 年，AI 编程工具的两大范式都站到了新的高度：一边是 Cursor 代表的”AI 原生编辑器”——把 AI 深度织进 IDE 的每一次操作；另一边是 Claude Code 代表的”终端强 Agent”——让 AI 像工程师一样在命令行里自主干活。它们不是同一个产品的两个版本，而是关于”AI 如何参与软件开发”的两种世界观。 谁更适合你？取决于你的工作流。 两种范式的内核差异Cursor：AI 作为”增强的编辑器”。 Cursor 的思路是”你依然是驾驶员，AI 是副驾驶”：你在编辑器里写代码、看 diff、做决定，AI 负责补全、重构、问答与多文件修改的辅助。它的核心优势是人类掌控感强——每一步改动都可视化、可回退，适合”AI 写、人审”的协作模式。对习惯了传统 IDE 的开发者，Cursor 是几乎无痛的升级。 Claude Code：AI 作为”自主的工程师”。 Claude Code 的思路更激进：你在终端里下达任务，它自己读代码、改文件、跑测试、修 bug...</div></div></div></a><a class="pagination-related" href="/ai-cli-tool-wars/" title="AI CLI 大混战：Claude Code、Codex、Gemini CLI……终端为何成为兵家必争之地"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">AI CLI 大混战：Claude Code、Codex、Gemini CLI……终端为何成为兵家必争之地</div></div><div class="info-2"><div class="info-item-1">AI CLI 大混战：Claude Code、Codex、Gemini CLI……终端为何成为兵家必争之地2026 年的开发者工具市场，最热闹的战场不是编辑器，而是那个看起来最”古老”的东西——终端。以 Claude Code 为代表的 AI 命令行工具爆发式涌现：OpenAI 有 Codex，Google 有 Gemini CLI，微软把 Copilot 塞进终端，国内的通义千问、DeepSeek、月之暗面也各自推出了 CLI 工具。一夜之间，”在终端里用自然语言写代码”成了所有大模型公司的兵家必争之地。 为什么是终端终端成为 AI 编程主战场的逻辑，其实非常硬核：  终端是开发的”原生语境”。跑构建、执行测试、操作 git、管理依赖——开发者的真实工作流锚定在终端里。AI 工具在终端里，能直接读写文件、执行命令、看报错并迭代修复，天然具备”干活”的能力，而不是只会在编辑器里补全代码。 Agent 需要”执行权限”。真正的 AI 编程智能体（agent）不是聊天机器人，它需要自己动手：改文件、跑测试、修 bug。终端给了它完整的操作环境与反馈回路——“能执行 + 能验证”是 A...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/openai-codex-trust-crisis/" title="OpenAI Codex 的&quot;计费信任危机&quot;：当 AI 编程开始偷偷烧钱"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-06</div><div class="info-item-2">OpenAI Codex 的&quot;计费信任危机&quot;：当 AI 编程开始偷偷烧钱</div></div><div class="info-2"><div class="info-item-1">OpenAI Codex 的”计费信任危机”：当 AI 编程开始偷偷烧钱OpenAI 的 Codex 本是 AI 编程赛道最受期待的工具之一——背靠 GPT 系最强模型，天然拥有顶级代码能力。但 2026 年围绕它的关键词，从”强大”变成了**”烧钱”**：越来越多开发者反映，Codex 在一次看似普通的任务里消耗的 token 和费用远超预期，账单高到令人肉疼。这场”计费信任危机”，正在消耗用户对 Codex 乃至整个 AI 编程品类的信任。 Codex 为什么”烧钱”AI 编程工具烧钱，其实有结构性原因，Codex 只是最典型的样本：  Agent 模式的 token 黑洞。Agent 式编程要”自己看代码→决定改哪→动手改→跑测试→看报错→再改”，每一轮都要把大量上下文喂给模型。一次跨多文件的重构任务，可能消耗几十万甚至上百万 token——这还只是”一次任务”。开发者按”任务数”预期成本，厂商按”token 量”计费，认知错位由此而来。 长上下文的复利。Codex 主打长上下文能力，而长上下文每次请求都按全量计费。上下文越长，单次调用越贵，任务越复杂，账单越失控——“能力...</div></div></div></a><a class="pagination-related" href="/ai-cli-tool-wars/" title="AI CLI 大混战：Claude Code、Codex、Gemini CLI……终端为何成为兵家必争之地"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-06</div><div class="info-item-2">AI CLI 大混战：Claude Code、Codex、Gemini CLI……终端为何成为兵家必争之地</div></div><div class="info-2"><div class="info-item-1">AI CLI 大混战：Claude Code、Codex、Gemini CLI……终端为何成为兵家必争之地2026 年的开发者工具市场，最热闹的战场不是编辑器，而是那个看起来最”古老”的东西——终端。以 Claude Code 为代表的 AI 命令行工具爆发式涌现：OpenAI 有 Codex，Google 有 Gemini CLI，微软把 Copilot 塞进终端，国内的通义千问、DeepSeek、月之暗面也各自推出了 CLI 工具。一夜之间，”在终端里用自然语言写代码”成了所有大模型公司的兵家必争之地。 为什么是终端终端成为 AI 编程主战场的逻辑，其实非常硬核：  终端是开发的”原生语境”。跑构建、执行测试、操作 git、管理依赖——开发者的真实工作流锚定在终端里。AI 工具在终端里，能直接读写文件、执行命令、看报错并迭代修复，天然具备”干活”的能力，而不是只会在编辑器里补全代码。 Agent 需要”执行权限”。真正的 AI 编程智能体（agent）不是聊天机器人，它需要自己动手：改文件、跑测试、修 bug。终端给了它完整的操作环境与反馈回路——“能执行 + 能验证”是 A...</div></div></div></a><a class="pagination-related" href="/sora-shutdown-postmortem/" title="Sora 关停复盘：OpenAI 为何亲手埋葬&quot;视频 GPT&quot;"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-06</div><div class="info-item-2">Sora 关停复盘：OpenAI 为何亲手埋葬&quot;视频 GPT&quot;</div></div><div class="info-2"><div class="info-item-1">Sora 关停复盘：OpenAI 为何亲手埋葬”视频 GPT”Sora 死了——不是被竞争对手打败，而是被它的缔造者亲手按下了终止键。2024 年初那段 60 秒的演示视频曾让全世界惊呼”视频的 GPT-3 时刻来了”，两年后，OpenAI 却在 2026 年上半年分阶段将其关停：独立应用与网页端在 4 月底下线，API 也在 9 月画上句号。 一款”概念股”型产品的宿命回看 Sora 的一生，它其实始终没完成从”演示惊艳”到”产品成立”的惊险一跃。问题不是技术不够炫，而是它掉进了明星 AI 产品最常见的坑：  贵得离谱。视频生成的推理成本远高于文本，Sora 的算力账单在当时被戏称为”每生成一秒钟都在烧钱”，商业化定价要么劝退用户，要么补贴到怀疑人生； 难用得伤心。演示片段是精挑细选的，真实创作中它对指令的遵循、对物理世界的还原仍然飘忽不定，创作者试过几次就回流到传统工具； 找不到付费场景。C 端用户要不起，专业用户嫌不稳，Sora 卡在”高不成低不就”的尴尬区间——这几乎是所有”先秀技术、后补产品”路线的通病。  真正跑通的不是”Sora 模式”Sora 离场的同时，生成式视...</div></div></div></a><a class="pagination-related" href="/ai-generated-code-supply-chain/" title="AI 生成代码的供应链安全：谁来为&quot;幻觉代码&quot;负责"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-06</div><div class="info-item-2">AI 生成代码的供应链安全：谁来为&quot;幻觉代码&quot;负责</div></div><div class="info-2"><div class="info-item-1">AI 生成代码的供应链安全：谁来为”幻觉代码”负责AI 编程工具的普及速度，远超整个行业对它的安全认知。2026 年，很多团队的代码库里，AI 生成的代码占比已经相当可观——从脚手架到业务逻辑，AI 无处不在。但一个尖锐的问题被问得越来越少、却越来越重要：当 AI 写出有漏洞的代码、引用不存在的依赖、甚至建议安装一个恶意同名包时，谁来负责？ AI 生成代码正在重塑软件供应链，而它的安全挑战，远比我们想象的复杂。 AI 代码的三种典型安全风险AI 编程引入的安全问题，大致有三类： 1. “幻觉”引发的真实漏洞。 AI 很擅长”一本正经地犯错”：写出看似合理实则错误的加密实现、忘了做输入校验、在边界条件上埋下隐患。这些”幻觉代码”往往比人写的 bug 更难发现——因为它语法正确、风格规范，看起来完全正常，却藏着安全缺陷。AI 提升了代码产能，也可能同步放大了漏洞产能。 2. 依赖投毒的新通道。 AI 训练数据里包含了海量公开代码，其中就可能有被投毒的恶意包、被废弃的旧库。当 AI “建议”你 pip install 一个名字很合理的包时，它不会验证这个包是否安全、是否存在于官方源。攻...</div></div></div></a><a class="pagination-related" href="/claude-code-vs-cursor-2026/" title="Claude Code 与 Cursor 的 2026：终端强 Agent 与 AI 原生编辑器的路线之争"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-06</div><div class="info-item-2">Claude Code 与 Cursor 的 2026：终端强 Agent 与 AI 原生编辑器的路线之争</div></div><div class="info-2"><div class="info-item-1">Claude Code 与 Cursor 的 2026：终端强 Agent 与 AI 原生编辑器的路线之争2026 年，AI 编程工具的两大范式都站到了新的高度：一边是 Cursor 代表的”AI 原生编辑器”——把 AI 深度织进 IDE 的每一次操作；另一边是 Claude Code 代表的”终端强 Agent”——让 AI 像工程师一样在命令行里自主干活。它们不是同一个产品的两个版本，而是关于”AI 如何参与软件开发”的两种世界观。 谁更适合你？取决于你的工作流。 两种范式的内核差异Cursor：AI 作为”增强的编辑器”。 Cursor 的思路是”你依然是驾驶员，AI 是副驾驶”：你在编辑器里写代码、看 diff、做决定，AI 负责补全、重构、问答与多文件修改的辅助。它的核心优势是人类掌控感强——每一步改动都可视化、可回退，适合”AI 写、人审”的协作模式。对习惯了传统 IDE 的开发者，Cursor 是几乎无痛的升级。 Claude Code：AI 作为”自主的工程师”。 Claude Code 的思路更激进：你在终端里下达任务，它自己读代码、改文件、跑测试、修 bug...</div></div></div></a><a class="pagination-related" href="/gpt-6-astra-analysis/" title="GPT-6 Astra 发布：当 OpenAI 把&quot;智能上限&quot;写进名字"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-06</div><div class="info-item-2">GPT-6 Astra 发布：当 OpenAI 把&quot;智能上限&quot;写进名字</div></div><div class="info-2"><div class="info-item-1">GPT-6 Astra 发布：当 OpenAI 把”智能上限”写进名字2026 年 9 月初，硅谷的大模型赛道在 48 小时内迎来一轮密集发牌：OpenAI 发布 GPT-6 Astra，官方口径是”目前智能水平最高的模型”，并在多项基准测试中刷新纪录。同一天前后，Anthropic 拿出 Claude Fable 5.1，Google 则用 Gemini 3.8 Flash 压阵。三家撞在同一周，已经不是巧合，而是基础模型竞争进入”以周为单位迭代”的明确信号。 名字里藏着产品策略“6”代表代际跃迁，”Astra”这个后缀则透露了 OpenAI 对它的定位——不是一个”更大号的 5.6”，而是一个被寄予”系列起点”厚望的旗舰底座。对普通用户来说，名字里有没有后缀并不影响聊天体验；但对开发者而言，后缀意味着新的能力边界、新的参数取舍和新的计价档位，后两者往往才是真正影响工作流的东西。 值得注意的是，OpenAI 近几年几乎每年都在上调”旗舰”的定义。当一个市场领导者把自己的迭代周期压缩到不足一年时，它真正的目的并不只是”更强”，而是让竞争对手永远处于”追赶上一代”的状态：这边刚针对...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">mc-yzy15</div><div class="author-info-description">Yzy15的个人博客 | 技术教程 · 编程经验 · 学习笔记</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">76</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">209</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">19</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/mc-yzy15"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://yzy15.dpdns.org" target="_blank" title="个人主页"><i class="fas fa-home" style="color: #ff6600;"></i></a><a class="social-icon" href="https://github.com/mc-yzy15" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:yingmoliuguang@yeah.net" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a><a class="social-icon" href="https://space.bilibili.com/1338637552" target="_blank" title="Bilibili"><i class="fab fa-bilibili" style="color: #00a1d6;"></i></a><a class="social-icon" href="https://t.me/ShuangXiang_Dddddavidd_bot" target="_blank" title="Telegram"><i class="fab fa-telegram" style="color: #0088cc;"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="RSS"><i class="fas fa-rss" style="color: #ff6600;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到我的博客！这里记录着我的技术分享和生活点滴~<br>📢 <a href="/link/">广告位招租</a> | 💼 商业合作见<a href="/link/">友链页</a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#OpenAI-Codex-%E7%9A%84%E2%80%9D%E8%AE%A1%E8%B4%B9%E4%BF%A1%E4%BB%BB%E5%8D%B1%E6%9C%BA%E2%80%9D%EF%BC%9A%E5%BD%93-AI-%E7%BC%96%E7%A8%8B%E5%BC%80%E5%A7%8B%E5%81%B7%E5%81%B7%E7%83%A7%E9%92%B1"><span class="toc-number">1.</span> <span class="toc-text">OpenAI Codex 的”计费信任危机”：当 AI 编程开始偷偷烧钱</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Codex-%E4%B8%BA%E4%BB%80%E4%B9%88%E2%80%9D%E7%83%A7%E9%92%B1%E2%80%9D"><span class="toc-number">1.1.</span> <span class="toc-text">Codex 为什么”烧钱”</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%99%E6%9E%84%E6%88%90%E2%80%9D%E4%BF%A1%E4%BB%BB%E5%8D%B1%E6%9C%BA%E2%80%9D"><span class="toc-number">1.2.</span> <span class="toc-text">为什么这构成”信任危机”</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%99%E4%B8%8D%E4%BB%85%E6%98%AF-Codex-%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">1.3.</span> <span class="toc-text">这不仅是 Codex 的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%80%E5%8F%91%E8%80%85%E7%9A%84%E8%87%AA%E4%BF%9D%E6%8C%87%E5%8D%97"><span class="toc-number">1.4.</span> <span class="toc-text">开发者的自保指南</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%99%E5%9C%A8%E6%9C%80%E5%90%8E"><span class="toc-number">1.5.</span> <span class="toc-text">写在最后</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/ai-search-2026-evolution/" title="AI 搜索的 2026：当&quot;搜索&quot;从链接分发变成答案生成，流量逻辑被改写">AI 搜索的 2026：当&quot;搜索&quot;从链接分发变成答案生成，流量逻辑被改写</a><time datetime="2026-09-07T02:20:00.000Z" title="发表于 2026-09-07 10:20:00">2026-09-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/ai-video-commercialization/" title="AI 视频的商业化元年：广告、短剧与影视工业的&quot;降本实验&quot;">AI 视频的商业化元年：广告、短剧与影视工业的&quot;降本实验&quot;</a><time datetime="2026-09-07T02:00:00.000Z" title="发表于 2026-09-07 10:00:00">2026-09-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/prompt-injection-ai-security/" title="提示注入与 Agent 安全：当 AI 会&quot;被骗&quot;时，应用如何自保">提示注入与 Agent 安全：当 AI 会&quot;被骗&quot;时，应用如何自保</a><time datetime="2026-09-07T01:40:00.000Z" title="发表于 2026-09-07 09:40:00">2026-09-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/memory-storage-supercycle-2026/" title="存储的&quot;超级周期&quot;：HBM 与 AI 之外，内存厂商才是最大赢家？">存储的&quot;超级周期&quot;：HBM 与 AI 之外，内存厂商才是最大赢家？</a><time datetime="2026-09-07T01:20:00.000Z" title="发表于 2026-09-07 09:20:00">2026-09-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/gpu-cloud-price-war/" title="GPU 云价格战与算力过剩：AI 基础设施从&quot;卖方市场&quot;转向&quot;买方市场&quot;">GPU 云价格战与算力过剩：AI 基础设施从&quot;卖方市场&quot;转向&quot;买方市场&quot;</a><time datetime="2026-09-07T01:00:00.000Z" title="发表于 2026-09-07 09:00:00">2026-09-07</time></div></div></div></div><div class="card-widget rec-card"><div style="text-align:center;padding:18px 10px;border:2px dashed #49b1f5;border-radius:8px;margin:0 auto;background:linear-gradient(135deg,#f0f9ff,#e0f2fe);"><div style="font-size:16px;font-weight:bold;color:#49b1f5;">☁️ 南影云 - 高性价比云服务器</div><div style="font-size:12px;color:#555;margin-top:6px;">上万台服务器 | T+级DDoS防护 | 无限防CC</div><div style="font-size:12px;color:#555;margin-top:4px;">🎁 通过下方链接注册享专属优惠</div><div style="margin-top:8px;"><a href="https://idc.ofoca.net/aff/PJQGAEKY" target="_blank" rel="noopener" style="display:inline-block;padding:6px 20px;background:#49b1f5;color:#fff;border-radius:16px;text-decoration:none;font-size:13px;font-weight:bold;">立即注册领优惠</a></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By mc-yzy15</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.1</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><script src="/js/tw_cn.js?v=5.5.4"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.9/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><div class="js-pjax"></div><script src="/js/webinfo-stats.js"></script><div class="ad-banner sponsor" style="text-align:center;padding:12px 10px;margin:10px auto;max-width:728px;background:linear-gradient(135deg,#fff5f5,#ffe0e0);border:1px solid<script src="/js/content-loader.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
