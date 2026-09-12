@@ -1,0 +1,288 @@
+<!DOCTYPE html><html lang="[&quot;zh-CN&quot;,&quot;en&quot;,&quot;zh-TW&quot;,&quot;ja&quot;,&quot;ko&quot;,&quot;fr&quot;,&quot;de&quot;,&quot;es&quot;,&quot;ru&quot;,&quot;pt&quot;,&quot;ar&quot;,&quot;hi&quot;,&quot;it&quot;,&quot;th&quot;,&quot;vi&quot;,&quot;id&quot;,&quot;tr&quot;,&quot;uk&quot;,&quot;pl&quot;,&quot;nl&quot;]" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>预览部署工作流设计：用 Cloudflare Pages 把评审成本压到最低 | Yzy15's Blog - 技术分享与生活记录</title><meta name="author" content="mc-yzy15"><meta name="copyright" content="mc-yzy15"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="预览部署不只是「每个 PR 给一个链接」，它需要解决访问控制、数据隔离、缓存污染与回滚四个工程问题。本文给出一套可直接落地的预览环境工作流设计，包括分支命名约定、预览与生产的数据边界、以及如何避免预览环境被搜索引擎收录。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="预览部署工作流设计：用 Cloudflare Pages 把评审成本压到最低">
+<meta property="og:url" content="https://blogs.yzy15.dpdns.org/nl/cf-pages-preview-deploy-workflow/">
+<meta property="og:site_name" content="Yzy15&#39;s Blog - 技术分享与生活记录">
+<meta property="og:description" content="预览部署不只是「每个 PR 给一个链接」，它需要解决访问控制、数据隔离、缓存污染与回滚四个工程问题。本文给出一套可直接落地的预览环境工作流设计，包括分支命名约定、预览与生产的数据边界、以及如何避免预览环境被搜索引擎收录。">
+<meta property="og:locale" content="nl_NL">
+<meta property="og:image" content="https://blogs.yzy15.dpdns.org/img/butterfly-icon.png">
+<meta property="article:published_time" content="2026-09-13T03:02:00.000Z">
+<meta property="article:modified_time" content="2026-09-12T17:33:38.958Z">
+<meta property="article:author" content="mc-yzy15">
+<meta property="article:tag" content="Cloudflare Pages">
+<meta property="article:tag" content="团队协作">
+<meta property="article:tag" content="预览部署">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://blogs.yzy15.dpdns.org/img/favicon.ico">
+<meta name="twitter:site" content="@mc_yzy15"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "预览部署工作流设计：用 Cloudflare Pages 把评审成本压到最低",
+  "url": "https://blogs.yzy15.dpdns.org/cf-pages-preview-deploy-workflow/",
+  "image": "https://blogs.yzy15.dpdns.org/img/butterfly-icon.png",
+  "datePublished": "2026-09-13T03:02:00.000Z",
+  "dateModified": "2026-09-12T17:33:38.958Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "mc-yzy15",
+      "url": "https://yzy15.dpdns.org"
+    }
+  ]
+}
+</script><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Yzy15's Blog - 技术分享与生活记录",
+      "item": "https://blogs.yzy15.dpdns.org/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "云计算",
+      "item": "https://blogs.yzy15.dpdns.org/categories/%E4%BA%91%E8%AE%A1%E7%AE%97/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "预览部署工作流设计：用 Cloudflare Pages 把评审成本压到最低",
+      "item": "https://blogs.yzy15.dpdns.org/cf-pages-preview-deploy-workflow/"
+    }
+  ]
+}
+</script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://blogs.yzy15.dpdns.org/nl/cf-pages-preview-deploy-workflow/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.9/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-HK1JGTYX4N"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-HK1JGTYX4N')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-HK1JGTYX4N', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '预览部署工作流设计：用 Cloudflare Pages 把评审成本压到最低',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 8.1.1"><link rel="alternate" href="/atom.xml" title="Yzy15's Blog - 技术分享与生活记录" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">245</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">533</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">21</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/homepage/"><i class="fa-fw fas fa-globe"></i><span> Homepage</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/stats/"><i class="fa-fw fas fa-chart-bar"></i><span> Stats</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Yzy15's Blog - 技术分享与生活记录</span></a><a class="nav-page-title" href="/"><span class="site-name">预览部署工作流设计：用 Cloudflare Pages 把评审成本压到最低</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/homepage/"><i class="fa-fw fas fa-globe"></i><span> Homepage</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/stats/"><i class="fa-fw fas fa-chart-bar"></i><span> Stats</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">预览部署工作流设计：用 Cloudflare Pages 把评审成本压到最低</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-09-13T03:02:00.000Z" title="发表于 2026-09-13 11:02:00">2026-09-13</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-09-12T17:33:38.958Z" title="更新于 2026-09-13 01:33:38">2026-09-13</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E4%BA%91%E8%AE%A1%E7%AE%97/">云计算</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="预览部署工作流设计：用-Cloudflare-Pages-把评审成本压到最低"><a href="#预览部署工作流设计：用-Cloudflare-Pages-把评审成本压到最低" class="headerlink" title="预览部署工作流设计：用 Cloudflare Pages 把评审成本压到最低"></a>预览部署工作流设计：用 Cloudflare Pages 把评审成本压到最低</h1><p>「每个 PR 自动生成一个预览链接」这件事，演示起来只要十分钟，但在真实团队里跑上三个月，就会积累出一堆脏问题：预览链接被外部爬虫收录、预览环境往生产数据库写数据、评审者看到的是三天前的缓存版本、回滚时不知道该回滚到哪个 deployment。</p>
+<p>这些问题的共同点是：它们都不是 Pages 的功能问题，而是工作流设计问题。本文讨论如何在 Pages 提供的能力之上，设计一套能长期运行的预览部署工作流。</p>
+<h2 id="预览部署真正的价值在哪里"><a href="#预览部署真正的价值在哪里" class="headerlink" title="预览部署真正的价值在哪里"></a>预览部署真正的价值在哪里</h2><p>先澄清一个常见误解。预览部署的价值不在于”给非技术人员看效果”——那个需求用截图或本地服务器也能满足。它真正解决的是下面三类问题：</p>
+<ul>
+<li><strong>环境相关缺陷只能在真实环境暴露</strong>。路由重写、资源路径、跨域头、缓存策略这些问题在本地往往表现正常。</li>
+<li><strong>评审需要上下文而非代码</strong>。产品与设计评审的是”行为”，不是 diff。</li>
+<li><strong>变更影响面需要可验证</strong>。特别是改动构建配置、CDN 缓存规则、重定向表时，只有真实部署能验证。</li>
+</ul>
+<p>因此预览部署的设计目标应该是：<strong>让一次部署尽可能接近生产，同时把它的副作用降到零</strong>。这个目标里，”副作用”才是难点。</p>
+<h2 id="分支命名约定：让-URL-成为可读的元数据"><a href="#分支命名约定：让-URL-成为可读的元数据" class="headerlink" title="分支命名约定：让 URL 成为可读的元数据"></a>分支命名约定：让 URL 成为可读的元数据</h2><p>多数团队会把预览链接直接丢在聊天窗口里，然后几周后没人知道哪个链接对应哪个功能。解决方式是把信息编码进分支名，因为 Pages 会用分支名生成预览子域。</p>
+<p>一个可用的约定是分层命名：</p>
+<ol>
+<li><code>feat/&lt;issue-id&gt;-&lt;slug&gt;</code>：功能分支，如 <code>feat/412-checkout-retry</code>。</li>
+<li><code>fix/&lt;issue-id&gt;-&lt;slug&gt;</code>：缺陷修复分支。</li>
+<li><code>exp/&lt;slug&gt;</code>：纯实验分支，允许不稳定，允许随时删除。</li>
+<li><code>release/&lt;version&gt;</code>：发布候选，通常需要额外一层保护。</li>
+</ol>
+<p>这样生成的预览域名天然携带语义，回看历史时有据可查。反过来，如果分支名全是 <code>update</code>、<code>test2</code>、<code>tmp</code>，预览部署的信息价值会被迅速稀释。</p>
+<h2 id="数据隔离：预览环境最容易出事的地方"><a href="#数据隔离：预览环境最容易出事的地方" class="headerlink" title="数据隔离：预览环境最容易出事的地方"></a>数据隔离：预览环境最容易出事的地方</h2><p>预览部署最危险的场景是：它看起来像个玩具，但它连的是真数据库。用户点一下”删除”，生产数据就没了。</p>
+<p>对于前后端一体的站点（例如 Pages 静态前端 + Pages Functions 后端），几种隔离策略按成本从低到高排列：</p>
+<table>
+<thead>
+<tr>
+<th>策略</th>
+<th>实现方式</th>
+<th>隔离强度</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>只读预览</td>
+<td>预览环境注入只读凭据</td>
+<td>中</td>
+<td>纯展示型评审</td>
+</tr>
+<tr>
+<td>独立数据集</td>
+<td>预览使用独立 D1 &#x2F; KV 实例</td>
+<td>高</td>
+<td>需要写入验证的功能</td>
+</tr>
+<tr>
+<td>影子数据库</td>
+<td>定期从生产脱敏同步</td>
+<td>高</td>
+<td>需要真实数据结构</td>
+</tr>
+<tr>
+<td>完全模拟</td>
+<td>使用内存或 mock 层</td>
+<td>最高</td>
+<td>单元级验证、无后端依赖</td>
+</tr>
+</tbody></table>
+<p>对多数团队而言，<strong>独立数据集</strong>是性价比最高的选择：Pages 的环境变量机制允许预览与生产绑定不同的绑定（binding），你只需要在配置层面做一次分流，就能让预览环境永远碰不到生产数据。</p>
+<figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># wrangler.toml 片段：用环境区分预览与生产的绑定</span></span><br><span class="line"><span class="attr">name</span> = <span class="string">&quot;shop-frontend&quot;</span></span><br><span class="line"><span class="attr">pages_build_output_dir</span> = <span class="string">&quot;dist&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="section">[vars]</span></span><br><span class="line"><span class="attr">PUBLIC_SITE_NAME</span> = <span class="string">&quot;shop-preview&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 注意：生产环境的绑定应在 Pages 面板中单独配置</span></span><br><span class="line"><span class="comment"># 这里的 var 只用于预览构建；敏感值一律走 secrets，不要写进仓库</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>风险提示</strong>：不要把 D1、KV 或 R2 的生产凭据放在预览环境变量里。一旦预览部署的链接泄露（这几乎必然发生），凭据就等于公开。</p>
+</blockquote>
+<h2 id="访问控制：预览链接的默认安全姿态"><a href="#访问控制：预览链接的默认安全姿态" class="headerlink" title="访问控制：预览链接的默认安全姿态"></a>访问控制：预览链接的默认安全姿态</h2><p>这里需要区分两件事：<strong>平台层面的访问控制</strong>与<strong>应用层面的访问控制</strong>。</p>
+<p>平台层面可以限制整个预览域名的访问（例如通过 Access 之类的身份层），应用层面则是在自己的代码里判断当前是否预览环境。两者的正确用法是：</p>
+<ul>
+<li>内部项目：优先用平台层控制，因为它是”默认拒绝”的姿态，漏配的代价是访问被挡，而不是数据泄露。</li>
+<li>开源或公开评审项目：预览链接本身可能就需要公开展示，此时应用层要显式处理”这是预览”的语义，例如加一个顶部横幅、禁用支付入口、禁止提交表单。</li>
+</ul>
+<p>一个常见的失误是：只在预览环境加”禁止支付”的代码分支，而忘记预览环境同样会调用真实的第三方 API。正确做法是把所有外部副作用统一收口到一个配置开关，预览环境默认全部关闭。</p>
+<h2 id="缓存与-SEO：两个容易被忽略的副作用"><a href="#缓存与-SEO：两个容易被忽略的副作用" class="headerlink" title="缓存与 SEO：两个容易被忽略的副作用"></a>缓存与 SEO：两个容易被忽略的副作用</h2><p><strong>缓存污染</strong>。如果预览域名与生产域名共享 CDN 缓存键，或者预览环境的响应被写入了共享的 KV 缓存，你会看到”预览内容串到生产”的诡异现象。避免方式很简单：让缓存键包含部署标识，或者让预览环境完全不写共享缓存。</p>
+<p><strong>搜索引擎收录</strong>。预览域名的内容通常与生产重复，如果被收录会造成内容重复问题，更糟的是可能让未完成的页面出现在搜索结果里。推荐的双保险是：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 在预览环境的 HTML head 中注入 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;robots&quot;</span> <span class="attr">content</span>=<span class="string">&quot;noindex, nofollow&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>同时配合响应头 <code>X-Robots-Tag: noindex</code>，因为某些爬虫更信任响应头而非 meta 标签。还需要注意的是：如果预览环境存在未公开的功能描述，<code>noindex</code> 并不能阻止内容被读取，只是阻止被索引。</p>
+<ul>
+<li>使用 <code>noindex</code> 而非 <code>robots.txt</code>：后者对未收录的域名约束力有限，且是全局的。</li>
+<li>在预览环境关闭 sitemap 输出。</li>
+<li>在预览环境关闭社会化分享的预览图抓取，避免生成指向预览域名的卡片。</li>
+<li>定期清理陈旧的预览部署，减少被发现的表面积。</li>
+</ul>
+<h2 id="回滚与清理：工作流的最后一段"><a href="#回滚与清理：工作流的最后一段" class="headerlink" title="回滚与清理：工作流的最后一段"></a>回滚与清理：工作流的最后一段</h2><p>预览部署的工作流必须包含”结束”这一步，否则三个月后你会面对几百个僵尸部署。</p>
+<p>回滚方面，Pages 的 deployment 是不可变的，这使得回滚变得异常简单：直接把一个历史 deployment 重新提升为生产即可，无需重新构建。这比”重新跑一次旧 commit 的构建”可靠得多，因为旧 commit 的依赖可能已经无法解析。</p>
+<p>清理方面，建议在上线后自动删除对应的预览部署，或者按保留策略定期清理。判断标准可以很简单：<strong>已合并或已关闭的分支，其预览部署应在一个固定周期后消失</strong>。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># GitHub Actions 片段：PR 关闭后触发清理（伪代码式示意）</span></span><br><span class="line"><span class="comment"># on:</span></span><br><span class="line"><span class="comment">#   pull_request:</span></span><br><span class="line"><span class="comment">#     types: [closed]</span></span><br><span class="line"><span class="comment"># steps:</span></span><br><span class="line"><span class="comment">#   - name: Notify cleanup</span></span><br><span class="line"><span class="comment">#     run: |</span></span><br><span class="line"><span class="comment">#       echo &quot;PR #$&#123;&#123; github.event.number &#125;&#125; closed&quot;</span></span><br><span class="line"><span class="comment">#       # 调用部署平台的 API 删除对应预览部署，具体接口以官方文档为准</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>经验法则</strong>：预览部署应当”用完即弃”，把它当成一次性的评审设施，而不是长期托管的第二个站点。丢弃的默认值应该是”删除”，而不是”保留”。</p>
+</blockquote>
+<p>把以上几节合起来看，一套健康的预览工作流大约长这样：分支名承载语义、预览与生产绑定分离、外部副作用默认关闭、索引被双重阻断、部署生命周期随 PR 结束而终结。做到这几点，预览部署才会从”看起来很酷的演示”变成真正降低评审成本的基础设施。</p>
+<blockquote>
+<p><strong>说明：</strong> 本文讨论的是预览部署的工作流设计方法论，不涉及任何特定平台的定价或配额承诺；文中配置片段为示意写法，实际字段与能力请以 Cloudflare 官方最新文档为准。文中的经验法则来自工程实践总结，不同团队规模下可能有不同取舍。</p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a target="_blank" rel="noopener" href="https://yzy15.dpdns.org">mc-yzy15</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://blogs.yzy15.dpdns.org/cf-pages-preview-deploy-workflow/">https://blogs.yzy15.dpdns.org/cf-pages-preview-deploy-workflow/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。<strong>禁止商用</strong>。转载请注明来源 <a href="https://blogs.yzy15.dpdns.org" target="_blank">Yzy15's Blog - 技术分享与生活记录</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Cloudflare-Pages/">Cloudflare Pages</a><a class="post-meta__tags" href="/tags/%E9%A2%84%E8%A7%88%E9%83%A8%E7%BD%B2/">预览部署</a><a class="post-meta__tags" href="/tags/%E5%9B%A2%E9%98%9F%E5%8D%8F%E4%BD%9C/">团队协作</a></div><div class="post-share"><div class="social-share" data-image="/img/butterfly-icon.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>感谢您的支持，您的赞赏是我持续创作的动力！</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://img.cdn1.vip/i/69ed1d29274a9_1777147177.webp" target="_blank"><img class="post-qr-code-img" src="https://img.cdn1.vip/i/69ed1d29274a9_1777147177.webp" alt="微信赞赏"/ loading='lazy'></a><div class="post-qr-code-desc">微信赞赏</div></li></ul></div></div><div class="rec-card ad-slot ad-placement"><div style="text-align:center;padding:20px 10px;border:2px dashed #ff6b6b;border-radius:8px;margin:0 auto;background:linear-gradient(135deg,#fff5f5,#ffe0e0);"><div style="font-size:18px;font-weight:bold;color:#ff6b6b;">☁️ 南影云 - 高性价比云服务器</div><div style="font-size:13px;color:#555;margin-top:8px;">上万台服务器 | T+级DDoS防护 | 无限防CC</div><div style="font-size:13px;color:#555;margin-top:4px;">🎁 通过下方链接注册享专属优惠</div><div style="margin-top:10px;"><a href="https://idc.ofoca.net/aff/PJQGAEKY" target="_blank" rel="noopener" style="display:inline-block;padding:8px 24px;background:#ff6b6b;color:#fff;border-radius:20px;text-decoration:none;font-size:14px;font-weight:bold;">立即注册领优惠</a></div><div style="font-size:11px;color:#999;margin-top:6px;">注册后联系博主可再领额外折扣</div></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/cf-pages-vs-workers-static/" title="Pages 与 Workers 的边界在哪里：静态托管选型的技术判断"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">Pages 与 Workers 的边界在哪里：静态托管选型的技术判断</div></div><div class="info-2"><div class="info-item-1">Pages 与 Workers 的边界在哪里：静态托管选型的技术判断Cloudflare 的 Pages 和 Workers 曾经界限分明：Pages 管静态站点，Workers 管动态逻辑。随着两者能力互相渗透——Pages 有了 Functions，Workers 有了静态资源绑定——这条线变得模糊，选型问题也从”该用哪个”变成了”哪个更省心”。 本文不站队，而是给出四个可判断的维度。在多数真实项目里，答案不是二选一，而是”主用哪个 + 另一个补位”。 维度一：构建模型决定工作流的形状这是两者最本质的差异，也是最多人忽略的一点。 Pages 是构建驱动的。它假设你有一个需要编译的前端项目，平台负责检出代码、装依赖、跑构建命令、上传产物。这套模型天然适配 Git 工作流：push 即部署，PR 即预览。 Workers 是产物驱动的。它接收的是已经准备好的代码包（或资源目录），部署是 wrangler deploy 这一步，构建发生在你的机器或 CI 上。平台不关心你怎么生成产物。 这个差异带来的实际影响是：    关注点 Pages Workers    构建发生在哪 平台构...</div></div></div></a><a class="pagination-related" href="/cf-pages-build-pipeline-anatomy/" title="Cloudflare Pages 构建管线解剖：从 Git 提交到全球边缘的完整链路"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Cloudflare Pages 构建管线解剖：从 Git 提交到全球边缘的完整链路</div></div><div class="info-2"><div class="info-item-1">Cloudflare Pages 构建管线解剖：从 Git 提交到全球边缘的完整链路大多数团队接入 Pages 的过程只有五分钟：连仓库、填 build command、填 output directory、点部署。之后这条链路就变成了理所当然的存在，直到某天构建突然从 90 秒变成 6 分钟，或者某个环境变量在预览环境里神秘消失，才会有人回头去问：这中间到底发生了什么。 本文不复述官方文档的配置项清单，而是把 Pages 的构建管线拆成可推理的四个阶段，然后针对每个阶段讨论缓存、约束与调优空间。 阶段拆解：一次 push 之后的四个动作从工程视角看，Pages 的构建管线可以抽象成下面四个串行阶段：  事件接收与排队：Git provider 通过 webhook 通知 Pages 有新的 commit，Pages 为这次提交创建一个 deployment 记录。同一分支上的新提交会让旧 deployment 快速失效（superseded）。 环境准备：拉起一个一次性的构建容器，检出仓库到该 commit，恢复依赖缓存，按项目配置注入环境变量（分为生产环境与预览环境两套）。 ...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/cf-pages-preview-deploy-workflow/" title="预览部署工作流设计：用 Cloudflare Pages 把评审成本压到最低"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-13</div><div class="info-item-2">预览部署工作流设计：用 Cloudflare Pages 把评审成本压到最低</div></div><div class="info-2"><div class="info-item-1">预览部署工作流设计：用 Cloudflare Pages 把评审成本压到最低「每个 PR 自动生成一个预览链接」这件事，演示起来只要十分钟，但在真实团队里跑上三个月，就会积累出一堆脏问题：预览链接被外部爬虫收录、预览环境往生产数据库写数据、评审者看到的是三天前的缓存版本、回滚时不知道该回滚到哪个 deployment。 这些问题的共同点是：它们都不是 Pages 的功能问题，而是工作流设计问题。本文讨论如何在 Pages 提供的能力之上，设计一套能长期运行的预览部署工作流。 预览部署真正的价值在哪里先澄清一个常见误解。预览部署的价值不在于”给非技术人员看效果”——那个需求用截图或本地服务器也能满足。它真正解决的是下面三类问题：  环境相关缺陷只能在真实环境暴露。路由重写、资源路径、跨域头、缓存策略这些问题在本地往往表现正常。 评审需要上下文而非代码。产品与设计评审的是”行为”，不是 diff。 变更影响面需要可验证。特别是改动构建配置、CDN 缓存规则、重定向表时，只有真实部署能验证。  因此预览部署的设计目标应该是：让一次部署尽可能接近生产，同时把它的副作用降到零。这个目标里，...</div></div></div></a><a class="pagination-related" href="/cf-pages-vs-workers-static/" title="Pages 与 Workers 的边界在哪里：静态托管选型的技术判断"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-13</div><div class="info-item-2">Pages 与 Workers 的边界在哪里：静态托管选型的技术判断</div></div><div class="info-2"><div class="info-item-1">Pages 与 Workers 的边界在哪里：静态托管选型的技术判断Cloudflare 的 Pages 和 Workers 曾经界限分明：Pages 管静态站点，Workers 管动态逻辑。随着两者能力互相渗透——Pages 有了 Functions，Workers 有了静态资源绑定——这条线变得模糊，选型问题也从”该用哪个”变成了”哪个更省心”。 本文不站队，而是给出四个可判断的维度。在多数真实项目里，答案不是二选一，而是”主用哪个 + 另一个补位”。 维度一：构建模型决定工作流的形状这是两者最本质的差异，也是最多人忽略的一点。 Pages 是构建驱动的。它假设你有一个需要编译的前端项目，平台负责检出代码、装依赖、跑构建命令、上传产物。这套模型天然适配 Git 工作流：push 即部署，PR 即预览。 Workers 是产物驱动的。它接收的是已经准备好的代码包（或资源目录），部署是 wrangler deploy 这一步，构建发生在你的机器或 CI 上。平台不关心你怎么生成产物。 这个差异带来的实际影响是：    关注点 Pages Workers    构建发生在哪 平台构...</div></div></div></a><a class="pagination-related" href="/cf-pages-build-pipeline-anatomy/" title="Cloudflare Pages 构建管线解剖：从 Git 提交到全球边缘的完整链路"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-13</div><div class="info-item-2">Cloudflare Pages 构建管线解剖：从 Git 提交到全球边缘的完整链路</div></div><div class="info-2"><div class="info-item-1">Cloudflare Pages 构建管线解剖：从 Git 提交到全球边缘的完整链路大多数团队接入 Pages 的过程只有五分钟：连仓库、填 build command、填 output directory、点部署。之后这条链路就变成了理所当然的存在，直到某天构建突然从 90 秒变成 6 分钟，或者某个环境变量在预览环境里神秘消失，才会有人回头去问：这中间到底发生了什么。 本文不复述官方文档的配置项清单，而是把 Pages 的构建管线拆成可推理的四个阶段，然后针对每个阶段讨论缓存、约束与调优空间。 阶段拆解：一次 push 之后的四个动作从工程视角看，Pages 的构建管线可以抽象成下面四个串行阶段：  事件接收与排队：Git provider 通过 webhook 通知 Pages 有新的 commit，Pages 为这次提交创建一个 deployment 记录。同一分支上的新提交会让旧 deployment 快速失效（superseded）。 环境准备：拉起一个一次性的构建容器，检出仓库到该 commit，恢复依赖缓存，按项目配置注入环境变量（分为生产环境与预览环境两套）。 ...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">mc-yzy15</div><div class="author-info-description">Yzy15的个人博客 | 技术教程 · 编程经验 · 学习笔记</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">245</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">533</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">21</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/mc-yzy15"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://yzy15.dpdns.org" target="_blank" title="个人主页"><i class="fas fa-home" style="color: #ff6600;"></i></a><a class="social-icon" href="https://github.com/mc-yzy15" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:yingmoliuguang@yeah.net" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a><a class="social-icon" href="https://space.bilibili.com/1338637552" target="_blank" title="Bilibili"><i class="fab fa-bilibili" style="color: #00a1d6;"></i></a><a class="social-icon" href="https://t.me/ShuangXiang_Dddddavidd_bot" target="_blank" title="Telegram"><i class="fab fa-telegram" style="color: #0088cc;"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="RSS"><i class="fas fa-rss" style="color: #ff6600;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到我的博客！这里记录着我的技术分享和生活点滴~<br>📢 <a href="/link/">广告位招租</a> | 💼 商业合作见<a href="/link/">友链页</a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%A2%84%E8%A7%88%E9%83%A8%E7%BD%B2%E5%B7%A5%E4%BD%9C%E6%B5%81%E8%AE%BE%E8%AE%A1%EF%BC%9A%E7%94%A8-Cloudflare-Pages-%E6%8A%8A%E8%AF%84%E5%AE%A1%E6%88%90%E6%9C%AC%E5%8E%8B%E5%88%B0%E6%9C%80%E4%BD%8E"><span class="toc-number">1.</span> <span class="toc-text">预览部署工作流设计：用 Cloudflare Pages 把评审成本压到最低</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%84%E8%A7%88%E9%83%A8%E7%BD%B2%E7%9C%9F%E6%AD%A3%E7%9A%84%E4%BB%B7%E5%80%BC%E5%9C%A8%E5%93%AA%E9%87%8C"><span class="toc-number">1.1.</span> <span class="toc-text">预览部署真正的价值在哪里</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%94%AF%E5%91%BD%E5%90%8D%E7%BA%A6%E5%AE%9A%EF%BC%9A%E8%AE%A9-URL-%E6%88%90%E4%B8%BA%E5%8F%AF%E8%AF%BB%E7%9A%84%E5%85%83%E6%95%B0%E6%8D%AE"><span class="toc-number">1.2.</span> <span class="toc-text">分支命名约定：让 URL 成为可读的元数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E9%9A%94%E7%A6%BB%EF%BC%9A%E9%A2%84%E8%A7%88%E7%8E%AF%E5%A2%83%E6%9C%80%E5%AE%B9%E6%98%93%E5%87%BA%E4%BA%8B%E7%9A%84%E5%9C%B0%E6%96%B9"><span class="toc-number">1.3.</span> <span class="toc-text">数据隔离：预览环境最容易出事的地方</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%BF%E9%97%AE%E6%8E%A7%E5%88%B6%EF%BC%9A%E9%A2%84%E8%A7%88%E9%93%BE%E6%8E%A5%E7%9A%84%E9%BB%98%E8%AE%A4%E5%AE%89%E5%85%A8%E5%A7%BF%E6%80%81"><span class="toc-number">1.4.</span> <span class="toc-text">访问控制：预览链接的默认安全姿态</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%93%E5%AD%98%E4%B8%8E-SEO%EF%BC%9A%E4%B8%A4%E4%B8%AA%E5%AE%B9%E6%98%93%E8%A2%AB%E5%BF%BD%E7%95%A5%E7%9A%84%E5%89%AF%E4%BD%9C%E7%94%A8"><span class="toc-number">1.5.</span> <span class="toc-text">缓存与 SEO：两个容易被忽略的副作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9E%E6%BB%9A%E4%B8%8E%E6%B8%85%E7%90%86%EF%BC%9A%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%9A%84%E6%9C%80%E5%90%8E%E4%B8%80%E6%AE%B5"><span class="toc-number">1.6.</span> <span class="toc-text">回滚与清理：工作流的最后一段</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/vc-monorepo-package-boundaries/" title="Monorepo 包边界治理：依赖方向、公开 API 与循环依赖的工程约束">Monorepo 包边界治理：依赖方向、公开 API 与循环依赖的工程约束</a><time datetime="2026-09-13T12:04:00.000Z" title="发表于 2026-09-13 20:04:00">2026-09-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/vc-monorepo-remote-cache-ops/" title="Turborepo 远程缓存落地的三个硬问题：隔离、命中率与命中失败">Turborepo 远程缓存落地的三个硬问题：隔离、命中率与命中失败</a><time datetime="2026-09-13T12:02:00.000Z" title="发表于 2026-09-13 20:02:00">2026-09-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/vc-monorepo-task-graph-design/" title="Turborepo 任务图怎么设计：从 workspace 拓扑到增量构建">Turborepo 任务图怎么设计：从 workspace 拓扑到增量构建</a><time datetime="2026-09-13T12:00:00.000Z" title="发表于 2026-09-13 20:00:00">2026-09-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/vc-blob-kv-edge-config-selection/" title="Blob、KV 与 Edge Config 的选型对比：三种&quot;边缘存储&quot;到底该用在哪儿">Blob、KV 与 Edge Config 的选型对比：三种&quot;边缘存储&quot;到底该用在哪儿</a><time datetime="2026-09-13T10:00:00.000Z" title="发表于 2026-09-13 18:00:00">2026-09-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/cf-netlify-to-cloudflare-migration/" title="从 Netlify 迁移到 Cloudflare：静态站与函数的分手清单">从 Netlify 迁移到 Cloudflare：静态站与函数的分手清单</a><time datetime="2026-09-13T07:02:00.000Z" title="发表于 2026-09-13 15:02:00">2026-09-13</time></div></div></div></div><div class="card-widget rec-card"><div style="text-align:center;padding:18px 10px;border:2px dashed #49b1f5;border-radius:8px;margin:0 auto;background:linear-gradient(135deg,#f0f9ff,#e0f2fe);"><div style="font-size:16px;font-weight:bold;color:#49b1f5;">☁️ 南影云 - 高性价比云服务器</div><div style="font-size:12px;color:#555;margin-top:6px;">上万台服务器 | T+级DDoS防护 | 无限防CC</div><div style="font-size:12px;color:#555;margin-top:4px;">🎁 通过下方链接注册享专属优惠</div><div style="margin-top:8px;"><a href="https://idc.ofoca.net/aff/PJQGAEKY" target="_blank" rel="noopener" style="display:inline-block;padding:6px 20px;background:#49b1f5;color:#fff;border-radius:16px;text-decoration:none;font-size:13px;font-weight:bold;">立即注册领优惠</a></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By mc-yzy15</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.1</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><script src="/js/tw_cn.js?v=5.5.4"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.9/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><div class="js-pjax"></div><script src="/js/webinfo-stats.js"></script><div class="ad-banner sponsor" style="text-align:center;padding:12px 10px;margin:10px auto;max-width:728px;background:linear-gradient(135deg,#fff5f5,#ffe0e0);border:1px solid<script src="/js/content-loader.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

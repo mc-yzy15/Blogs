@@ -1,0 +1,276 @@
+<!DOCTYPE html><html lang="[&quot;zh-CN&quot;,&quot;en&quot;,&quot;zh-TW&quot;,&quot;ja&quot;,&quot;ko&quot;,&quot;fr&quot;,&quot;de&quot;,&quot;es&quot;,&quot;ru&quot;,&quot;pt&quot;,&quot;ar&quot;,&quot;hi&quot;,&quot;it&quot;,&quot;th&quot;,&quot;vi&quot;,&quot;id&quot;,&quot;tr&quot;,&quot;uk&quot;,&quot;pl&quot;,&quot;nl&quot;]" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>D1 与 SQLite 的读副本一致性模型：延迟、顺序与故障恢复 | Yzy15's Blog - 技术分享与生活记录</title><meta name="author" content="mc-yzy15"><meta name="copyright" content="mc-yzy15"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="从原理层拆解 Cloudflare D1 背后 SQLite 读副本的一致性模型，讲清楚为什么边缘读会返回旧值、顺序一致性在什么条件下被破坏、故障切换时数据可能回退的机制，以及会话令牌与读写分离该怎么配合，帮助正在把业务往边缘迁移的团队提前识别数据可见性事故。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="D1 与 SQLite 的读副本一致性模型：延迟、顺序与故障恢复">
+<meta property="og:url" content="https://blogs.yzy15.dpdns.org/ko/cf-d1-sqlite-consistency-model/">
+<meta property="og:site_name" content="Yzy15&#39;s Blog - 技术分享与生活记录">
+<meta property="og:description" content="从原理层拆解 Cloudflare D1 背后 SQLite 读副本的一致性模型，讲清楚为什么边缘读会返回旧值、顺序一致性在什么条件下被破坏、故障切换时数据可能回退的机制，以及会话令牌与读写分离该怎么配合，帮助正在把业务往边缘迁移的团队提前识别数据可见性事故。">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:image" content="https://blogs.yzy15.dpdns.org/img/butterfly-icon.png">
+<meta property="article:published_time" content="2026-09-13T02:00:00.000Z">
+<meta property="article:modified_time" content="2026-09-12T17:33:38.957Z">
+<meta property="article:author" content="mc-yzy15">
+<meta property="article:tag" content="D1">
+<meta property="article:tag" content="SQLite">
+<meta property="article:tag" content="数据一致性">
+<meta property="article:tag" content="边缘计算">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://blogs.yzy15.dpdns.org/img/favicon.ico">
+<meta name="twitter:site" content="@mc_yzy15"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "D1 与 SQLite 的读副本一致性模型：延迟、顺序与故障恢复",
+  "url": "https://blogs.yzy15.dpdns.org/cf-d1-sqlite-consistency-model/",
+  "image": "https://blogs.yzy15.dpdns.org/img/butterfly-icon.png",
+  "datePublished": "2026-09-13T02:00:00.000Z",
+  "dateModified": "2026-09-12T17:33:38.957Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "mc-yzy15",
+      "url": "https://yzy15.dpdns.org"
+    }
+  ]
+}
+</script><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Yzy15's Blog - 技术分享与生活记录",
+      "item": "https://blogs.yzy15.dpdns.org/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "云计算",
+      "item": "https://blogs.yzy15.dpdns.org/categories/%E4%BA%91%E8%AE%A1%E7%AE%97/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "D1 与 SQLite 的读副本一致性模型：延迟、顺序与故障恢复",
+      "item": "https://blogs.yzy15.dpdns.org/cf-d1-sqlite-consistency-model/"
+    }
+  ]
+}
+</script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://blogs.yzy15.dpdns.org/ko/cf-d1-sqlite-consistency-model/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.9/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-HK1JGTYX4N"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-HK1JGTYX4N')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-HK1JGTYX4N', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'D1 与 SQLite 的读副本一致性模型：延迟、顺序与故障恢复',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 8.1.1"><link rel="alternate" href="/atom.xml" title="Yzy15's Blog - 技术分享与生活记录" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">245</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">533</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">21</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/homepage/"><i class="fa-fw fas fa-globe"></i><span> Homepage</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/stats/"><i class="fa-fw fas fa-chart-bar"></i><span> Stats</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Yzy15's Blog - 技术分享与生活记录</span></a><a class="nav-page-title" href="/"><span class="site-name">D1 与 SQLite 的读副本一致性模型：延迟、顺序与故障恢复</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  홈으로 돌아가기</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/homepage/"><i class="fa-fw fas fa-globe"></i><span> Homepage</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/stats/"><i class="fa-fw fas fa-chart-bar"></i><span> Stats</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">D1 与 SQLite 的读副本一致性模型：延迟、顺序与故障恢复</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">작성일</span><time class="post-meta-date-created" datetime="2026-09-13T02:00:00.000Z" title="작성일 2026-09-13 10:00:00">2026-09-13</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">수정일</span><time class="post-meta-date-updated" datetime="2026-09-12T17:33:38.957Z" title="수정일 2026-09-13 01:33:38">2026-09-13</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E4%BA%91%E8%AE%A1%E7%AE%97/">云计算</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">조회수:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="D1-与-SQLite-的读副本一致性模型：延迟、顺序与故障恢复"><a href="#D1-与-SQLite-的读副本一致性模型：延迟、顺序与故障恢复" class="headerlink" title="D1 与 SQLite 的读副本一致性模型：延迟、顺序与故障恢复"></a>D1 与 SQLite 的读副本一致性模型：延迟、顺序与故障恢复</h1><p>把数据库搬到边缘，第一个被现实击碎的美好幻想往往不是性能，而是「为什么我刚刚写入的数据查不到了」。这不是 D1 的 bug，而是分布式系统里读副本一致性模型在所有边缘数据库上的必然表现。本文不谈怎么建表，只谈一件事：当一次写操作返回成功之后，世界各地的读者究竟在多长时间里、在多远的距离上，能看到一个「什么样」的数据版本。</p>
+<h2 id="为什么边缘读会「看不到」刚写的行"><a href="#为什么边缘读会「看不到」刚写的行" class="headerlink" title="为什么边缘读会「看不到」刚写的行"></a>为什么边缘读会「看不到」刚写的行</h2><p>D1 的架构本质上是「一个主库 + 一组读副本」，主库负责所有写入，读副本分布在离用户更近的位置负责读取。这个模型决定了写入必须先落到主库并被确认提交，随后才通过复制通道投递到各副本。任何读副本上的查询，返回的都是<strong>某个已经复制完成的快照</strong>，而不是主库此刻的真实状态。</p>
+<p>因此「写后立即读」在边缘会遇到一个明确的窗口期：写请求的响应在网络里返回给客户端的同一时刻，复制流可能还停在离主库最近的节点上。用户刷新页面，请求被路由到一个尚未追上进度的副本，于是看到了旧值。这个窗口通常以毫秒到百毫秒量级计，但它不是零，也不是固定值——它取决于主库到副本的物理距离、复制管道的拥塞情况和当时的写入压力。</p>
+<p>一个常见的错误认知是「我把两次请求都发到同一个边缘节点，就能保证顺序」。事实并非如此：边缘节点只是客户端到网络的入口，它到主库与到副本的链路是独立的。即使入口相同，写走主库路径、读走副本路径，两者依然是两条不同的数据路径。想在这条路径上要顺序性，必须显式地把读也钉到主库。</p>
+<h2 id="会话令牌：把「读到自己写」变成可工程化的保证"><a href="#会话令牌：把「读到自己写」变成可工程化的保证" class="headerlink" title="会话令牌：把「读到自己写」变成可工程化的保证"></a>会话令牌：把「读到自己写」变成可工程化的保证</h2><p>Cloudflare 在 D1 的 HTTP 接口与 Workers Binding 中提供了会话（session）与书签（bookmark）机制，用来解决上述「读己之写」（read-your-writes）问题。它的思路很朴素：写入时返回一个书签，代表主库当前的复制位置；后续读取时把这个书签带上，副本会等到自己至少追平到该位置后再返回结果。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 以 Workers Binding 为例，以官方文档为准</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  <span class="keyword">async</span> <span class="title function_">fetch</span>(<span class="params">request, env</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> url = <span class="keyword">new</span> <span class="title function_">URL</span>(request.<span class="property">url</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (url.<span class="property">pathname</span> === <span class="string">&quot;/comment&quot;</span> &amp;&amp; request.<span class="property">method</span> === <span class="string">&quot;POST&quot;</span>) &#123;</span><br><span class="line">      <span class="keyword">const</span> body = <span class="keyword">await</span> request.<span class="title function_">json</span>();</span><br><span class="line">      <span class="comment">// 写操作：withSession 记录本次写入的会话位置</span></span><br><span class="line">      <span class="keyword">const</span> session = env.<span class="property">DB</span>.<span class="title function_">withSession</span>(<span class="string">&quot;request-scoped&quot;</span>);</span><br><span class="line">      <span class="keyword">await</span> session</span><br><span class="line">        .<span class="title function_">prepare</span>(<span class="string">&quot;INSERT INTO comments (post_id, author, body) VALUES (?, ?, ?)&quot;</span>)</span><br><span class="line">        .<span class="title function_">bind</span>(body.<span class="property">postId</span>, body.<span class="property">author</span>, body.<span class="property">body</span>)</span><br><span class="line">        .<span class="title function_">run</span>();</span><br><span class="line">      <span class="comment">// 将书签回传给客户端或缓存，供后续读取使用</span></span><br><span class="line">      <span class="keyword">const</span> bookmark = session.<span class="title function_">getBookmark</span>();</span><br><span class="line">      <span class="keyword">return</span> <span class="title class_">Response</span>.<span class="title function_">json</span>(&#123; <span class="attr">ok</span>: <span class="literal">true</span>, bookmark &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (url.<span class="property">pathname</span> === <span class="string">&quot;/comments&quot;</span>) &#123;</span><br><span class="line">      <span class="keyword">const</span> bookmark = url.<span class="property">searchParams</span>.<span class="title function_">get</span>(<span class="string">&quot;bookmark&quot;</span>);</span><br><span class="line">      <span class="keyword">const</span> session = env.<span class="property">DB</span>.<span class="title function_">withSession</span>(bookmark || <span class="string">&quot;first-primary&quot;</span>);</span><br><span class="line">      <span class="keyword">const</span> &#123; results &#125; = <span class="keyword">await</span> session</span><br><span class="line">        .<span class="title function_">prepare</span>(<span class="string">&quot;SELECT * FROM comments WHERE post_id = ? ORDER BY id DESC LIMIT 20&quot;</span>)</span><br><span class="line">        .<span class="title function_">bind</span>(url.<span class="property">searchParams</span>.<span class="title function_">get</span>(<span class="string">&quot;postId&quot;</span>))</span><br><span class="line">        .<span class="title function_">all</span>();</span><br><span class="line">      <span class="keyword">return</span> <span class="title class_">Response</span>.<span class="title function_">json</span>(&#123; results &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Response</span>(<span class="string">&quot;not found&quot;</span>, &#123; <span class="attr">status</span>: <span class="number">404</span> &#125;);</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>这段代码里有两个关键选择。第一，<code>withSession</code> 的参数从 <code>first-primary</code> 变成书签之后，读取的语义从「哪快读哪」变成了「至少不早于这个点」。第二，书签是可以跨请求传递的普通字符串，这意味着你可以在服务端存储、在 Cookie 里携带、甚至写进响应头，让同一个用户的后续读请求都获得顺序保证。</p>
+<p>代价必须讲清楚：带上书签的读会被<strong>强制等待</strong>复制追平。如果你的书签很新，而请求被路由到了很远或很忙的副本，这次读的延迟会比普通读高出一个量级。所以书签适合用在「用户自己刚写入、然后马上要看结果」这种强相关场景，而不是用在全站的列表页查询上。</p>
+<h2 id="顺序一致性在什么条件下被破坏"><a href="#顺序一致性在什么条件下被破坏" class="headerlink" title="顺序一致性在什么条件下被破坏"></a>顺序一致性在什么条件下被破坏</h2><p>「读己之写」是单用户视角的顺序性。一旦视角扩大到多用户，问题就复杂得多。假设 A 用户发表一条评论，B 用户在同一秒打开页面，B 的读大概率落在没有这条评论的快照上。这不是错误，而是<strong>最终一致性</strong>的定义本身。</p>
+<p>真正会变成事故的是下面几种顺序错乱：</p>
+<ul>
+<li><strong>跨表因果断裂</strong>：事务里同时写了主表和统计表，如果事务本身没有被原子地应用到副本，可能出现主表已更新、统计表还是旧值的中间态。SQLite 在单库内是原子提交的，但复制投递的粒度与可见性边界需要以官方文档为准。</li>
+<li><strong>回滚导致的「时间倒流」</strong>：某些故障切换或重建副本的场景会让副本的进度短暂后退，用户刚看到的新数据又消失了。这类现象通常伴随主库故障转移，属于低频高风险事件。</li>
+<li><strong>读缓存与副本叠加</strong>：在 D1 前面又套一层 KV 或 HTTP 缓存，缓存自身的 TTL 会让一致性窗口被放大数倍。很多「D1 不一致」的投诉，根因其实在外层缓存。</li>
+</ul>
+<p>理解这一点很重要：<strong>一致性不是数据库单方面提供的属性，而是整条读路径共同决定的结果</strong>。数据库上的一致性能力再强，也挡不住你在前面叠一层无脑缓存的缓存。</p>
+<h2 id="主库故障切换与数据可见性回退"><a href="#主库故障切换与数据可见性回退" class="headerlink" title="主库故障切换与数据可见性回退"></a>主库故障切换与数据可见性回退</h2><p>D1 作为托管服务，会在主库所在区域出现问题时进行故障转移。对应用而言，最需要提前设计的两件事是写入的可重试性和读取的容忍度。</p>
+<p>写方面，网络抖动会导致「服务端已提交但客户端未收到响应」，这个经典的两难在边缘场景更容易出现，因为链路上还多了一层边缘节点。<strong>幂等键</strong>是唯一稳妥的解法：客户端为每次写生成一个唯一 ID 并在重试时复用，服务端对这个 ID 做去重。</p>
+<p>读方面，要接受一个事实：在最坏情况下，副本可能落后于你上次读到的位置。因此不要把「上次读到的数据」当作业务上的既成事实来做后续决策。举一个具体例子：不要用「读到的余额大于 0」作为发起扣款的理由，而应该把判断放到主库上的原子条件更新里。</p>
+<p>下面这张表对比了几种读取策略在延迟、一致性和适用场景上的差异，可以作为选型参考。</p>
+<table>
+<thead>
+<tr>
+<th>读取策略</th>
+<th>一致性保证</th>
+<th>典型延迟量级</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>默认副本读</td>
+<td>最终一致</td>
+<td>最低（就近命中）</td>
+<td>列表页、静态内容、统计展示</td>
+</tr>
+<tr>
+<td>带书签的副本读</td>
+<td>读己之写</td>
+<td>中等，视落后程度</td>
+<td>用户提交后立即回显</td>
+</tr>
+<tr>
+<td>强制主库读</td>
+<td>强一致（单主）</td>
+<td>较高，跨区域</td>
+<td>余额、库存、权限判定</td>
+</tr>
+<tr>
+<td>副本读 + 外层缓存</td>
+<td>弱于最终一致</td>
+<td>最低</td>
+<td>可接受陈旧的聚合数据</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>经验法则：把「读己之写」写进需求文档，把强一致读限制在极少数关键路径上，剩下的全部按最终一致设计。反过来做，边缘带来的延迟优势会被等待复制的时间吃回去。</p>
+</blockquote>
+<h2 id="从故障排查倒推一致性设计"><a href="#从故障排查倒推一致性设计" class="headerlink" title="从故障排查倒推一致性设计"></a>从故障排查倒推一致性设计</h2><p>线上反馈「数据不对」时，排查顺序建议固定成下面四步，能省掉大量无谓的怀疑：</p>
+<ol>
+<li><strong>确认读路径</strong>：这条查询究竟走的是副本还是主库？先看请求被路由到了哪里，再看代码里用的是默认读还是会话读。</li>
+<li><strong>确认外层缓存</strong>：D1 前面有没有 KV、Cache API 或 CDN 缓存？如果有，先绕过它再复现一次。</li>
+<li><strong>确认时间窗口</strong>：写入与读取相隔多久？几十毫秒内的问题大概率是复制延迟，不是逻辑错误。</li>
+<li><strong>确认是否发生故障转移</strong>：查询监控里主库是否在问题时段有切换记录，切换会导致可见性回退。</li>
+</ol>
+<p>这套顺序的价值在于：它把「玄学不一致」拆成了四个可观测、可证伪的假设。绝大多数情况下，问题在前两步就能定位。</p>
+<h2 id="团队落地时的边界约定"><a href="#团队落地时的边界约定" class="headerlink" title="团队落地时的边界约定"></a>团队落地时的边界约定</h2><p>最后是一组工程约定，建议写进团队规范里：</p>
+<ul>
+<li>所有写入接口<strong>必须</strong>返回可传递的书签，前端在关键回显场景携带它。</li>
+<li>所有关键判断<strong>不得</strong>基于副本读的绝对值，必须基于主库上的条件更新。</li>
+<li>明确列出允许陈旧的字段清单，其余字段一律不允许出现在默认副本读的结果里。</li>
+<li>监控复制延迟与故障转移事件，把它们当作一级告警而不是后台信息。</li>
+</ul>
+<p>把一致性当作一个显式的架构决策而不是默认假设，是团队从「能跑通」走向「能上量」的分水岭。</p>
+<blockquote>
+<p><strong>说明：</strong> 本文为原创技术分析，基于公开的 D1 架构资料与分布式数据库一致性的一般原理撰写，涉及的具体 API 名称、配额、复制延迟数值与故障转移行为以 Cloudflare 官方最新文档为准；文中示例代码为讲解用途，生产使用前请核对当前 SDK 用法。观点部分为笔者主观判断，欢迎以实测数据修正。</p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>작성자: </span><span class="post-copyright-info"><a target="_blank" rel="noopener" href="https://yzy15.dpdns.org">mc-yzy15</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>링크: </span><span class="post-copyright-info"><a href="https://blogs.yzy15.dpdns.org/cf-d1-sqlite-consistency-model/">https://blogs.yzy15.dpdns.org/cf-d1-sqlite-consistency-model/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>저작권 고지: </span><span class="post-copyright-info">이 블로그의 모든 글은 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 라이선스를 따릅니다. <strong>상업적 이용 금지</strong>. 재배포 시 출처를 명시해 주세요: <a href="https://blogs.yzy15.dpdns.org">Yzy15's Blog - 技术分享与生活记录</a>.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/D1/">D1</a><a class="post-meta__tags" href="/tags/SQLite/">SQLite</a><a class="post-meta__tags" href="/tags/%E6%95%B0%E6%8D%AE%E4%B8%80%E8%87%B4%E6%80%A7/">数据一致性</a><a class="post-meta__tags" href="/tags/%E8%BE%B9%E7%BC%98%E8%AE%A1%E7%AE%97/">边缘计算</a></div><div class="post-share"><div class="social-share" data-image="/img/butterfly-icon.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>感谢您的支持，您的赞赏是我持续创作的动力！</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://img.cdn1.vip/i/69ed1d29274a9_1777147177.webp" target="_blank"><img class="post-qr-code-img" src="https://img.cdn1.vip/i/69ed1d29274a9_1777147177.webp" alt="微信赞赏"/ loading='lazy'></a><div class="post-qr-code-desc">微信赞赏</div></li></ul></div></div><div class="rec-card ad-slot ad-placement"><div style="text-align:center;padding:20px 10px;border:2px dashed #ff6b6b;border-radius:8px;margin:0 auto;background:linear-gradient(135deg,#fff5f5,#ffe0e0);"><div style="font-size:18px;font-weight:bold;color:#ff6b6b;">☁️ 南影云 - 高性价比云服务器</div><div style="font-size:13px;color:#555;margin-top:8px;">上万台服务器 | T+级DDoS防护 | 无限防CC</div><div style="font-size:13px;color:#555;margin-top:4px;">🎁 通过下方链接注册享专属优惠</div><div style="margin-top:10px;"><a href="https://idc.ofoca.net/aff/PJQGAEKY" target="_blank" rel="noopener" style="display:inline-block;padding:8px 24px;background:#ff6b6b;color:#fff;border-radius:20px;text-decoration:none;font-size:14px;font-weight:bold;">立即注册领优惠</a></div><div style="font-size:11px;color:#999;margin-top:6px;">注册后联系博主可再领额外折扣</div></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/vibe-probe-definition/" title="Vibe Coding 到底是什么：一次概念澄清"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">이전</div><div class="info-item-2">Vibe Coding 到底是什么：一次概念澄清</div></div><div class="info-2"><div class="info-item-1">Vibe Coding 到底是什么：一次概念澄清「Vibe Coding」大概是这几年被引用得最多、被定义得最少的开发术语之一。它第一次进入大众视野时，描述的是一种相当具体的行为：你不看代码，只凭感觉（vibe）描述你想要什么，让模型反复改，直到跑出来的东西看起来对了。但两年过去，这个词已经被厂商、媒体和招聘启事反复借用，如今既能指「用 Copilot 补全一行函数」，也能指「一句话生成一个 App」，甚至能指「产品经理自己搭了个内部工具」。 当一个词同时指代这么多东西，它就失去了沟通能力。本文想做的事情很朴素：把 Vibe Coding 和它最容易混淆的三个邻居——AI 辅助编程、低代码平台、提示词生成应用——放到同一张桌子上，用可操作的标准把它们切开。 为什么这个词一定需要澄清，以及从哪些维度澄清概念含混不只是学术问题，它会直接造成工程上的误判。 第一类误判是风险误判。如果团队把「让模型补全单元测试」和「让模型不改测试直接改实现直到变绿」都叫 Vibe Coding，那么针对前者制定的代码评审流程，会被后者悄悄绕过——因为流程的假设是「人始终读得懂改动」。 第二类误判是能力误...</div></div></div></a><a class="pagination-related" href="/cf-edge-multicloud-topology/" title="多云边缘拓扑：让 Cloudflare 与非 Cloudflare 后端共存"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">다음</div><div class="info-item-2">多云边缘拓扑：让 Cloudflare 与非 Cloudflare 后端共存</div></div><div class="info-2"><div class="info-item-1">多云边缘拓扑：让 Cloudflare 与非 Cloudflare 后端共存真实世界的迁移几乎不是”从零开始”，而是”在已有的多云与自建环境上加一层”。这种场景下的设计目标不是追求架构纯洁性，而是让边缘平台成为一个统一入口，同时不破坏既有系统。本文讨论这类拓扑的几种常见形态与决策点。 起点：先给现有系统分类在画拓扑之前，先把后端分成三类，因为它们对边缘的配合方式完全不同：  A 类：可安全暴露给边缘的 HTTP 服务（API、渲染层），能被边缘直接回源； B 类：不应暴露的敏感系统（数据库、管理后台、消息中间件），必须走私网通道或只在内网可达； C 类：非 HTTP 协议或有状态长连接（WebSocket、gRPC、消息队列），需要专门的代理或隧道方案。  划分标准不是技术栈，而是**”是否可以被一段来自边缘的请求安全触达”**。这个判断决定了回源方式，也就决定了整个拓扑的形状。 形态一：边缘做统一入口，后端保持原样最常见的形态，也最容易落地。用户流量统一进入边缘，边缘完成鉴权、限流、路由、缓存，然后回源到原有后端（通过公网 + 隧道，或专线类私网互联）。 优点：改动最小，后端不...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>관련 글</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/cf-d1-sqlite-consistency-model/" title="D1 与 SQLite 的读副本一致性模型：延迟、顺序与故障恢复"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-13</div><div class="info-item-2">D1 与 SQLite 的读副本一致性模型：延迟、顺序与故障恢复</div></div><div class="info-2"><div class="info-item-1">D1 与 SQLite 的读副本一致性模型：延迟、顺序与故障恢复把数据库搬到边缘，第一个被现实击碎的美好幻想往往不是性能，而是「为什么我刚刚写入的数据查不到了」。这不是 D1 的 bug，而是分布式系统里读副本一致性模型在所有边缘数据库上的必然表现。本文不谈怎么建表，只谈一件事：当一次写操作返回成功之后，世界各地的读者究竟在多长时间里、在多远的距离上，能看到一个「什么样」的数据版本。 为什么边缘读会「看不到」刚写的行D1 的架构本质上是「一个主库 + 一组读副本」，主库负责所有写入，读副本分布在离用户更近的位置负责读取。这个模型决定了写入必须先落到主库并被确认提交，随后才通过复制通道投递到各副本。任何读副本上的查询，返回的都是某个已经复制完成的快照，而不是主库此刻的真实状态。 因此「写后立即读」在边缘会遇到一个明确的窗口期：写请求的响应在网络里返回给客户端的同一时刻，复制流可能还停在离主库最近的节点上。用户刷新页面，请求被路由到一个尚未追上进度的副本，于是看到了旧值。这个窗口通常以毫秒到百毫秒量级计，但它不是零，也不是固定值——它取决于主库到副本的物理距离、复制管道的拥塞情况和当...</div></div></div></a><a class="pagination-related" href="/cf-edge-isolate-vs-container/" title="V8 Isolate 与容器：边缘运行时的隔离模型取舍"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-13</div><div class="info-item-2">V8 Isolate 与容器：边缘运行时的隔离模型取舍</div></div><div class="info-2"><div class="info-item-1">V8 Isolate 与容器：边缘运行时的隔离模型取舍“边缘平台把函数跑在多个小沙箱里”这句话谁都会说，但真正影响你写代码方式的，是隔离单元的粒度。容器模型（每个实例一个或一组容器）与 Isolate 模型（同一个进程里多个独立 JS 上下文）在启动成本、内存隔离强度、库兼容性上的差异，会直接决定你能写什么、不能写什么。 两种模型的本质差异先看清结构： 容器模型：一个容器是一个独立的 Linux 进程树，拥有自己的文件系统视图、网络命名空间、PID 空间。硬件级隔离通常依赖虚拟化（如 microVM）或内核命名空间。启动需要拉起进程、挂载文件系统、初始化运行时。 Isolate 模型：宿主进程预先启动并完成引擎初始化，每个租户的代码获得一个独立的 Isolate——独立堆、独立全局对象、独立调用栈，但共享同一个操作系统进程。代码只在自己的堆里活动，无法直接访问其他租户的内存。 一个直观类比：容器像给每位租客一套独立公寓（自己的墙、自己的门厅、自己的水电表）；Isolate 像同一栋楼里已经装修好的多个房间——房间之间不能互相进入，但整栋楼的水电与地基是共享的。共享带来极致的经济性...</div></div></div></a><a class="pagination-related" href="/cf-d1-sqlite-schema-migration/" title="边缘 SQLite 的 Schema 迁移：把 DDL 当作可回滚的发布流程"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-13</div><div class="info-item-2">边缘 SQLite 的 Schema 迁移：把 DDL 当作可回滚的发布流程</div></div><div class="info-2"><div class="info-item-1">边缘 SQLite 的 Schema 迁移：把 DDL 当作可回滚的发布流程应用代码可以灰度、可以回滚、可以同时跑两个版本，但数据库 schema 只有一个。在边缘 SQLite 场景下，这个矛盾会被放大：因为边缘应用是就近执行的，多个版本的 Worker 可能同时在线，它们会同时按自己的假设读写同一套表结构。本文讨论的是如何在这种约束下做 schema 迁移，而不是教 ALTER TABLE 的语法。 SQLite 的 DDL 特性如何约束迁移设计SQLite 有一个与其他数据库很不相同的特性：它的 ALTER TABLE 能力非常有限。长期以来它只能做「加列」「重命名表」「重命名列」这类操作，而改列类型、改约束、删列、调整主键这些需求，需要通过「建新表 → 复制数据 → 删旧表 → 重命名」这一整套重建流程来完成。这个流程本身是标准做法，但它有一个直接的工程后果：很多看似微小的 schema 变更，其实是一次数据搬运。 数据搬运在我们关心的环境里有三个代价。第一是行读写开销，复制整表意味着读一遍写一遍，这与按行计费的模型直接相关。第二是执行时长，大表的复制可能超出单次请求或单...</div></div></div></a><a class="pagination-related" href="/cf-edge-anycast-routing-tradeoffs/" title="Anycast 的代价：全球负载均衡为什么不能只看&quot;最近&quot;"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-13</div><div class="info-item-2">Anycast 的代价：全球负载均衡为什么不能只看&quot;最近&quot;</div></div><div class="info-2"><div class="info-item-1">Anycast 的代价：全球负载均衡为什么不能只看”最近”Anycast 在边缘平台里几乎被当作一个”免费好事”来介绍：同一个 IP 在很多地方宣告，用户自动连到最近的节点，延迟低、抗打击。但只要你真正运营过边缘上的业务，就会遇到一批典型症状：同一时刻不同用户的体验差距很大、灰度发布的流量比例总是与预期不符、某个区域”莫名”一起变慢。这些问题有一个共同根源——Anycast 不是负载均衡器，它是路由协议的一种使用方式。 代价一：路由是一种协商，而不是一种指令关键认知是：BGP 路由的去向由对端运营商决定，而不是由你决定。你只能宣告”我在这里也有这个网段”；至于流量走不走这里，取决于对方的本地优先级、链路成本、对等协议与聚合策略。 因此会出现一些看似矛盾的现象：  你的所有 PoP 都是健康的，但某个区域的流量持续集中到两个 PoP，导致这两个 PoP 承压； 你新上线了一个 PoP，但一个月内几乎没有流量进来——因为对方运营商没有理由改路由； 你下线一个 PoP，部分运营商立即切走，另一些则在很长时间内还在往旧地址发包。  结论很硬：Anycast 提供的是可达性与收敛性，不提供...</div></div></div></a><a class="pagination-related" href="/cf-edge-network-anatomy/" title="边缘网络的解剖学：一次请求如何穿过 Cloudflare 的全球拓扑"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-13</div><div class="info-item-2">边缘网络的解剖学：一次请求如何穿过 Cloudflare 的全球拓扑</div></div><div class="info-2"><div class="info-item-1">边缘网络的解剖学：一次请求如何穿过 Cloudflare 的全球拓扑很多人对”边缘”的理解停留在”机房多、离用户近”。这个理解不算错，但远远不够。真正决定边缘平台行为特征的，不是机房数量，而是路由决策发生在哪一层、由谁做出、依据什么信息。本文沿一次 HTTPS 请求的路径往下走，把 Cloudflare 的全球网络拆成可分析的几层。 第一层：Anycast 与”同一 IP 出现在几百个地方”传统托管的做法是把域名解析到一个固定 IP，用户流量汇聚到某几个入口。边缘网络的做法完全不同：同一个 IP 地址段在全球大量 PoP（Point of Presence）同时对外宣告。这就是 Anycast。 关键在于，Anycast 不提供一个”最近”的答案，它提供一个”由 BGP 决定”的答案。用户方的路由器选择哪条路径，取决于它自己收到的路由表、本地策略、对等互联关系与运营商偏好，而不是地理距离。这带来两个直接后果：  收敛快、抗打击：某个 PoP 或某段链路出问题，BGP 撤销宣告后流量会自动绕行，不需要改 DNS，也不需要客户端重试逻辑。 不可预测：同一城市的两家运营商用户，可能被路...</div></div></div></a><a class="pagination-related" href="/cf-d1-sqlite-quota-cost-model/" title="D1 成本与配额模型拆解：行读写、存储与按量计费的隐藏成本"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-13</div><div class="info-item-2">D1 成本与配额模型拆解：行读写、存储与按量计费的隐藏成本</div></div><div class="info-2"><div class="info-item-1">D1 成本与配额模型拆解：行读写、存储与按量计费的隐藏成本在传统关系型数据库里，估算成本主要看实例规格和并发连接数，SQL 写得好不好通常不影响账单。到了边缘托管的 SQLite 方案上，这套直觉会失效：D1 的计费核心是行读写次数与存储量，而不是实例规格。这意味着一次慢查询和一次快查询可能同价，而一次被索引优化掉的扫描和一次全表扫描可能差出好几个数量级。理解这个模型，是控制成本的前提。 计费维度到底看什么按公开的计费口径，D1 的费用主要由几块构成：读操作触及的行数、写操作触及的行数、存储的数据量与备份占用、以及超出免费额度后的按量费用。不同套餐在额度、并发和可用能力上有差别，具体数值以官方定价页为准。本文关心的是这些维度背后的行为机制，而不是记住一串会变的数字。 需要特别理解的一点是「行」这个计量单位。一条 SELECT 如果通过索引精确定位到一行，成本约等于一次行读；如果它退化成全表扫描，扫过的每一行都可能计入读行数。所以在 D1 上，索引不是性能优化，而是成本优化。这跟传统数据库里「索引主要为了快」的心智模型有本质区别。 写操作同理。单行 INSERT 计一次写；如果表上...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">mc-yzy15</div><div class="author-info-description">Yzy15的个人博客 | 技术教程 · 编程经验 · 学习笔记</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">245</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">533</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">21</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/mc-yzy15"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://yzy15.dpdns.org" target="_blank" title="个人主页"><i class="fas fa-home" style="color: #ff6600;"></i></a><a class="social-icon" href="https://github.com/mc-yzy15" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:yingmoliuguang@yeah.net" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a><a class="social-icon" href="https://space.bilibili.com/1338637552" target="_blank" title="Bilibili"><i class="fab fa-bilibili" style="color: #00a1d6;"></i></a><a class="social-icon" href="https://t.me/ShuangXiang_Dddddavidd_bot" target="_blank" title="Telegram"><i class="fab fa-telegram" style="color: #0088cc;"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="RSS"><i class="fas fa-rss" style="color: #ff6600;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到我的博客！这里记录着我的技术分享和生活点滴~<br>📢 <a href="/link/">广告位招租</a> | 💼 商业合作见<a href="/link/">友链页</a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>목차</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#D1-%E4%B8%8E-SQLite-%E7%9A%84%E8%AF%BB%E5%89%AF%E6%9C%AC%E4%B8%80%E8%87%B4%E6%80%A7%E6%A8%A1%E5%9E%8B%EF%BC%9A%E5%BB%B6%E8%BF%9F%E3%80%81%E9%A1%BA%E5%BA%8F%E4%B8%8E%E6%95%85%E9%9A%9C%E6%81%A2%E5%A4%8D"><span class="toc-number">1.</span> <span class="toc-text">D1 与 SQLite 的读副本一致性模型：延迟、顺序与故障恢复</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BE%B9%E7%BC%98%E8%AF%BB%E4%BC%9A%E3%80%8C%E7%9C%8B%E4%B8%8D%E5%88%B0%E3%80%8D%E5%88%9A%E5%86%99%E7%9A%84%E8%A1%8C"><span class="toc-number">1.1.</span> <span class="toc-text">为什么边缘读会「看不到」刚写的行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%9A%E8%AF%9D%E4%BB%A4%E7%89%8C%EF%BC%9A%E6%8A%8A%E3%80%8C%E8%AF%BB%E5%88%B0%E8%87%AA%E5%B7%B1%E5%86%99%E3%80%8D%E5%8F%98%E6%88%90%E5%8F%AF%E5%B7%A5%E7%A8%8B%E5%8C%96%E7%9A%84%E4%BF%9D%E8%AF%81"><span class="toc-number">1.2.</span> <span class="toc-text">会话令牌：把「读到自己写」变成可工程化的保证</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%BA%E5%BA%8F%E4%B8%80%E8%87%B4%E6%80%A7%E5%9C%A8%E4%BB%80%E4%B9%88%E6%9D%A1%E4%BB%B6%E4%B8%8B%E8%A2%AB%E7%A0%B4%E5%9D%8F"><span class="toc-number">1.3.</span> <span class="toc-text">顺序一致性在什么条件下被破坏</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BB%E5%BA%93%E6%95%85%E9%9A%9C%E5%88%87%E6%8D%A2%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%81%E6%80%A7%E5%9B%9E%E9%80%80"><span class="toc-number">1.4.</span> <span class="toc-text">主库故障切换与数据可见性回退</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8E%E6%95%85%E9%9A%9C%E6%8E%92%E6%9F%A5%E5%80%92%E6%8E%A8%E4%B8%80%E8%87%B4%E6%80%A7%E8%AE%BE%E8%AE%A1"><span class="toc-number">1.5.</span> <span class="toc-text">从故障排查倒推一致性设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%A2%E9%98%9F%E8%90%BD%E5%9C%B0%E6%97%B6%E7%9A%84%E8%BE%B9%E7%95%8C%E7%BA%A6%E5%AE%9A"><span class="toc-number">1.6.</span> <span class="toc-text">团队落地时的边界约定</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/vc-monorepo-package-boundaries/" title="Monorepo 包边界治理：依赖方向、公开 API 与循环依赖的工程约束">Monorepo 包边界治理：依赖方向、公开 API 与循环依赖的工程约束</a><time datetime="2026-09-13T12:04:00.000Z" title="发表于 2026-09-13 20:04:00">2026-09-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/vc-monorepo-remote-cache-ops/" title="Turborepo 远程缓存落地的三个硬问题：隔离、命中率与命中失败">Turborepo 远程缓存落地的三个硬问题：隔离、命中率与命中失败</a><time datetime="2026-09-13T12:02:00.000Z" title="发表于 2026-09-13 20:02:00">2026-09-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/vc-monorepo-task-graph-design/" title="Turborepo 任务图怎么设计：从 workspace 拓扑到增量构建">Turborepo 任务图怎么设计：从 workspace 拓扑到增量构建</a><time datetime="2026-09-13T12:00:00.000Z" title="发表于 2026-09-13 20:00:00">2026-09-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/vc-blob-kv-edge-config-selection/" title="Blob、KV 与 Edge Config 的选型对比：三种&quot;边缘存储&quot;到底该用在哪儿">Blob、KV 与 Edge Config 的选型对比：三种&quot;边缘存储&quot;到底该用在哪儿</a><time datetime="2026-09-13T10:00:00.000Z" title="发表于 2026-09-13 18:00:00">2026-09-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/cf-netlify-to-cloudflare-migration/" title="从 Netlify 迁移到 Cloudflare：静态站与函数的分手清单">从 Netlify 迁移到 Cloudflare：静态站与函数的分手清单</a><time datetime="2026-09-13T07:02:00.000Z" title="发表于 2026-09-13 15:02:00">2026-09-13</time></div></div></div></div><div class="card-widget rec-card"><div style="text-align:center;padding:18px 10px;border:2px dashed #49b1f5;border-radius:8px;margin:0 auto;background:linear-gradient(135deg,#f0f9ff,#e0f2fe);"><div style="font-size:16px;font-weight:bold;color:#49b1f5;">☁️ 南影云 - 高性价比云服务器</div><div style="font-size:12px;color:#555;margin-top:6px;">上万台服务器 | T+级DDoS防护 | 无限防CC</div><div style="font-size:12px;color:#555;margin-top:4px;">🎁 通过下方链接注册享专属优惠</div><div style="margin-top:8px;"><a href="https://idc.ofoca.net/aff/PJQGAEKY" target="_blank" rel="noopener" style="display:inline-block;padding:6px 20px;background:#49b1f5;color:#fff;border-radius:16px;text-decoration:none;font-size:13px;font-weight:bold;">立即注册领优惠</a></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By mc-yzy15</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.1</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="읽기 모드"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="번체와 간체 전환">繁</button><button id="darkmode" type="button" title="라이트/다크 모드 전환"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="단일/이중 열 전환"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="설정"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="목차"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="맨 위로"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><script src="/js/tw_cn.js?v=5.5.4"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.9/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><div class="js-pjax"></div><script src="/js/webinfo-stats.js"></script><div class="ad-banner sponsor" style="text-align:center;padding:12px 10px;margin:10px auto;max-width:728px;background:linear-gradient(135deg,#fff5f5,#ffe0e0);border:1px solid<script src="/js/content-loader.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

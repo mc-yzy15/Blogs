@@ -1,0 +1,299 @@
+<!DOCTYPE html><html lang="[&quot;zh-CN&quot;,&quot;en&quot;,&quot;zh-TW&quot;,&quot;ja&quot;,&quot;ko&quot;,&quot;fr&quot;,&quot;de&quot;,&quot;es&quot;,&quot;ru&quot;,&quot;pt&quot;,&quot;ar&quot;,&quot;hi&quot;,&quot;it&quot;,&quot;th&quot;,&quot;vi&quot;,&quot;id&quot;,&quot;tr&quot;,&quot;uk&quot;,&quot;pl&quot;,&quot;nl&quot;]" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Pages 与 Workers 的边界在哪里：静态托管选型的技术判断 | Yzy15's Blog - 技术分享与生活记录</title><meta name="author" content="mc-yzy15"><meta name="copyright" content="mc-yzy15"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Pages 和 Workers 在能力上正在收敛，这让选型反而变难了。本文从构建模型、运行时约束、路由能力与运维成本四个维度给出可操作的判断标准，并讨论混合架构如何避免两头都想要、结果两头都别扭。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Pages 与 Workers 的边界在哪里：静态托管选型的技术判断">
+<meta property="og:url" content="https://blogs.yzy15.dpdns.org/ar/cf-pages-vs-workers-static/">
+<meta property="og:site_name" content="Yzy15&#39;s Blog - 技术分享与生活记录">
+<meta property="og:description" content="Pages 和 Workers 在能力上正在收敛，这让选型反而变难了。本文从构建模型、运行时约束、路由能力与运维成本四个维度给出可操作的判断标准，并讨论混合架构如何避免两头都想要、结果两头都别扭。">
+<meta property="og:locale">
+<meta property="og:image" content="https://blogs.yzy15.dpdns.org/img/butterfly-icon.png">
+<meta property="article:published_time" content="2026-09-13T03:04:00.000Z">
+<meta property="article:modified_time" content="2026-09-12T17:33:38.958Z">
+<meta property="article:author" content="mc-yzy15">
+<meta property="article:tag" content="Cloudflare Pages">
+<meta property="article:tag" content="Cloudflare Workers">
+<meta property="article:tag" content="架构选型">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://blogs.yzy15.dpdns.org/img/favicon.ico">
+<meta name="twitter:site" content="@mc_yzy15"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Pages 与 Workers 的边界在哪里：静态托管选型的技术判断",
+  "url": "https://blogs.yzy15.dpdns.org/cf-pages-vs-workers-static/",
+  "image": "https://blogs.yzy15.dpdns.org/img/butterfly-icon.png",
+  "datePublished": "2026-09-13T03:04:00.000Z",
+  "dateModified": "2026-09-12T17:33:38.958Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "mc-yzy15",
+      "url": "https://yzy15.dpdns.org"
+    }
+  ]
+}
+</script><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Yzy15's Blog - 技术分享与生活记录",
+      "item": "https://blogs.yzy15.dpdns.org/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "云计算",
+      "item": "https://blogs.yzy15.dpdns.org/categories/%E4%BA%91%E8%AE%A1%E7%AE%97/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Pages 与 Workers 的边界在哪里：静态托管选型的技术判断",
+      "item": "https://blogs.yzy15.dpdns.org/cf-pages-vs-workers-static/"
+    }
+  ]
+}
+</script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://blogs.yzy15.dpdns.org/ar/cf-pages-vs-workers-static/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.9/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-HK1JGTYX4N"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-HK1JGTYX4N')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-HK1JGTYX4N', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Pages 与 Workers 的边界在哪里：静态托管选型的技术判断',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 8.1.1"><link rel="alternate" href="/atom.xml" title="Yzy15's Blog - 技术分享与生活记录" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">245</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">533</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">21</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/homepage/"><i class="fa-fw fas fa-globe"></i><span> Homepage</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/stats/"><i class="fa-fw fas fa-chart-bar"></i><span> Stats</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Yzy15's Blog - 技术分享与生活记录</span></a><a class="nav-page-title" href="/"><span class="site-name">Pages 与 Workers 的边界在哪里：静态托管选型的技术判断</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/homepage/"><i class="fa-fw fas fa-globe"></i><span> Homepage</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/stats/"><i class="fa-fw fas fa-chart-bar"></i><span> Stats</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Pages 与 Workers 的边界在哪里：静态托管选型的技术判断</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-09-13T03:04:00.000Z" title="发表于 ٢٠٢٦-٠٩-١٣ ١١:٠٤:٠٠">٢٠٢٦-٠٩-١٣</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-09-12T17:33:38.958Z" title="更新于 ٢٠٢٦-٠٩-١٣ ٠١:٣٣:٣٨">٢٠٢٦-٠٩-١٣</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E4%BA%91%E8%AE%A1%E7%AE%97/">云计算</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="Pages-与-Workers-的边界在哪里：静态托管选型的技术判断"><a href="#Pages-与-Workers-的边界在哪里：静态托管选型的技术判断" class="headerlink" title="Pages 与 Workers 的边界在哪里：静态托管选型的技术判断"></a>Pages 与 Workers 的边界在哪里：静态托管选型的技术判断</h1><p>Cloudflare 的 Pages 和 Workers 曾经界限分明：Pages 管静态站点，Workers 管动态逻辑。随着两者能力互相渗透——Pages 有了 Functions，Workers 有了静态资源绑定——这条线变得模糊，选型问题也从”该用哪个”变成了”哪个更省心”。</p>
+<p>本文不站队，而是给出四个可判断的维度。在多数真实项目里，答案不是二选一，而是”主用哪个 + 另一个补位”。</p>
+<h2 id="维度一：构建模型决定工作流的形状"><a href="#维度一：构建模型决定工作流的形状" class="headerlink" title="维度一：构建模型决定工作流的形状"></a>维度一：构建模型决定工作流的形状</h2><p>这是两者最本质的差异，也是最多人忽略的一点。</p>
+<p><strong>Pages 是构建驱动的</strong>。它假设你有一个需要编译的前端项目，平台负责检出代码、装依赖、跑构建命令、上传产物。这套模型天然适配 Git 工作流：push 即部署，PR 即预览。</p>
+<p><strong>Workers 是产物驱动的</strong>。它接收的是已经准备好的代码包（或资源目录），部署是 <code>wrangler deploy</code> 这一步，构建发生在你的机器或 CI 上。平台不关心你怎么生成产物。</p>
+<p>这个差异带来的实际影响是：</p>
+<table>
+<thead>
+<tr>
+<th>关注点</th>
+<th>Pages</th>
+<th>Workers</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>构建发生在哪</td>
+<td>平台构建容器</td>
+<td>你的本地或 CI</td>
+</tr>
+<tr>
+<td>预览部署</td>
+<td>内建，按分支自动生成</td>
+<td>需自行编排或使用平台能力</td>
+</tr>
+<tr>
+<td>构建耗时可控性</td>
+<td>受平台约束</td>
+<td>完全自控</td>
+</tr>
+<tr>
+<td>适配非 Git 流程</td>
+<td>较弱</td>
+<td>很强</td>
+</tr>
+</tbody></table>
+<p>如果你的团队已经在 CI 里做完整的构建与测试，Workers 的产物驱动模型反而更自然——你不需要让平台再理解一遍你的构建。</p>
+<h2 id="维度二：运行时约束决定上限"><a href="#维度二：运行时约束决定上限" class="headerlink" title="维度二：运行时约束决定上限"></a>维度二：运行时约束决定上限</h2><p>两者都跑在边缘运行时上，但绑定与配置的默认姿态不同。</p>
+<ul>
+<li><strong>启动与冷启动</strong>：边缘运行时通常没有传统意义上的长冷启动，但首次请求的初始化成本依然存在，尤其是加载大依赖或建立连接时。</li>
+<li><strong>CPU 时间</strong>：计费上通常区分 CPU 时间与墙钟时间，等待 I&#x2F;O 的时间一般不计入 CPU，但长任务仍受总时长约束。</li>
+<li><strong>状态</strong>：边缘运行时默认无状态，持久化必须走 KV、D1、R2、Durable Objects 等绑定。</li>
+<li><strong>子请求</strong>:对外部服务的调用数量与并发存在约束，批量扇出需要谨慎设计。</li>
+</ul>
+<p>对静态站点而言这些约束几乎不构成问题；对需要处理上传、调用多个上游 API 的应用，约束会迅速变成架构约束。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Workers 风格：请求时读取绑定，而不是把值内联进构建产物</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  <span class="keyword">async</span> <span class="title function_">fetch</span>(<span class="params">request, env</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> url = <span class="keyword">new</span> <span class="title function_">URL</span>(request.<span class="property">url</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 运行期变量：敏感值只在这里出现，不进入构建产物</span></span><br><span class="line">    <span class="keyword">const</span> upstream = env.<span class="property">UPSTREAM_ORIGIN</span>;</span><br><span class="line">    <span class="keyword">if</span> (!upstream) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Response</span>(<span class="string">&quot;misconfigured&quot;</span>, &#123; <span class="attr">status</span>: <span class="number">500</span> &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> target = <span class="keyword">new</span> <span class="title function_">URL</span>(url.<span class="property">pathname</span> + url.<span class="property">search</span>, upstream);</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_">fetch</span>(target, &#123; <span class="attr">cf</span>: &#123; <span class="attr">cacheTtl</span>: <span class="number">60</span> &#125; &#125;);</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>上面这段代码的关键不在语法，而在语义：<code>env.UPSTREAM_ORIGIN</code> 是运行期注入的。如果你用 Pages 静态构建，这个值会在构建时就固化，改一次配置就要重新构建一次。这是选型时最容易被低估的差异。</p>
+<h2 id="维度三：路由与中间件的表达力"><a href="#维度三：路由与中间件的表达力" class="headerlink" title="维度三：路由与中间件的表达力"></a>维度三：路由与中间件的表达力</h2><p>静态托管最常遇到的”就差一点”需求是路由：把 <code>/old/*</code> 重定向、给 <code>/api/*</code> 加鉴权、按 <code>Accept</code> 头返回不同格式。这些需求在纯静态方案里靠配置文件，在 Workers 里靠代码。</p>
+<p>一个是声明式的、有限表达力的路由表；一个是图灵完备的代码。前者更安全、更易审计，后者更灵活、更难约束。</p>
+<p>实践中的分界线大致是：</p>
+<ul>
+<li>规则数量少、逻辑简单、变更不频繁 → 声明式路由更合适。</li>
+<li>需要读取请求内容做判断、需要访问绑定、需要重写响应体 → 只能用代码。</li>
+</ul>
+<p>反过来，如果只是 302 一批旧链接，用 Workers 写代码是过度设计，而且会增加故障面：代码会抛异常，配置文件基本不会。</p>
+<h2 id="维度四：运维成本与团队认知"><a href="#维度四：运维成本与团队认知" class="headerlink" title="维度四：运维成本与团队认知"></a>维度四：运维成本与团队认知</h2><p>技术选型的最后一公里往往是人的问题。</p>
+<p><strong>Pages 的优势在于心智负担低</strong>：非前端工程师也能理解”push 就部署”。<strong>Workers 的优势在于可观测性强</strong>：你有完整的代码路径，可以在本地跑、可以单元测试、可以在 CI 里做集成测试。</p>
+<table>
+<thead>
+<tr>
+<th>团队特征</th>
+<th>倾向</th>
+<th>理由</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>前端为主，无专职运维</td>
+<td>Pages</td>
+<td>工作流内建，无需编排</td>
+</tr>
+<tr>
+<td>有成熟 CI，追求可复现</td>
+<td>Workers</td>
+<td>产物驱动，构建完全自控</td>
+</tr>
+<tr>
+<td>需要多环境灰度</td>
+<td>两者皆可 + 明确约定</td>
+<td>取决于是否愿意自建编排</td>
+</tr>
+<tr>
+<td>需要长事务与队列</td>
+<td>Workers + 队列能力</td>
+<td>静态托管无法承载</td>
+</tr>
+</tbody></table>
+<h2 id="混合架构：怎样组合才不别扭"><a href="#混合架构：怎样组合才不别扭" class="headerlink" title="混合架构：怎样组合才不别扭"></a>混合架构：怎样组合才不别扭</h2><p>现实中更常见的答案是混合，但混合有正确姿势和错误姿势。</p>
+<p><strong>正确姿势</strong>：静态产物交给 Pages（或 Workers 静态资源），动态接口交给 Workers，两者通过同域路由聚合。这样静态部分享受构建流水线，动态部分享受代码灵活性。</p>
+<p><strong>错误姿势</strong>：在 Pages Functions 里塞进整套业务逻辑，最后发现需要队列、需要长任务、需要复杂绑定，于是把一半逻辑迁移到 Workers，剩下的一半留在 Functions 里——两套部署、两套配置、两套日志，认知成本翻倍。</p>
+<p>判断混合是否健康的标准很简单：<strong>如果两个部分的部署频率不同、依赖的团队不同、变更的理由不同，那它们就应该是两个独立的部署单元</strong>；反之，如果它们总是一起改，分包只会增加摩擦。</p>
+<figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 混合架构示意：一个 wrangler 配置里区分静态资源与 Worker 任务</span></span><br><span class="line"><span class="attr">name</span> = <span class="string">&quot;site-edge&quot;</span></span><br><span class="line"><span class="attr">main</span> = <span class="string">&quot;src/worker.js&quot;</span></span><br><span class="line"><span class="attr">compatibility_date</span> = <span class="string">&quot;2026-07-01&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 静态资源绑定：让 Worker 处理请求的同时能回退到静态产物</span></span><br><span class="line"><span class="section">[assets]</span></span><br><span class="line"><span class="attr">directory</span> = <span class="string">&quot;./dist&quot;</span></span><br><span class="line"><span class="attr">not_found_handling</span> = <span class="string">&quot;single-page-application&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>上面这个模式实际上在消解”Pages 还是 Workers”的二分法：一个部署单元同时拥有静态能力和动态能力，代价是你需要自己承担构建与部署编排。</p>
+<blockquote>
+<p><strong>判断法则</strong>：先问”我的构建流水线由谁负责”，再问”我的运行期配置由谁注入”。这两个问题的答案如果不同，说明你需要两个部署单元，而不是一个更复杂的单元。</p>
+</blockquote>
+<h2 id="结语：边界在收敛，判断标准不变"><a href="#结语：边界在收敛，判断标准不变" class="headerlink" title="结语：边界在收敛，判断标准不变"></a>结语：边界在收敛，判断标准不变</h2><p>平台能力的收敛会让”功能对比表”越来越没意义，因为两边最终会看起来都支持。但判断标准其实很稳定：<strong>构建发生在哪、配置在何时注入、路由由谁表达、谁来维护</strong>。把这四个问题答清楚，选型就不再是风格偏好问题。</p>
+<p>如果非要给一个默认建议：以静态内容为主的站点，从 Pages 起步，遇到明确的运行期需求再引入 Workers；以 API 与动态逻辑为主的场景，直接从 Workers 起步，把静态资源当作它的一个绑定。这样两条路径都不会在一开始就背上不必要的复杂度。</p>
+<blockquote>
+<p><strong>说明：</strong> 本文讨论的是架构选型方法而非产品功能承诺，Pages 与 Workers 的具体能力、配额与命名可能随版本演进而变化，请以 Cloudflare 官方最新文档为准。文中倾向性结论为笔者基于工程实践的主观判断，不同团队应按自身约束重新评估。</p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a target="_blank" rel="noopener" href="https://yzy15.dpdns.org">mc-yzy15</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://blogs.yzy15.dpdns.org/cf-pages-vs-workers-static/">https://blogs.yzy15.dpdns.org/cf-pages-vs-workers-static/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。<strong>禁止商用</strong>。转载请注明来源 <a href="https://blogs.yzy15.dpdns.org" target="_blank">Yzy15's Blog - 技术分享与生活记录</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Cloudflare-Pages/">Cloudflare Pages</a><a class="post-meta__tags" href="/tags/Cloudflare-Workers/">Cloudflare Workers</a><a class="post-meta__tags" href="/tags/%E6%9E%B6%E6%9E%84%E9%80%89%E5%9E%8B/">架构选型</a></div><div class="post-share"><div class="social-share" data-image="/img/butterfly-icon.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>感谢您的支持，您的赞赏是我持续创作的动力！</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://img.cdn1.vip/i/69ed1d29274a9_1777147177.webp" target="_blank"><img class="post-qr-code-img" src="https://img.cdn1.vip/i/69ed1d29274a9_1777147177.webp" alt="微信赞赏"/ loading='lazy'></a><div class="post-qr-code-desc">微信赞赏</div></li></ul></div></div><div class="rec-card ad-slot ad-placement"><div style="text-align:center;padding:20px 10px;border:2px dashed #ff6b6b;border-radius:8px;margin:0 auto;background:linear-gradient(135deg,#fff5f5,#ffe0e0);"><div style="font-size:18px;font-weight:bold;color:#ff6b6b;">☁️ 南影云 - 高性价比云服务器</div><div style="font-size:13px;color:#555;margin-top:8px;">上万台服务器 | T+级DDoS防护 | 无限防CC</div><div style="font-size:13px;color:#555;margin-top:4px;">🎁 通过下方链接注册享专属优惠</div><div style="margin-top:10px;"><a href="https://idc.ofoca.net/aff/PJQGAEKY" target="_blank" rel="noopener" style="display:inline-block;padding:8px 24px;background:#ff6b6b;color:#fff;border-radius:20px;text-decoration:none;font-size:14px;font-weight:bold;">立即注册领优惠</a></div><div style="font-size:11px;color:#999;margin-top:6px;">注册后联系博主可再领额外折扣</div></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/cf-pages-functions-runtime-guide/" title="Pages Functions 实战：在静态站点里安全地嵌入动态能力"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">Pages Functions 实战：在静态站点里安全地嵌入动态能力</div></div><div class="info-2"><div class="info-item-1">Pages Functions 实战：在静态站点里安全地嵌入动态能力静态站点的最大优点是简单：没有运行时、没有状态、没有失败模式。引入 Pages Functions 的那一刻，这三样东西全部回来了。于是问题变成：如何只取走动态能力，而不把后端的复杂度一并接管。 答案在于克制。Functions 适合做”薄”的事情——鉴权、代理、重写、聚合，而不适合承载业务流程。本文讨论这条线该怎么画，以及画好之后代码该怎么写。 绑定：能力与约束的同一枚硬币Functions 通过绑定访问外部资源：KV 做缓存、D1 做关系数据、R2 做对象存储、队列做异步。绑定是平台给能力的方式，同时也是约束的来源：  绑定是环境级的。预览与生产可以使用不同的绑定，这是做数据隔离的基础。 绑定是声明式的。你需要显式声明用到哪些资源，未声明的资源无法访问——这其实是好事，它让依赖关系可见。 绑定有配额。读写次数、存储量、请求数都有上限，静态站点突然”变贵”往往是因为某段代码在高频路径上访问了付费资源。  一个常见反模式是：在 Functions 里用 KV 做”每次请求都读一次”的配置存储。请求量上来后，KV ...</div></div></div></a><a class="pagination-related" href="/cf-pages-preview-deploy-workflow/" title="预览部署工作流设计：用 Cloudflare Pages 把评审成本压到最低"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">预览部署工作流设计：用 Cloudflare Pages 把评审成本压到最低</div></div><div class="info-2"><div class="info-item-1">预览部署工作流设计：用 Cloudflare Pages 把评审成本压到最低「每个 PR 自动生成一个预览链接」这件事，演示起来只要十分钟，但在真实团队里跑上三个月，就会积累出一堆脏问题：预览链接被外部爬虫收录、预览环境往生产数据库写数据、评审者看到的是三天前的缓存版本、回滚时不知道该回滚到哪个 deployment。 这些问题的共同点是：它们都不是 Pages 的功能问题，而是工作流设计问题。本文讨论如何在 Pages 提供的能力之上，设计一套能长期运行的预览部署工作流。 预览部署真正的价值在哪里先澄清一个常见误解。预览部署的价值不在于”给非技术人员看效果”——那个需求用截图或本地服务器也能满足。它真正解决的是下面三类问题：  环境相关缺陷只能在真实环境暴露。路由重写、资源路径、跨域头、缓存策略这些问题在本地往往表现正常。 评审需要上下文而非代码。产品与设计评审的是”行为”，不是 diff。 变更影响面需要可验证。特别是改动构建配置、CDN 缓存规则、重定向表时，只有真实部署能验证。  因此预览部署的设计目标应该是：让一次部署尽可能接近生产，同时把它的副作用降到零。这个目标里，...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/cf-pages-vs-workers-static/" title="Pages 与 Workers 的边界在哪里：静态托管选型的技术判断"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> ٢٠٢٦-٠٩-١٣</div><div class="info-item-2">Pages 与 Workers 的边界在哪里：静态托管选型的技术判断</div></div><div class="info-2"><div class="info-item-1">Pages 与 Workers 的边界在哪里：静态托管选型的技术判断Cloudflare 的 Pages 和 Workers 曾经界限分明：Pages 管静态站点，Workers 管动态逻辑。随着两者能力互相渗透——Pages 有了 Functions，Workers 有了静态资源绑定——这条线变得模糊，选型问题也从”该用哪个”变成了”哪个更省心”。 本文不站队，而是给出四个可判断的维度。在多数真实项目里，答案不是二选一，而是”主用哪个 + 另一个补位”。 维度一：构建模型决定工作流的形状这是两者最本质的差异，也是最多人忽略的一点。 Pages 是构建驱动的。它假设你有一个需要编译的前端项目，平台负责检出代码、装依赖、跑构建命令、上传产物。这套模型天然适配 Git 工作流：push 即部署，PR 即预览。 Workers 是产物驱动的。它接收的是已经准备好的代码包（或资源目录），部署是 wrangler deploy 这一步，构建发生在你的机器或 CI 上。平台不关心你怎么生成产物。 这个差异带来的实际影响是：    关注点 Pages Workers    构建发生在哪 平台构...</div></div></div></a><a class="pagination-related" href="/cf-pages-build-pipeline-anatomy/" title="Cloudflare Pages 构建管线解剖：从 Git 提交到全球边缘的完整链路"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> ٢٠٢٦-٠٩-١٣</div><div class="info-item-2">Cloudflare Pages 构建管线解剖：从 Git 提交到全球边缘的完整链路</div></div><div class="info-2"><div class="info-item-1">Cloudflare Pages 构建管线解剖：从 Git 提交到全球边缘的完整链路大多数团队接入 Pages 的过程只有五分钟：连仓库、填 build command、填 output directory、点部署。之后这条链路就变成了理所当然的存在，直到某天构建突然从 90 秒变成 6 分钟，或者某个环境变量在预览环境里神秘消失，才会有人回头去问：这中间到底发生了什么。 本文不复述官方文档的配置项清单，而是把 Pages 的构建管线拆成可推理的四个阶段，然后针对每个阶段讨论缓存、约束与调优空间。 阶段拆解：一次 push 之后的四个动作从工程视角看，Pages 的构建管线可以抽象成下面四个串行阶段：  事件接收与排队：Git provider 通过 webhook 通知 Pages 有新的 commit，Pages 为这次提交创建一个 deployment 记录。同一分支上的新提交会让旧 deployment 快速失效（superseded）。 环境准备：拉起一个一次性的构建容器，检出仓库到该 commit，恢复依赖缓存，按项目配置注入环境变量（分为生产环境与预览环境两套）。 ...</div></div></div></a><a class="pagination-related" href="/cf-pages-preview-deploy-workflow/" title="预览部署工作流设计：用 Cloudflare Pages 把评审成本压到最低"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> ٢٠٢٦-٠٩-١٣</div><div class="info-item-2">预览部署工作流设计：用 Cloudflare Pages 把评审成本压到最低</div></div><div class="info-2"><div class="info-item-1">预览部署工作流设计：用 Cloudflare Pages 把评审成本压到最低「每个 PR 自动生成一个预览链接」这件事，演示起来只要十分钟，但在真实团队里跑上三个月，就会积累出一堆脏问题：预览链接被外部爬虫收录、预览环境往生产数据库写数据、评审者看到的是三天前的缓存版本、回滚时不知道该回滚到哪个 deployment。 这些问题的共同点是：它们都不是 Pages 的功能问题，而是工作流设计问题。本文讨论如何在 Pages 提供的能力之上，设计一套能长期运行的预览部署工作流。 预览部署真正的价值在哪里先澄清一个常见误解。预览部署的价值不在于”给非技术人员看效果”——那个需求用截图或本地服务器也能满足。它真正解决的是下面三类问题：  环境相关缺陷只能在真实环境暴露。路由重写、资源路径、跨域头、缓存策略这些问题在本地往往表现正常。 评审需要上下文而非代码。产品与设计评审的是”行为”，不是 diff。 变更影响面需要可验证。特别是改动构建配置、CDN 缓存规则、重定向表时，只有真实部署能验证。  因此预览部署的设计目标应该是：让一次部署尽可能接近生产，同时把它的副作用降到零。这个目标里，...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">mc-yzy15</div><div class="author-info-description">Yzy15的个人博客 | 技术教程 · 编程经验 · 学习笔记</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">245</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">533</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">21</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/mc-yzy15"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://yzy15.dpdns.org" target="_blank" title="个人主页"><i class="fas fa-home" style="color: #ff6600;"></i></a><a class="social-icon" href="https://github.com/mc-yzy15" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:yingmoliuguang@yeah.net" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a><a class="social-icon" href="https://space.bilibili.com/1338637552" target="_blank" title="Bilibili"><i class="fab fa-bilibili" style="color: #00a1d6;"></i></a><a class="social-icon" href="https://t.me/ShuangXiang_Dddddavidd_bot" target="_blank" title="Telegram"><i class="fab fa-telegram" style="color: #0088cc;"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="RSS"><i class="fas fa-rss" style="color: #ff6600;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到我的博客！这里记录着我的技术分享和生活点滴~<br>📢 <a href="/link/">广告位招租</a> | 💼 商业合作见<a href="/link/">友链页</a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Pages-%E4%B8%8E-Workers-%E7%9A%84%E8%BE%B9%E7%95%8C%E5%9C%A8%E5%93%AA%E9%87%8C%EF%BC%9A%E9%9D%99%E6%80%81%E6%89%98%E7%AE%A1%E9%80%89%E5%9E%8B%E7%9A%84%E6%8A%80%E6%9C%AF%E5%88%A4%E6%96%AD"><span class="toc-number">1.</span> <span class="toc-text">Pages 与 Workers 的边界在哪里：静态托管选型的技术判断</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%B4%E5%BA%A6%E4%B8%80%EF%BC%9A%E6%9E%84%E5%BB%BA%E6%A8%A1%E5%9E%8B%E5%86%B3%E5%AE%9A%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%9A%84%E5%BD%A2%E7%8A%B6"><span class="toc-number">1.1.</span> <span class="toc-text">维度一：构建模型决定工作流的形状</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%B4%E5%BA%A6%E4%BA%8C%EF%BC%9A%E8%BF%90%E8%A1%8C%E6%97%B6%E7%BA%A6%E6%9D%9F%E5%86%B3%E5%AE%9A%E4%B8%8A%E9%99%90"><span class="toc-number">1.2.</span> <span class="toc-text">维度二：运行时约束决定上限</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%B4%E5%BA%A6%E4%B8%89%EF%BC%9A%E8%B7%AF%E7%94%B1%E4%B8%8E%E4%B8%AD%E9%97%B4%E4%BB%B6%E7%9A%84%E8%A1%A8%E8%BE%BE%E5%8A%9B"><span class="toc-number">1.3.</span> <span class="toc-text">维度三：路由与中间件的表达力</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%B4%E5%BA%A6%E5%9B%9B%EF%BC%9A%E8%BF%90%E7%BB%B4%E6%88%90%E6%9C%AC%E4%B8%8E%E5%9B%A2%E9%98%9F%E8%AE%A4%E7%9F%A5"><span class="toc-number">1.4.</span> <span class="toc-text">维度四：运维成本与团队认知</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%B7%E5%90%88%E6%9E%B6%E6%9E%84%EF%BC%9A%E6%80%8E%E6%A0%B7%E7%BB%84%E5%90%88%E6%89%8D%E4%B8%8D%E5%88%AB%E6%89%AD"><span class="toc-number">1.5.</span> <span class="toc-text">混合架构：怎样组合才不别扭</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E8%AF%AD%EF%BC%9A%E8%BE%B9%E7%95%8C%E5%9C%A8%E6%94%B6%E6%95%9B%EF%BC%8C%E5%88%A4%E6%96%AD%E6%A0%87%E5%87%86%E4%B8%8D%E5%8F%98"><span class="toc-number">1.6.</span> <span class="toc-text">结语：边界在收敛，判断标准不变</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/vc-monorepo-package-boundaries/" title="Monorepo 包边界治理：依赖方向、公开 API 与循环依赖的工程约束">Monorepo 包边界治理：依赖方向、公开 API 与循环依赖的工程约束</a><time datetime="2026-09-13T12:04:00.000Z" title="发表于 2026-09-13 20:04:00">2026-09-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/vc-monorepo-remote-cache-ops/" title="Turborepo 远程缓存落地的三个硬问题：隔离、命中率与命中失败">Turborepo 远程缓存落地的三个硬问题：隔离、命中率与命中失败</a><time datetime="2026-09-13T12:02:00.000Z" title="发表于 2026-09-13 20:02:00">2026-09-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/vc-monorepo-task-graph-design/" title="Turborepo 任务图怎么设计：从 workspace 拓扑到增量构建">Turborepo 任务图怎么设计：从 workspace 拓扑到增量构建</a><time datetime="2026-09-13T12:00:00.000Z" title="发表于 2026-09-13 20:00:00">2026-09-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/vc-blob-kv-edge-config-selection/" title="Blob、KV 与 Edge Config 的选型对比：三种&quot;边缘存储&quot;到底该用在哪儿">Blob、KV 与 Edge Config 的选型对比：三种&quot;边缘存储&quot;到底该用在哪儿</a><time datetime="2026-09-13T10:00:00.000Z" title="发表于 2026-09-13 18:00:00">2026-09-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/cf-netlify-to-cloudflare-migration/" title="从 Netlify 迁移到 Cloudflare：静态站与函数的分手清单">从 Netlify 迁移到 Cloudflare：静态站与函数的分手清单</a><time datetime="2026-09-13T07:02:00.000Z" title="发表于 2026-09-13 15:02:00">2026-09-13</time></div></div></div></div><div class="card-widget rec-card"><div style="text-align:center;padding:18px 10px;border:2px dashed #49b1f5;border-radius:8px;margin:0 auto;background:linear-gradient(135deg,#f0f9ff,#e0f2fe);"><div style="font-size:16px;font-weight:bold;color:#49b1f5;">☁️ 南影云 - 高性价比云服务器</div><div style="font-size:12px;color:#555;margin-top:6px;">上万台服务器 | T+级DDoS防护 | 无限防CC</div><div style="font-size:12px;color:#555;margin-top:4px;">🎁 通过下方链接注册享专属优惠</div><div style="margin-top:8px;"><a href="https://idc.ofoca.net/aff/PJQGAEKY" target="_blank" rel="noopener" style="display:inline-block;padding:6px 20px;background:#49b1f5;color:#fff;border-radius:16px;text-decoration:none;font-size:13px;font-weight:bold;">立即注册领优惠</a></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By mc-yzy15</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.1</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><script src="/js/tw_cn.js?v=5.5.4"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.9/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><div class="js-pjax"></div><script src="/js/webinfo-stats.js"></script><div class="ad-banner sponsor" style="text-align:center;padding:12px 10px;margin:10px auto;max-width:728px;background:linear-gradient(135deg,#fff5f5,#ffe0e0);border:1px solid<script src="/js/content-loader.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

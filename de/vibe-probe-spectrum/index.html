@@ -1,0 +1,311 @@
+<!DOCTYPE html><html lang="[&quot;zh-CN&quot;,&quot;en&quot;,&quot;zh-TW&quot;,&quot;ja&quot;,&quot;ko&quot;,&quot;fr&quot;,&quot;de&quot;,&quot;es&quot;,&quot;ru&quot;,&quot;pt&quot;,&quot;ar&quot;,&quot;hi&quot;,&quot;it&quot;,&quot;th&quot;,&quot;vi&quot;,&quot;id&quot;,&quot;tr&quot;,&quot;uk&quot;,&quot;pl&quot;,&quot;nl&quot;]" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>从自动补全到意图编程：Vibe Coding 的光谱与能力分层 | Yzy15's Blog - 技术分享与生活记录</title><meta name="author" content="mc-yzy15"><meta name="copyright" content="mc-yzy15"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="把「AI 写代码」当成一个整体来讨论，是多数团队做错技术决策的起点。本文用控制权与验证强度两条轴，把它拆成 L0 到 L4 五个层级，说明每一层的适用边界、隐性成本与升级条件，并给出可落地的选择决策树。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从自动补全到意图编程：Vibe Coding 的光谱与能力分层">
+<meta property="og:url" content="https://blogs.yzy15.dpdns.org/de/vibe-probe-spectrum/">
+<meta property="og:site_name" content="Yzy15&#39;s Blog - 技术分享与生活记录">
+<meta property="og:description" content="把「AI 写代码」当成一个整体来讨论，是多数团队做错技术决策的起点。本文用控制权与验证强度两条轴，把它拆成 L0 到 L4 五个层级，说明每一层的适用边界、隐性成本与升级条件，并给出可落地的选择决策树。">
+<meta property="og:locale" content="de_DE">
+<meta property="og:image" content="https://blogs.yzy15.dpdns.org/img/butterfly-icon.png">
+<meta property="article:published_time" content="2026-09-13T02:03:00.000Z">
+<meta property="article:modified_time" content="2026-09-12T17:33:38.964Z">
+<meta property="article:author" content="mc-yzy15">
+<meta property="article:tag" content="Vibe Coding">
+<meta property="article:tag" content="交互范式">
+<meta property="article:tag" content="工程实践">
+<meta property="article:tag" content="能力分层">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://blogs.yzy15.dpdns.org/img/favicon.ico">
+<meta name="twitter:site" content="@mc_yzy15"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "从自动补全到意图编程：Vibe Coding 的光谱与能力分层",
+  "url": "https://blogs.yzy15.dpdns.org/vibe-probe-spectrum/",
+  "image": "https://blogs.yzy15.dpdns.org/img/butterfly-icon.png",
+  "datePublished": "2026-09-13T02:03:00.000Z",
+  "dateModified": "2026-09-12T17:33:38.964Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "mc-yzy15",
+      "url": "https://yzy15.dpdns.org"
+    }
+  ]
+}
+</script><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Yzy15's Blog - 技术分享与生活记录",
+      "item": "https://blogs.yzy15.dpdns.org/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "开发者生态",
+      "item": "https://blogs.yzy15.dpdns.org/categories/%E5%BC%80%E5%8F%91%E8%80%85%E7%94%9F%E6%80%81/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "从自动补全到意图编程：Vibe Coding 的光谱与能力分层",
+      "item": "https://blogs.yzy15.dpdns.org/vibe-probe-spectrum/"
+    }
+  ]
+}
+</script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://blogs.yzy15.dpdns.org/de/vibe-probe-spectrum/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.9/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-HK1JGTYX4N"></script><script>window.dataLayer = window.dataLayer || []
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date())
+gtag('config', 'G-HK1JGTYX4N')
+btf.addGlobalFn('pjaxComplete', () => {
+  gtag('config', 'G-HK1JGTYX4N', {'page_path': window.location.pathname})
+}, 'google_analytics')
+</script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '从自动补全到意图编程：Vibe Coding 的光谱与能力分层',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 8.1.1"><link rel="alternate" href="/atom.xml" title="Yzy15's Blog - 技术分享与生活记录" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">245</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">533</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">21</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/homepage/"><i class="fa-fw fas fa-globe"></i><span> Homepage</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/stats/"><i class="fa-fw fas fa-chart-bar"></i><span> Stats</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Yzy15's Blog - 技术分享与生活记录</span></a><a class="nav-page-title" href="/"><span class="site-name">从自动补全到意图编程：Vibe Coding 的光谱与能力分层</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/homepage/"><i class="fa-fw fas fa-globe"></i><span> Homepage</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/stats/"><i class="fa-fw fas fa-chart-bar"></i><span> Stats</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">从自动补全到意图编程：Vibe Coding 的光谱与能力分层</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-09-13T02:03:00.000Z" title="发表于 2026-09-13 10:03:00">2026-09-13</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-09-12T17:33:38.964Z" title="更新于 2026-09-13 01:33:38">2026-09-13</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%BC%80%E5%8F%91%E8%80%85%E7%94%9F%E6%80%81/">开发者生态</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="从自动补全到意图编程：Vibe-Coding-的光谱与能力分层"><a href="#从自动补全到意图编程：Vibe-Coding-的光谱与能力分层" class="headerlink" title="从自动补全到意图编程：Vibe Coding 的光谱与能力分层"></a>从自动补全到意图编程：Vibe Coding 的光谱与能力分层</h1><p>在上一篇文章里，我们把 Vibe Coding 从「AI 辅助编程」「低代码」「提示词生成应用」这几个概念里切了出来。但切开之后还有一件事没做：<strong>Vibe Coding 自己内部也不是一个东西。</strong></p>
+<p>让模型补全一行 if 判断，和让一个 agent 自己读仓库、改五个文件、跑测试、失败了自己重试——这两件事的差别，比「Vibe Coding 和低代码的差别」还要大。把它们统称为「用 AI 写代码」，就等于把自行车和货轮统称为「交通工具」。</p>
+<p>这篇文章试图建立一个可用的分层模型。它不追求术语精确，追求的是<strong>让团队在讨论工具选型时，能指着某一层说「我们要的是这个，不是那个」。</strong></p>
+<h2 id="两条轴：控制权与验证强度，以及由此得出的五个层级"><a href="#两条轴：控制权与验证强度，以及由此得出的五个层级" class="headerlink" title="两条轴：控制权与验证强度，以及由此得出的五个层级"></a>两条轴：控制权与验证强度，以及由此得出的五个层级</h2><p>分层之前先确定坐标。观察大量实际工作流后，笔者发现区分度最高的两个变量是：</p>
+<ul>
+<li><strong>控制权（Control）</strong>：在一轮修改中，谁决定「改哪里、改成什么」。人逐步确认是最保守的一端，模型自主决策是另一端。</li>
+<li><strong>验证强度（Verification）</strong>：改动是否被自动化手段拦截。没有检查是最弱的一端，编译器 + 类型系统 + 测试 + 静态分析全绿是最强的一端。</li>
+</ul>
+<p>关键在于，<strong>这两条轴是独立的</strong>。很多人以为「模型越自主，验证必然越弱」，其实不然：一个被约束在「改完必须让 pnpm test 通过、否则回滚」循环里的 agent，其验证强度远高于一个人肉复制粘贴模型输出、然后直接 git commit 的开发者。</p>
+<p>反过来也成立：人手动改一行代码，验证强度也可能是零。控制权和验证强度是两个旋钮，可以分开拧。</p>
+<p>理解了这一点，就能避免一个常见错误——用「谁写的代码」来判断风险。风险取决于验证，不取决于作者是人还是模型。</p>
+<p>把它们组合起来，就得到下面这个按控制权从人到模型、验证强度从弱到强综合排序的分层，每一层都对应一种已经被广泛使用的交互形态。</p>
+<table>
+<thead>
+<tr>
+<th>层级</th>
+<th>名称</th>
+<th>典型交互</th>
+<th>控制权</th>
+<th>验证强度</th>
+<th>人的核心动作</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>L0</td>
+<td>自动补全</td>
+<td>行内 Tab 接受&#x2F;拒绝</td>
+<td>人</td>
+<td>沿用原流程</td>
+<td>判断这行对不对</td>
+</tr>
+<tr>
+<td>L1</td>
+<td>对话式生成</td>
+<td>选中代码，让模型改写，人工应用</td>
+<td>人</td>
+<td>沿用原流程</td>
+<td>审查 diff</td>
+</tr>
+<tr>
+<td>L2</td>
+<td>带护栏的生成</td>
+<td>模型改代码，自动跑 lint&#x2F;测试，失败回灌</td>
+<td>混合</td>
+<td>中到强</td>
+<td>定义护栏、看结果</td>
+</tr>
+<tr>
+<td>L3</td>
+<td>任务级 Agent</td>
+<td>给一个任务，agent 自行多文件修改并验证</td>
+<td>模型</td>
+<td>强（依赖护栏）</td>
+<td>写任务描述、验收益</td>
+</tr>
+<tr>
+<td>L4</td>
+<td>意图编程</td>
+<td>描述目标，系统持续演化产物并自证</td>
+<td>模型</td>
+<td>取决于系统设计</td>
+<td>定义目标与验收标准</td>
+</tr>
+</tbody></table>
+<p>需要强调：<strong>层级越高不代表越先进，只代表让渡的控制权越多。</strong> L4 不是 L0 的进化终点，它们是不同工具，服务不同问题。</p>
+<h2 id="L0-L1：把机械劳动还给人脑之外"><a href="#L0-L1：把机械劳动还给人脑之外" class="headerlink" title="L0-L1：把机械劳动还给人脑之外"></a>L0-L1：把机械劳动还给人脑之外</h2><p>L0 和 L1 是当今覆盖人数最多的两层，也是最没有争议的两层。</p>
+<p>L0 的形态是补全。它的价值不在「生成得多聪明」，而在<strong>摩擦极低</strong>：一次按键，一个 Tab，接受或忽略，全程不打断思考。这一层的正确使用方式是「把它当成一个打字速度更快的自己」，而不是「当成一个会思考的同事」。</p>
+<p>L1 的形态是对话式改写：选中一段代码，说「把这个回调改成 async&#x2F;await，顺便处理错误」，然后审查 diff。这一层已经能显著改变工作节奏，因为它处理的是<strong>有语义的整块逻辑</strong>。但它的关键约束没变：<strong>人必须读 diff</strong>。跳过 diff 的人，其实已经越级到了 L2 的风险区间，却还在享受 L1 的心理安全感。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># L1 使用者的典型日常——改完立刻看 diff，再看类型检查</span></span><br><span class="line">git diff --<span class="built_in">stat</span></span><br><span class="line">git diff -- src/services/payment.ts</span><br><span class="line">pnpm tsc --noEmit          <span class="comment"># 类型是第一道最便宜的护栏</span></span><br><span class="line">pnpm <span class="built_in">test</span> -- --changed     <span class="comment"># 只跑受影响的测试</span></span><br></pre></td></tr></table></figure>
+
+<p>这两层的隐性成本很低，唯一需要注意的是<strong>注意力债务</strong>：当补全过于流畅，人会逐渐降低审阅标准，把「看起来对」当成「是对的」。对抗手段很简单——把检查交给命令，而不是交给眼睛。</p>
+<h2 id="L2：真正开始有价值的分水岭"><a href="#L2：真正开始有价值的分水岭" class="headerlink" title="L2：真正开始有价值的分水岭"></a>L2：真正开始有价值的分水岭</h2><p>L2 是笔者认为当前性价比最高的一层，也是被讨论得最少的一层。</p>
+<p>它的定义是：模型直接修改工作区文件，但每一次修改后系统自动执行一组检查，检查结果被回灌给模型，模型据此修正，直到通过或者超出重试上限。人做的事从「读每一行代码」变成「定义护栏 + 判断业务语义」。</p>
+<p>这一层的价值来自一个被低估的事实：<strong>大部分 AI 生成的代码缺陷是机械性的、可被机器发现的</strong>。类型不匹配、未处理的 Promise、导入路径错误、格式违规——这些占失败原因的绝大多数，而它们全都能被现有工具零成本捕获。一旦把这些交给自动循环，人就只剩下真需要人判断的部分：这个逻辑符合业务吗？这个抽象合理吗？</p>
+<p>一个最小可用的护栏脚本大致长这样：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// package.json 中的检查聚合脚本（示意，命令名以本地配置为准）</span></span><br><span class="line"><span class="keyword">const</span> checks = [</span><br><span class="line">  [<span class="string">&#x27;typecheck&#x27;</span>, <span class="string">&#x27;tsc --noEmit&#x27;</span>],</span><br><span class="line">  [<span class="string">&#x27;lint&#x27;</span>, <span class="string">&#x27;eslint . --max-warnings=0&#x27;</span>],</span><br><span class="line">  [<span class="string">&#x27;test&#x27;</span>, <span class="string">&#x27;vitest run --changed&#x27;</span>],</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">const</span> [name, cmd] <span class="keyword">of</span> checks) &#123;</span><br><span class="line">  <span class="keyword">const</span> r = <span class="title function_">run</span>(cmd);</span><br><span class="line">  <span class="keyword">if</span> (r.<span class="property">code</span> !== <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">error</span>(<span class="string">`[gate:<span class="subst">$&#123;name&#125;</span>] failed\n<span class="subst">$&#123;r.stdout&#125;</span>`</span>);</span><br><span class="line">    process.<span class="title function_">exit</span>(<span class="number">1</span>); <span class="comment">// 交给循环，而不是交给人</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>L2 的升级条件是<strong>你真的配置了护栏</strong>。没有护栏的 L2 会退化成「模型自动改一堆文件，人一脸茫然地 review 五百行 diff」——那比 L1 更差，因为决策颗粒度变粗了。</p>
+<h2 id="L3：任务级-Agent-的收益与陷阱"><a href="#L3：任务级-Agent-的收益与陷阱" class="headerlink" title="L3：任务级 Agent 的收益与陷阱"></a>L3：任务级 Agent 的收益与陷阱</h2><p>L3 是近两年变化最快的层。交互形态从「改这段代码」变成「把这个需求做掉」：agent 自行搜索相关文件、规划修改、执行、验证、必要时回滚，结束时交付一个可评审的变更集。</p>
+<p>它真正的收益不在速度，而在<strong>并行度</strong>。一个人可以同时推进多个 L3 任务，只要这些任务的边界清晰、文件不重叠。这让「一个人做一个小团队的事」第一次变得在工程上说得通，而不只是营销话术。</p>
+<p>它的陷阱也集中在三处：</p>
+<ul>
+<li><strong>任务描述质量决定一切</strong>。L3 不是「随便说说」，好的任务描述包含目标、边界、验收标准、禁止事项，写起来接近写一份小型的 RFC。很多人抱怨 agent 不靠谱，其实是任务描述只有一句话。</li>
+<li><strong>上下文污染</strong>。agent 读到的旧代码、过期的注释、废弃的模块，会直接影响它的方案选择。仓库越混乱，L3 产出越随机。</li>
+<li><strong>错误的自信</strong>。agent 在无法完成任务时，倾向于交付一个「看起来完成」的版本，而不是明确说「我做不到」。所以验收标准必须由人预先定义，而不是事后从产物反推。</li>
+</ul>
+<p>笔者的经验法则是：<strong>L3 适合「边界清晰、验收可自动化」的任务</strong>，例如补测试、批量迁移 API、修复类型错误、给模块补齐日志。不适合「需要判断产品取舍」的任务。</p>
+<h2 id="L4：意图编程的边界在哪里"><a href="#L4：意图编程的边界在哪里" class="headerlink" title="L4：意图编程的边界在哪里"></a>L4：意图编程的边界在哪里</h2><p>L4 是标题里那个「意图编程」。它的想象图景是：你描述目标，系统自己规划、实现、验证、迭代，你只负责定义什么叫做「好」。</p>
+<p>必须诚实地讲，<strong>L4 目前只有非常窄的适用范围</strong>。它在以下条件同时成立时才可能工作：</p>
+<ol>
+<li>目标是<strong>可机器验证的</strong>（有测试、有明确的输入输出、有形式化约束）；</li>
+<li>反馈循环足够快（几秒到几分钟，而不是几小时）；</li>
+<li>搜索空间有界（技术栈固定、依赖可控、接口有限）。</li>
+</ol>
+<p>一旦缺少其中任意一条，L4 就会退化成一个成本更高、可控性更差的 L3。这也是为什么「一句话生成一个完整产品」在今天仍然是演示大于生产：演示的生命周期是十分钟，生产系统的生命周期是三年，而后者需要的是可维护性，不是生成速度。</p>
+<p>对绝大多数团队，务实的做法是<strong>把 L4 当方向，把 L2&#x2F;L3 当抓手</strong>：先让验证自动化，再让模型自主。顺序反了会很痛苦——先放权再补护栏，等于在没有安全带的时候上高速。</p>
+<h2 id="决策建议：怎么选你的层级"><a href="#决策建议：怎么选你的层级" class="headerlink" title="决策建议：怎么选你的层级"></a>决策建议：怎么选你的层级</h2><p>把上面的分析收敛成一张决策路径，可以直接用于团队讨论：</p>
+<ul>
+<li><strong>产物是临时的、失败了无后果</strong>？跳到 L3 甚至 L4，不要犹豫，这是这些层级最有价值的场景。</li>
+<li><strong>产物要长期维护</strong>？起点是 L0&#x2F;L1，先把补全和对话式改写用熟，成本几乎为零。</li>
+<li><strong>仓库有测试但覆盖率不高</strong>？优先投入 L2，先补护栏再提自动化程度，这是投入产出比最高的动作。</li>
+<li><strong>任务可并行、边界清晰</strong>？上 L3，但要为每个任务写清验收标准。</li>
+<li><strong>目标无法机器验证</strong>？停在 L2&#x2F;L3，不要指望 L4，人工判断这一环无法被跳过。</li>
+<li><strong>团队禁止读代码的人工智能产物合入主干</strong>？那就把这条规则写进规范，而不是靠个人自觉。</li>
+</ul>
+<p>一句话版本：<strong>顺着「验证先于自主」的顺序往上爬，而不是顺着「模型能力强弱」往上换工具。</strong></p>
+<h2 id="结论：分层是为了分权，不是为了排名"><a href="#结论：分层是为了分权，不是为了排名" class="headerlink" title="结论：分层是为了分权，不是为了排名"></a>结论：分层是为了分权，不是为了排名</h2><p>把 Vibe Coding 拆成 L0 到 L4，最大的作用不是排序，而是<strong>让「谁能改、谁验证」这件事变成显式选择</strong>。</p>
+<p>L0 和 L1 几乎不需要治理，因为控制权还在人手里。真正需要提前设计的是 L2 及以上的护栏形态：跑哪些检查、失败几次放弃、谁最终签字、变更集多大算可评审。这些问题没有标准答案，但每个团队都应该有答案。</p>
+<p>最后提醒一句：层级不是身份。同一个人在同一个下午，写业务逻辑时用 L1，写一次性脚本时用 L4，这是非常健康的用法。危险的是用同一套心智模型对待所有代码——那才是把工具用坏的方式。</p>
+<blockquote>
+<p><strong>说明：</strong> 本文的 L0-L4 分层为笔者自建的分析框架，用于工程讨论与工具选型，并非行业标准或任何厂商的官方定义。文中涉及的命令、包名与写法均为主流常见形式，具体行为以各工具官方最新文档为准；未引用任何未公开的统计数据。关于「L4 适用范围仍然很窄」的判断属笔者主观评估，会随工具与验证技术进步而变化，请结合自身项目风险承受能力判断。</p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a target="_blank" rel="noopener" href="https://yzy15.dpdns.org">mc-yzy15</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://blogs.yzy15.dpdns.org/vibe-probe-spectrum/">https://blogs.yzy15.dpdns.org/vibe-probe-spectrum/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。<strong>禁止商用</strong>。转载请注明来源 <a href="https://blogs.yzy15.dpdns.org" target="_blank">Yzy15's Blog - 技术分享与生活记录</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/">工程实践</a><a class="post-meta__tags" href="/tags/Vibe-Coding/">Vibe Coding</a><a class="post-meta__tags" href="/tags/%E4%BA%A4%E4%BA%92%E8%8C%83%E5%BC%8F/">交互范式</a><a class="post-meta__tags" href="/tags/%E8%83%BD%E5%8A%9B%E5%88%86%E5%B1%82/">能力分层</a></div><div class="post-share"><div class="social-share" data-image="/img/butterfly-icon.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>感谢您的支持，您的赞赏是我持续创作的动力！</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="https://img.cdn1.vip/i/69ed1d29274a9_1777147177.webp" target="_blank"><img class="post-qr-code-img" src="https://img.cdn1.vip/i/69ed1d29274a9_1777147177.webp" alt="微信赞赏"/ loading='lazy'></a><div class="post-qr-code-desc">微信赞赏</div></li></ul></div></div><div class="rec-card ad-slot ad-placement"><div style="text-align:center;padding:20px 10px;border:2px dashed #ff6b6b;border-radius:8px;margin:0 auto;background:linear-gradient(135deg,#fff5f5,#ffe0e0);"><div style="font-size:18px;font-weight:bold;color:#ff6b6b;">☁️ 南影云 - 高性价比云服务器</div><div style="font-size:13px;color:#555;margin-top:8px;">上万台服务器 | T+级DDoS防护 | 无限防CC</div><div style="font-size:13px;color:#555;margin-top:4px;">🎁 通过下方链接注册享专属优惠</div><div style="margin-top:10px;"><a href="https://idc.ofoca.net/aff/PJQGAEKY" target="_blank" rel="noopener" style="display:inline-block;padding:8px 24px;background:#ff6b6b;color:#fff;border-radius:20px;text-decoration:none;font-size:14px;font-weight:bold;">立即注册领优惠</a></div><div style="font-size:11px;color:#999;margin-top:6px;">注册后联系博主可再领额外折扣</div></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/cf-d1-sqlite-schema-migration/" title="边缘 SQLite 的 Schema 迁移：把 DDL 当作可回滚的发布流程"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">边缘 SQLite 的 Schema 迁移：把 DDL 当作可回滚的发布流程</div></div><div class="info-2"><div class="info-item-1">边缘 SQLite 的 Schema 迁移：把 DDL 当作可回滚的发布流程应用代码可以灰度、可以回滚、可以同时跑两个版本，但数据库 schema 只有一个。在边缘 SQLite 场景下，这个矛盾会被放大：因为边缘应用是就近执行的，多个版本的 Worker 可能同时在线，它们会同时按自己的假设读写同一套表结构。本文讨论的是如何在这种约束下做 schema 迁移，而不是教 ALTER TABLE 的语法。 SQLite 的 DDL 特性如何约束迁移设计SQLite 有一个与其他数据库很不相同的特性：它的 ALTER TABLE 能力非常有限。长期以来它只能做「加列」「重命名表」「重命名列」这类操作，而改列类型、改约束、删列、调整主键这些需求，需要通过「建新表 → 复制数据 → 删旧表 → 重命名」这一整套重建流程来完成。这个流程本身是标准做法，但它有一个直接的工程后果：很多看似微小的 schema 变更，其实是一次数据搬运。 数据搬运在我们关心的环境里有三个代价。第一是行读写开销，复制整表意味着读一遍写一遍，这与按行计费的模型直接相关。第二是执行时长，大表的复制可能超出单次请求或单...</div></div></div></a><a class="pagination-related" href="/cf-d1-sqlite-quota-cost-model/" title="D1 成本与配额模型拆解：行读写、存储与按量计费的隐藏成本"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">D1 成本与配额模型拆解：行读写、存储与按量计费的隐藏成本</div></div><div class="info-2"><div class="info-item-1">D1 成本与配额模型拆解：行读写、存储与按量计费的隐藏成本在传统关系型数据库里，估算成本主要看实例规格和并发连接数，SQL 写得好不好通常不影响账单。到了边缘托管的 SQLite 方案上，这套直觉会失效：D1 的计费核心是行读写次数与存储量，而不是实例规格。这意味着一次慢查询和一次快查询可能同价，而一次被索引优化掉的扫描和一次全表扫描可能差出好几个数量级。理解这个模型，是控制成本的前提。 计费维度到底看什么按公开的计费口径，D1 的费用主要由几块构成：读操作触及的行数、写操作触及的行数、存储的数据量与备份占用、以及超出免费额度后的按量费用。不同套餐在额度、并发和可用能力上有差别，具体数值以官方定价页为准。本文关心的是这些维度背后的行为机制，而不是记住一串会变的数字。 需要特别理解的一点是「行」这个计量单位。一条 SELECT 如果通过索引精确定位到一行，成本约等于一次行读；如果它退化成全表扫描，扫过的每一行都可能计入读行数。所以在 D1 上，索引不是性能优化，而是成本优化。这跟传统数据库里「索引主要为了快」的心智模型有本质区别。 写操作同理。单行 INSERT 计一次写；如果表上...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/vibe-probe-spectrum/" title="从自动补全到意图编程：Vibe Coding 的光谱与能力分层"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-13</div><div class="info-item-2">从自动补全到意图编程：Vibe Coding 的光谱与能力分层</div></div><div class="info-2"><div class="info-item-1">从自动补全到意图编程：Vibe Coding 的光谱与能力分层在上一篇文章里，我们把 Vibe Coding 从「AI 辅助编程」「低代码」「提示词生成应用」这几个概念里切了出来。但切开之后还有一件事没做：Vibe Coding 自己内部也不是一个东西。 让模型补全一行 if 判断，和让一个 agent 自己读仓库、改五个文件、跑测试、失败了自己重试——这两件事的差别，比「Vibe Coding 和低代码的差别」还要大。把它们统称为「用 AI 写代码」，就等于把自行车和货轮统称为「交通工具」。 这篇文章试图建立一个可用的分层模型。它不追求术语精确，追求的是让团队在讨论工具选型时，能指着某一层说「我们要的是这个，不是那个」。 两条轴：控制权与验证强度，以及由此得出的五个层级分层之前先确定坐标。观察大量实际工作流后，笔者发现区分度最高的两个变量是：  控制权（Control）：在一轮修改中，谁决定「改哪里、改成什么」。人逐步确认是最保守的一端，模型自主决策是另一端。 验证强度（Verification）：改动是否被自动化手段拦截。没有检查是最弱的一端，编译器 + 类型系统 + 测试 ...</div></div></div></a><a class="pagination-related" href="/agent-memory-design/" title="Agent 记忆设计入门：缓存、档案与遗忘"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-06</div><div class="info-item-2">Agent 记忆设计入门：缓存、档案与遗忘</div></div><div class="info-2"><div class="info-item-1">Agent 记忆设计入门：缓存、档案与遗忘GPT-6 时代，模型上下文窗口已经可以塞下几十万 token——但 Agent 依然需要专门的记忆系统。因为”塞得下”不等于”记得住”，更不等于”能在正确的时候想起正确的事”。当 Agent 开始跑跨越多轮、持续数周的真实任务，记忆架构成为决定成败的隐藏变量。 三层记忆架构参考人类记忆的分层，Agent 记忆通常设计为三层：  工作记忆（短期）：当前任务进行中的上下文——就是模型上下文窗口本身。设计要点是”够用即可”，塞太多无关内容反而会干扰推理； 情景记忆（中期）：跨会话的关键信息——之前处理过什么、用户偏好、进行到哪一步。通常存结构化记录或向量库，任务恢复时按需召回； 语义记忆（长期）：沉淀下来的领域知识、项目规范、历史决策——类似团队的 Wiki，为所有任务提供稳定的背景知识。  比”存”更重要的是”取”大多数记忆系统做不好，不是因为存不下，而是因为取不对：  相关性优先：召回记忆时，只取与当前任务真正相关的片段——把十万条记忆全塞进上下文，等于没有记忆； 时效性权重：三个月前的决定可能已经过期，召回时要考虑时间衰减； 来源可信度...</div></div></div></a><a class="pagination-related" href="/browser-agent-architecture/" title="浏览器 Agent 的技术栈拆解"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-06</div><div class="info-item-2">浏览器 Agent 的技术栈拆解</div></div><div class="info-2"><div class="info-item-1">浏览器 Agent 的技术栈拆解当 GPT-6 把”操作电脑”变成模型能力，浏览器 Agent（能自主打开网页、填表、点击、完成任务的 AI）成为最热门的落地形态。但做过的人都知道：让模型”看懂”网页容易，让 Agent”稳定操作”很难。 拆开一个生产级浏览器 Agent，技术栈大致分三层。 第一层：网页理解（页面怎么”看”）模型读网页有三种路径，各有取舍：  DOM&#x2F;无障碍树（Accessibility Tree）：直接把页面的结构化语义（按钮、输入框、链接）喂给模型——精确、省 token，是当前主流首选； 纯视觉（截图）：模型直接看渲染后的截图——最接近人眼，能处理 Canvas、复杂图表，但 token 消耗高、对像素级操作不稳定； 混合方案：以无障碍树为主干，遇到动态内容或视觉元素时切截图补充——工程上的折中主流。  第二层：操作执行（手怎么动）理解了页面，Agent 还要”动手”。可靠性设计是关键：  选择器 vs 坐标：优先用语义选择器（按钮 ID&#x2F;角色）定位元素，坐标点击只作兜底——页面布局一变，坐标就废了； 状态验证：每次操作后要验证页面状态...</div></div></div></a><a class="pagination-related" href="/vibe-probe-definition/" title="Vibe Coding 到底是什么：一次概念澄清"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-13</div><div class="info-item-2">Vibe Coding 到底是什么：一次概念澄清</div></div><div class="info-2"><div class="info-item-1">Vibe Coding 到底是什么：一次概念澄清「Vibe Coding」大概是这几年被引用得最多、被定义得最少的开发术语之一。它第一次进入大众视野时，描述的是一种相当具体的行为：你不看代码，只凭感觉（vibe）描述你想要什么，让模型反复改，直到跑出来的东西看起来对了。但两年过去，这个词已经被厂商、媒体和招聘启事反复借用，如今既能指「用 Copilot 补全一行函数」，也能指「一句话生成一个 App」，甚至能指「产品经理自己搭了个内部工具」。 当一个词同时指代这么多东西，它就失去了沟通能力。本文想做的事情很朴素：把 Vibe Coding 和它最容易混淆的三个邻居——AI 辅助编程、低代码平台、提示词生成应用——放到同一张桌子上，用可操作的标准把它们切开。 为什么这个词一定需要澄清，以及从哪些维度澄清概念含混不只是学术问题，它会直接造成工程上的误判。 第一类误判是风险误判。如果团队把「让模型补全单元测试」和「让模型不改测试直接改实现直到变绿」都叫 Vibe Coding，那么针对前者制定的代码评审流程，会被后者悄悄绕过——因为流程的假设是「人始终读得懂改动」。 第二类误判是能力误...</div></div></div></a><a class="pagination-related" href="/agent-cost-control/" title="Agent 账单失控：token 成本治理三板斧"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-06</div><div class="info-item-2">Agent 账单失控：token 成本治理三板斧</div></div><div class="info-2"><div class="info-item-1">Agent 账单失控：token 成本治理三板斧聊天机器人的 token 账单是可预测的，Agent 的不是——一个”看起来简单”的任务可能包含几十次模型调用、几万 token 的上下文往返。许多团队在 Agent 上线第一周就被账单教育了：Agent 的成本问题，必须在架构阶段就治理，而不是等账单来了再救火。 为什么 Agent 这么烧钱Agent 的成本结构与传统对话完全不同：  调用次数爆炸：一次任务 &#x3D; 规划 + N 次工具调用 + N 次结果反思，每次都是一次完整的模型往返； 上下文膨胀：工具返回结果、历史步骤、项目背景都在往上下文里塞，输入 token 是最大的成本黑洞； 失败重试成本：Agent 出错重试不是免费重来——每次重试都重新烧一遍钱。  三板斧之一：压缩（输入瘦身） 工具结果裁剪：工具返回 5000 token 的数据，只把相关的 500 token 喂给模型——别让”全量返回”白白烧钱； 历史摘要化：长任务不需要完整保留每轮对话，跑几步就压缩一次历史，只留决策要点； 上下文预算：给每类任务设上下文上限，超过就强制精简或切换更便宜的模型档。  三...</div></div></div></a><a class="pagination-related" href="/agent-eval-methodology/" title="怎么评估一个 Agent 真的能用"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-06</div><div class="info-item-2">怎么评估一个 Agent 真的能用</div></div><div class="info-2"><div class="info-item-1">怎么评估一个 Agent 真的能用千问用”10 万元本金经营 365 天”来考 AI 店长，厂商们用”任务完成率”宣传自己的 Agent——但作为买家，怎么判断一个 Agent 在你的场景里真的能用？单看厂商的”完成率”远远不够，你需要一套自己的评估框架。 为什么”完成率”不够用“任务完成率 90%”这个数字无法回答的问题太多了：任务集是什么？简单还是复杂？”完成”的定义是什么——是交付了结果，还是结果经过验证是对的？失败时是自动恢复还是需要人救火？同一个 90%，可能是”只挑简单任务测”的结果，也可能是”真刀真枪”的成绩。 四维评估框架评估一个 Agent，建议从四个维度打分：  端到端成功率：从下任务到拿结果，不人工干预的成功比例。注意要分层统计——简单任务、中等任务、复杂任务分开报，别只看平均数； 干预率：每完成 N 个任务，需要人类介入多少次？这是”无人值守”程度的直接度量——比成功率更反映工程成熟度； 错误严重度：Agent 失败不可怕，可怕的是”失败得很危险”——把错误按”可自动恢复 &#x2F; 需要修正 &#x2F; 造成破坏”分级统计； 成本效率：完成一个任务消...</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">mc-yzy15</div><div class="author-info-description">Yzy15的个人博客 | 技术教程 · 编程经验 · 学习笔记</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">245</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">533</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">21</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/mc-yzy15"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://yzy15.dpdns.org" target="_blank" title="个人主页"><i class="fas fa-home" style="color: #ff6600;"></i></a><a class="social-icon" href="https://github.com/mc-yzy15" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:yingmoliuguang@yeah.net" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a><a class="social-icon" href="https://space.bilibili.com/1338637552" target="_blank" title="Bilibili"><i class="fab fa-bilibili" style="color: #00a1d6;"></i></a><a class="social-icon" href="https://t.me/ShuangXiang_Dddddavidd_bot" target="_blank" title="Telegram"><i class="fab fa-telegram" style="color: #0088cc;"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="RSS"><i class="fas fa-rss" style="color: #ff6600;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到我的博客！这里记录着我的技术分享和生活点滴~<br>📢 <a href="/link/">广告位招租</a> | 💼 商业合作见<a href="/link/">友链页</a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%8E%E8%87%AA%E5%8A%A8%E8%A1%A5%E5%85%A8%E5%88%B0%E6%84%8F%E5%9B%BE%E7%BC%96%E7%A8%8B%EF%BC%9AVibe-Coding-%E7%9A%84%E5%85%89%E8%B0%B1%E4%B8%8E%E8%83%BD%E5%8A%9B%E5%88%86%E5%B1%82"><span class="toc-number">1.</span> <span class="toc-text">从自动补全到意图编程：Vibe Coding 的光谱与能力分层</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%A4%E6%9D%A1%E8%BD%B4%EF%BC%9A%E6%8E%A7%E5%88%B6%E6%9D%83%E4%B8%8E%E9%AA%8C%E8%AF%81%E5%BC%BA%E5%BA%A6%EF%BC%8C%E4%BB%A5%E5%8F%8A%E7%94%B1%E6%AD%A4%E5%BE%97%E5%87%BA%E7%9A%84%E4%BA%94%E4%B8%AA%E5%B1%82%E7%BA%A7"><span class="toc-number">1.1.</span> <span class="toc-text">两条轴：控制权与验证强度，以及由此得出的五个层级</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#L0-L1%EF%BC%9A%E6%8A%8A%E6%9C%BA%E6%A2%B0%E5%8A%B3%E5%8A%A8%E8%BF%98%E7%BB%99%E4%BA%BA%E8%84%91%E4%B9%8B%E5%A4%96"><span class="toc-number">1.2.</span> <span class="toc-text">L0-L1：把机械劳动还给人脑之外</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#L2%EF%BC%9A%E7%9C%9F%E6%AD%A3%E5%BC%80%E5%A7%8B%E6%9C%89%E4%BB%B7%E5%80%BC%E7%9A%84%E5%88%86%E6%B0%B4%E5%B2%AD"><span class="toc-number">1.3.</span> <span class="toc-text">L2：真正开始有价值的分水岭</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#L3%EF%BC%9A%E4%BB%BB%E5%8A%A1%E7%BA%A7-Agent-%E7%9A%84%E6%94%B6%E7%9B%8A%E4%B8%8E%E9%99%B7%E9%98%B1"><span class="toc-number">1.4.</span> <span class="toc-text">L3：任务级 Agent 的收益与陷阱</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#L4%EF%BC%9A%E6%84%8F%E5%9B%BE%E7%BC%96%E7%A8%8B%E7%9A%84%E8%BE%B9%E7%95%8C%E5%9C%A8%E5%93%AA%E9%87%8C"><span class="toc-number">1.5.</span> <span class="toc-text">L4：意图编程的边界在哪里</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%B3%E7%AD%96%E5%BB%BA%E8%AE%AE%EF%BC%9A%E6%80%8E%E4%B9%88%E9%80%89%E4%BD%A0%E7%9A%84%E5%B1%82%E7%BA%A7"><span class="toc-number">1.6.</span> <span class="toc-text">决策建议：怎么选你的层级</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E8%AE%BA%EF%BC%9A%E5%88%86%E5%B1%82%E6%98%AF%E4%B8%BA%E4%BA%86%E5%88%86%E6%9D%83%EF%BC%8C%E4%B8%8D%E6%98%AF%E4%B8%BA%E4%BA%86%E6%8E%92%E5%90%8D"><span class="toc-number">1.7.</span> <span class="toc-text">结论：分层是为了分权，不是为了排名</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/vc-monorepo-package-boundaries/" title="Monorepo 包边界治理：依赖方向、公开 API 与循环依赖的工程约束">Monorepo 包边界治理：依赖方向、公开 API 与循环依赖的工程约束</a><time datetime="2026-09-13T12:04:00.000Z" title="发表于 2026-09-13 20:04:00">2026-09-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/vc-monorepo-remote-cache-ops/" title="Turborepo 远程缓存落地的三个硬问题：隔离、命中率与命中失败">Turborepo 远程缓存落地的三个硬问题：隔离、命中率与命中失败</a><time datetime="2026-09-13T12:02:00.000Z" title="发表于 2026-09-13 20:02:00">2026-09-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/vc-monorepo-task-graph-design/" title="Turborepo 任务图怎么设计：从 workspace 拓扑到增量构建">Turborepo 任务图怎么设计：从 workspace 拓扑到增量构建</a><time datetime="2026-09-13T12:00:00.000Z" title="发表于 2026-09-13 20:00:00">2026-09-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/vc-blob-kv-edge-config-selection/" title="Blob、KV 与 Edge Config 的选型对比：三种&quot;边缘存储&quot;到底该用在哪儿">Blob、KV 与 Edge Config 的选型对比：三种&quot;边缘存储&quot;到底该用在哪儿</a><time datetime="2026-09-13T10:00:00.000Z" title="发表于 2026-09-13 18:00:00">2026-09-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/cf-netlify-to-cloudflare-migration/" title="从 Netlify 迁移到 Cloudflare：静态站与函数的分手清单">从 Netlify 迁移到 Cloudflare：静态站与函数的分手清单</a><time datetime="2026-09-13T07:02:00.000Z" title="发表于 2026-09-13 15:02:00">2026-09-13</time></div></div></div></div><div class="card-widget rec-card"><div style="text-align:center;padding:18px 10px;border:2px dashed #49b1f5;border-radius:8px;margin:0 auto;background:linear-gradient(135deg,#f0f9ff,#e0f2fe);"><div style="font-size:16px;font-weight:bold;color:#49b1f5;">☁️ 南影云 - 高性价比云服务器</div><div style="font-size:12px;color:#555;margin-top:6px;">上万台服务器 | T+级DDoS防护 | 无限防CC</div><div style="font-size:12px;color:#555;margin-top:4px;">🎁 通过下方链接注册享专属优惠</div><div style="margin-top:8px;"><a href="https://idc.ofoca.net/aff/PJQGAEKY" target="_blank" rel="noopener" style="display:inline-block;padding:6px 20px;background:#49b1f5;color:#fff;border-radius:16px;text-decoration:none;font-size:13px;font-weight:bold;">立即注册领优惠</a></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By mc-yzy15</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.1</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><script src="/js/tw_cn.js?v=5.5.4"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.9/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><div class="js-pjax"></div><script src="/js/webinfo-stats.js"></script><div class="ad-banner sponsor" style="text-align:center;padding:12px 10px;margin:10px auto;max-width:728px;background:linear-gradient(135deg,#fff5f5,#ffe0e0);border:1px solid<script src="/js/content-loader.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
