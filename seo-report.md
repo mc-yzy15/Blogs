@@ -1,12 +1,12 @@
 # SEO Analysis Report
 
-Generated: 2026-09-12 06:44:43
+Generated: 2026-09-12 17:33:45
 
 ## Summary
 
-- **Total Articles**: 205
+- **Total Articles**: 229
 - **Average SEO Score**: 99.9/100
-- **High Score (>80)**: 205
+- **High Score (>80)**: 229
 - **Medium Score (50-80)**: 0
 - **Low Score (<50)**: 0
 
@@ -31,6 +31,7 @@ Generated: 2026-09-12 06:44:43
 | [新机潮前怎么买旧机：2026 下半购机建议](source/_posts/iphone-old-model-buying.md) | 100 | None |
 | [本地优先的 Agent：隐私与可控的另一条路](source/_posts/local-first-agent-reminder.md) | 100 | None |
 | [具身智能 200 亿融资与 13 家百亿公司：热钱去哪了](source/_posts/china-embodied-ai-financing.md) | 100 | None |
+| [在边缘做区域化路由：数据驻留与合规的架构落地](source/_posts/cf-edge-regional-routing-architecture.md) | 100 | None |
 | [2026 的"AI 手机"到底指什么](source/_posts/ai-phone-2026-meaning.md) | 100 | None |
 | [二手旗舰市场升温：环保与钱包的合谋](source/_posts/secondhand-flagship-market.md) | 100 | None |
 | [企业 AI 预算走向：2027 会花在哪](source/_posts/enterprise-ai-budget-2027.md) | 100 | None |
@@ -41,13 +42,16 @@ Generated: 2026-09-12 06:44:43
 | [当"屠榜"成为日常：大模型评测基准正在集体失效](source/_posts/model-benchmark-saturation.md) | 100 | None |
 | [AI 视频进入淘汰赛：可灵领跑、Sora 离场，下一位轮到谁](source/_posts/ai-video-elimination-race.md) | 100 | None |
 | [MCP 的"USB-C 时刻"：一个协议如何统一 AI Agent 的工具生态](source/_posts/mcp-usb-c-moment.md) | 100 | None |
+| [多云边缘拓扑：让 Cloudflare 与非 Cloudflare 后端共存](source/_posts/cf-edge-multicloud-topology.md) | 100 | None |
 | [中国机器人的全球份额叙事](source/_posts/china-robot-global-share.md) | 100 | None |
 | [AI 耳机的新玩法：翻译、录音与助理](source/_posts/ai-earbuds-2026.md) | 100 | None |
 | [自动化工作流的审计与可回滚设计](source/_posts/autonomous-workflow-audit.md) | 100 | None |
 | [国产旗舰横评：Qwen3 Max、Kimi K3、DeepSeek V4 离"一](source/_posts/qwen-kimi-deepseek-vs-overseas.md) | 100 | None |
 | [从"API 经济"到"Agent 经济"：开发者正在从写接口转向写技能](source/_posts/from-api-economy-to-agent-economy.md) | 100 | None |
 | [快手分拆可灵：视频生成公司的资本故事](source/_posts/kuaishou-split-kling.md) | 100 | None |
+| [从 Netlify 迁移到 Cloudflare：静态站与函数的分手清单](source/_posts/cf-netlify-to-cloudflare-migration.md) | 100 | None |
 | [GPT-6 Astra 的"AGI 时刻"：99.9% 与 62.7% 为何争议](source/_posts/gpt6-astra-agiclaim-debate.md) | 100 | None |
+| [Cloudflare Vectorize 做 RAG 的完整架构：从索引构建到召](source/_posts/cf-vectorize-rag-architecture-basics.md) | 100 | None |
 | [Robotaxi 的 2026：中美同时撞线规模运营](source/_posts/robotaxi-turning-point-2026.md) | 100 | None |
 | [从库克到特努斯：苹果的权力交接如何改变产品决策](source/_posts/ternus-era-apple-strategy.md) | 100 | None |
 | [浏览器 Agent 的技术栈拆解](source/_posts/browser-agent-architecture.md) | 100 | None |
@@ -63,6 +67,7 @@ Generated: 2026-09-12 06:44:43
 | [折叠 iPhone 供应链观察：铰链、屏幕与良率](source/_posts/foldable-iphone-supply-chain.md) | 100 | None |
 | [小米开源表格大模型 Xiaomi-TabLDM：被忽视的基础设施](source/_posts/tabldm-xiaomi-model.md) | 100 | None |
 | [40-62% 漏洞率：AI 生成代码的安全债怎么还](source/_posts/ai-code-vulnerability-rates.md) | 100 | None |
+| [边缘 SQLite 的 Schema 迁移：把 DDL 当作可回滚的发布流程](source/_posts/cf-d1-sqlite-schema-migration.md) | 100 | None |
 | [AI 搜索的 2026：当"搜索"从链接分发变成答案生成，流量逻辑被改写](source/_posts/ai-search-2026-evolution.md) | 100 | None |
 | [给 Agent 一台电脑之后：OS 权限治理手册](source/_posts/computer-use-safety.md) | 100 | None |
 | [端侧 AI 芯片四方混战：骁龙、天玑、酷睿与苹果的算力暗战](source/_posts/edge-ai-chip-quad-battle.md) | 100 | None |
@@ -78,6 +83,7 @@ Generated: 2026-09-12 06:44:43
 | [Xcode 27 的智能体工作流：苹果的开发者 AI 押注](source/_posts/xcode-27-agentic-flows.md) | 100 | None |
 | [DeepSeek V4.1 前瞻：开源、低价与"斩杀线"还能复制吗](source/_posts/deepseek-v4-1-preview.md) | 100 | None |
 | [超级发布周复盘：9 月 1-5 日改变了什么](source/_posts/super-release-week-review.md) | 100 | None |
+| [边缘计算的安全边界：哪些防线属于平台，哪些必须自己建](source/_posts/cf-edge-security-boundary-model.md) | 100 | None |
 | [腾讯开悟深度测评：一场硬件与软件的"套娃"噩梦，普通开发者的绝望指南](source/_posts/tencent-kaiwu-rant.md) | 100 | None |
 | [Anthropic 150 亿美元信贷：IPO 前夜的算力豪赌](source/_posts/anthropic-150b-credit-line.md) | 100 | None |
 | [天玑 9600 与联发科的"艰难时刻"：从性价比之王到高端玩家的跨越](source/_posts/dimensity-9600-mediatek-challenge.md) | 100 | None |
@@ -86,6 +92,7 @@ Generated: 2026-09-12 06:44:43
 | [小米 MiMo Code 任务闭环：终端 AI 编程的下半场](source/_posts/xiaomi-mimo-closed-loop.md) | 100 | None |
 | [八周连发五款：国产大模型进入体系化竞争的下半场](source/_posts/china-llm-systemic-competition.md) | 100 | None |
 | [GPU 云价格战与算力过剩：AI 基础设施从"卖方市场"转向"买方市场"](source/_posts/gpu-cloud-price-war.md) | 100 | None |
+| [边缘到源站的私网路径：把回源流量收进隧道里](source/_posts/cf-edge-private-networking-architecture.md) | 100 | None |
 | [NVIDIA Rubin 量产前夜：架构换代背后的客户账](source/_posts/nvidia-rubin-before-launch.md) | 100 | None |
 | [自建 LLM API 网关一年复盘：鉴权、限流、渠道与账单，我踩过的坑](source/_posts/llm-api-gateway-year-one.md) | 100 | None |
 | [2026 年了，为什么我还坚持自己搭博客？](source/_posts/why-selfhost-blog-2026.md) | 100 | None |
@@ -96,9 +103,12 @@ Generated: 2026-09-12 06:44:43
 | [Cybercab 上路第一周的争议：让行、翻车与接管](source/_posts/cybercab-safety-first-week.md) | 100 | None |
 | [全球 AI 监管四大流派：欧盟、美国、中国与"轻监管"阵营的分野](source/_posts/global-ai-regulation-compare.md) | 100 | None |
 | [Anthropic 收入与估值反超 OpenAI？](source/_posts/anthropic-revenue-superiority.md) | 100 | None |
+| [D1 成本与配额模型拆解：行读写、存储与按量计费的隐藏成本](source/_posts/cf-d1-sqlite-quota-cost-model.md) | 100 | None |
+| [Pages 与 Workers 的边界在哪里：静态托管选型的技术判断](source/_posts/cf-pages-vs-workers-static.md) | 100 | None |
 | [三大 AI 服务集体宕机四小时：集中化的代价](source/_posts/us-ai-outage-lessons.md) | 100 | None |
 | [骁龙/天玑/玄戒同台：SoC 三强格局](source/_posts/dimensity-x-surge-o3-qualcomm.md) | 100 | None |
 | [GLM-5.3 Flash 与 10 万张国产卡：智谱的算力宣言](source/_posts/glm-53-flash-domestic-cards.md) | 100 | None |
+| [Monorepo 包边界治理：依赖方向、公开 API 与循环依赖的工程约束](source/_posts/vc-monorepo-package-boundaries.md) | 100 | None |
 | [GitHub Agent 项目一年涨 340%：开源正在"代理化"](source/_posts/agent-open-source-340pct.md) | 100 | None |
 | [2026 大模型 API 价格战复盘：价格屠夫轮流坐，用户真的赢了吗？](source/_posts/llm-api-price-war-2026.md) | 100 | None |
 | [石头科技无缆泳池机器人：清洁电器的边界扩张](source/_posts/roborock-pool-robot.md) | 100 | None |
@@ -109,6 +119,7 @@ Generated: 2026-09-12 06:44:43
 | [长鑫 LPDDR5X 上手机：存储国产化的一小步](source/_posts/changxin-lpddr5x-memory.md) | 100 | None |
 | [安卓旗舰起售价逼近 6000：价格天花板重构](source/_posts/android-flagship-6000-boundary.md) | 100 | None |
 | [智能家居需要新的 Agent 标准](source/_posts/smart-home-agent-standard.md) | 100 | None |
+| [边缘网络的解剖学：一次请求如何穿过 Cloudflare 的全球拓扑](source/_posts/cf-edge-network-anatomy.md) | 100 | None |
 | [联想把千亿参数装进 AI PC：端侧算力的新高度](source/_posts/ai-pc-ifa-nvidia.md) | 100 | None |
 | [小鹏机器人 9 亿美元融资：车企造人的新范式](source/_posts/xpeng-robot-900m.md) | 100 | None |
 | [HBM 与存储超级周期：涨价会持续多久](source/_posts/hbm-storage-cycle-still.md) | 100 | None |
@@ -122,6 +133,7 @@ Generated: 2026-09-12 06:44:43
 | [字节、阿里、腾讯 AI 军备竞赛的三种姿势](source/_posts/baidu-alibaba-tencent-ai-race.md) | 100 | None |
 | [特斯拉城市 NOA 提速：FSD 入华进入快车道](source/_posts/fsd-china-accelerating.md) | 100 | None |
 | [2026 下半年自部署开源模型选型指南](source/_posts/local-model-deployment-guide-2026.md) | 100 | None |
+| [从 Vercel 迁移到 Cloudflare：一条可回退的完整路径](source/_posts/cf-vercel-to-cloudflare-migration-path.md) | 100 | None |
 | [旗舰模型的新护城河：数据飞轮、安全与生态](source/_posts/frontier-model-moats.md) | 100 | None |
 | [手机厂商集体押注"智能体化 OS"：下一代入口之争已经开打](source/_posts/ai-phone-agent-os-trend.md) | 100 | None |
 | [GLM-5.3 Flash 对标 DeepSeek V4 Flash：轻量旗舰怎](source/_posts/glm-53-vs-deepseek-flash.md) | 100 | None |
@@ -149,20 +161,25 @@ Generated: 2026-09-12 06:44:43
 | [独立开发者的 2026 上半年：钱没多赚，工具倒是越买越多](source/_posts/indie-hacker-midyear-2026.md) | 100 | None |
 | [Gemini 3.8 Flash：轻量模型的迭代竞赛，赢家不是跑分](source/_posts/gemini-3-8-flash-analysis.md) | 100 | None |
 | [提示注入与 Agent 安全：当 AI 会"被骗"时，应用如何自保](source/_posts/prompt-injection-ai-security.md) | 100 | None |
+| [Blob、KV 与 Edge Config 的选型对比：三种"边缘存储"到底该用](source/_posts/vc-blob-kv-edge-config-selection.md) | 100 | None |
 | [Flash 围城：DeepSeek、智谱、阿里为何集体做轻量](source/_posts/flash-tier-war-china.md) | 100 | None |
 | [欧盟 GPAI 义务进入执行期：出海企业 checklist](source/_posts/eu-ai-act-gpai-summer.md) | 100 | None |
 | [宇树上市后第一周：A 股"人形机器人第一股"的估值真相](source/_posts/unitree-ipo-aftermath.md) | 100 | None |
 | [Fable 5.1 登顶编程榜：我们该怎么读编程基准](source/_posts/claude-fable51-coding-benchmarks.md) | 100 | None |
 | [OpenAI Codex 的"计费信任危机"：当 AI 编程开始偷偷烧钱](source/_posts/openai-codex-trust-crisis.md) | 100 | None |
 | [GPT-6 Astra 发布：当 OpenAI 把"智能上限"写进名字](source/_posts/gpt-6-astra-analysis.md) | 100 | None |
+| [从自动补全到意图编程：Vibe Coding 的光谱与能力分层](source/_posts/vibe-probe-spectrum.md) | 100 | None |
 | [为什么每家模型公司都在谈 Agentic](source/_posts/why-everyone-says-agentic.md) | 100 | None |
 | [从按 token 到按任务付费：AI 商业化的终局？](source/_posts/api-economy-to-task-economy.md) | 100 | None |
 | [小米 18 Fold 与玄戒 O3：自研芯片的折叠答卷](source/_posts/xiaomi-18-fold-surge-o3.md) | 100 | None |
 | [豆包手机获入网许可：字节把 AI 塞进终端的野望](source/_posts/doubao-phone-nubia.md) | 100 | None |
 | [Meta Muse Voice Transcribe：0.18 美元/小时的语音](source/_posts/meta-muse-voice-transcribe.md) | 100 | None |
 | [国产开源模型全景：谁能接住"开源+便宜"的接力棒](source/_posts/open-source-llm-china-2026.md) | 100 | None |
+| [预览部署工作流设计：用 Cloudflare Pages 把评审成本压到最低](source/_posts/cf-pages-preview-deploy-workflow.md) | 100 | None |
+| [D1 与 SQLite 的读副本一致性模型：延迟、顺序与故障恢复](source/_posts/cf-d1-sqlite-consistency-model.md) | 100 | None |
 | [iPhone 18 系列看点：Pro/Ultra 与首款折叠](source/_posts/iphone-18-series-rumor.md) | 100 | None |
 | [Cursor 被 SpaceX 收购百日后：600 亿估值下走钢丝](source/_posts/cursor-spacex-post-acquisition.md) | 100 | None |
+| [Pages Functions 实战：在静态站点里安全地嵌入动态能力](source/_posts/cf-pages-functions-runtime-guide.md) | 100 | None |
 | [彩墨屏手机回潮：护眼叙事的第二春](source/_posts/e-ink-color-display.md) | 100 | None |
 | [存储的"超级周期"：HBM 与 AI 之外，内存厂商才是最大赢家？](source/_posts/memory-storage-supercycle-2026.md) | 100 | None |
 | [Gemini 3.8 Flash Cyber：谷歌把"网络安全"做成了模型品类](source/_posts/gemini-38-flash-cyber.md) | 100 | None |
@@ -179,12 +196,14 @@ Generated: 2026-09-12 06:44:43
 | [阿里云与平头哥合体：AI 云与算力分部的 45% 增长](source/_posts/alibaba-cloud-ai-restructure.md) | 100 | None |
 | [Robotaxi 双雄对决：萝卜快跑与 Waymo 的全球棋局](source/_posts/robotaxi-duel-baidu-waymo.md) | 100 | None |
 | [Agent 记忆设计入门：缓存、档案与遗忘](source/_posts/agent-memory-design.md) | 100 | None |
+| [Turborepo 任务图怎么设计：从 workspace 拓扑到增量构建](source/_posts/vc-monorepo-task-graph-design.md) | 100 | None |
 | [Qwen3.8-Max-0902：2.4T 参数与 1M 上下文背后的阿里节奏](source/_posts/qwen38-max-0902-analysis.md) | 100 | None |
 | [AI 帮我写了半年代码，为什么我反而更累了？](source/_posts/ai-coding-half-year.md) | 100 | None |
 | [Kimi 的 Agent 编程野望：从长上下文到任务闭环](source/_posts/kimi-agent-coding-position.md) | 100 | None |
 | [Claude Fable 5.1：八项屠榜与最高 45% 降价的组合拳](source/_posts/claude-fable-5-1-analysis.md) | 100 | None |
 | [Agent 账单失控：token 成本治理三板斧](source/_posts/agent-cost-control.md) | 100 | None |
 | [NVIDIA 两年千亿美元投资组合盘点](source/_posts/nvidia-100b-invest-portfolio.md) | 100 | None |
+| [Anycast 的代价：全球负载均衡为什么不能只看"最近"](source/_posts/cf-edge-anycast-routing-tradeoffs.md) | 100 | None |
 | [各家都在发 Flash，DeepSeek 下一步该打什么牌](source/_posts/deepseek-wait-whats-next.md) | 100 | None |
 | [特斯拉 Cybercab 开放公众服务：方向盘消失的"行业时刻"](source/_posts/tesla-cybercab-public-service.md) | 100 | None |
 | [三足鼎立：Copilot、Claude Code、Codex 该选谁](source/_posts/copilot-vs-claude-code-vs-codex.md) | 100 | None |
@@ -202,6 +221,7 @@ Generated: 2026-09-12 06:44:43
 | [当 Codex 登陆移动端：口袋里的人工智能程序员](source/_posts/codex-mobile-developer.md) | 100 | None |
 | [FrontierMath Erdős 五题全解：数学是模型最后的护城河吗](source/_posts/frontiermath-erdos-five-problems.md) | 100 | None |
 | [阿里"AI 云与算力"分部收入 484 亿：一次组织与叙事的双重手术](source/_posts/china-cloud-ai-484-billion.md) | 100 | None |
+| [V8 Isolate 与容器：边缘运行时的隔离模型取舍](source/_posts/cf-edge-isolate-vs-container.md) | 100 | None |
 | [苹果要砍掉标准版 iPhone 18？产品矩阵重构背后的三个信号](source/_posts/apple-drops-standard-iphone18.md) | 100 | None |
 | [AI 的"电力瓶颈"与核电回潮：算力狂飙背后的能源大考](source/_posts/datacenter-power-nuclear-resurgence.md) | 100 | None |
 | [千问 E-Commerce Bench：给 AI 店长上的"国考"](source/_posts/qwen-ecommerce-bench.md) | 100 | None |
@@ -213,9 +233,12 @@ Generated: 2026-09-12 06:44:43
 | [从季度更新到周更：模型发布节奏的军备竞赛](source/_posts/model-release-cadence.md) | 100 | None |
 | [从 0 到 1 搭博客：域名、HTTPS、CI 自动部署，一次说清](source/_posts/hexo-blog-deploy-guide.md) | 100 | None |
 | [上线前必做：我的个人项目安全体检清单](source/_posts/project-security-checklist.md) | 100 | None |
+| [Vibe Coding 到底是什么：一次概念澄清](source/_posts/vibe-probe-definition.md) | 100 | None |
 | [MCP 进入第二年：协议红利与工具通胀](source/_posts/mcp-year-two.md) | 100 | None |
 | [AI 安全事件响应：企业该建什么团队](source/_posts/ai-security-incident-response.md) | 100 | None |
+| [Turborepo 远程缓存落地的三个硬问题：隔离、命中率与命中失败](source/_posts/vc-monorepo-remote-cache-ops.md) | 100 | None |
 | [AI 乱象专项整治：野蛮生长的终结信号](source/_posts/ai-regulatory-crackdown-2026.md) | 100 | None |
+| [Cloudflare Pages 构建管线解剖：从 Git 提交到全球边缘的完整](source/_posts/cf-pages-build-pipeline-anatomy.md) | 100 | None |
 | [AI 搜索正在变成 Agent 的默认入口](source/_posts/ai-search-agent-2026.md) | 100 | None |
 | [给博客配了 37 种语言之后：多语言 SEO 的真实代价](source/_posts/blog-37-languages.md) | 100 | None |
 | [DeepSeek V4 Flash 正式版上手两周：便宜大碗之外，还差什么？](source/_posts/deepseek-v4-flash-review.md) | 100 | None |
@@ -224,4 +247,5 @@ Generated: 2026-09-12 06:44:43
 | [GPT-6 Astra 的定价信号：10/50 美元锚定了什么](source/_posts/gpt6-price-anchoring.md) | 100 | None |
 | [国产模型的成本优势还能持续多久](source/_posts/infer-cost-china-advantage.md) | 100 | None |
 | [AI 独角兽 IPO 潮：可灵、宇树与下一批](source/_posts/ai-unicorn-ipo-wave.md) | 100 | None |
+| [边缘冷启动与调度：为什么"无服务器"也会慢](source/_posts/cf-edge-cold-start-scheduling.md) | 100 | None |
 | [具身智能 2026 六大趋势：从"造人形"转向"抢落地"](source/_posts/embodied-ai-2026-trends.md) | 100 | None |
