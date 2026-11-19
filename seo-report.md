@@ -1,6 +1,6 @@
 # SEO Analysis Report
 
-Generated: 2026-11-18 09:34:58
+Generated: 2026-11-19 09:42:36
 
 ## Summary
 
